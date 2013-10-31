@@ -72,6 +72,7 @@ public class Database {
 	public static synchronized Sql2o getInstance() {
 		if (database == null) {
 			database = new Database();
+			return Database.sql;
 		}
 		// Rather than returning an instance of this class like in typical
 		// singleton design we instead return a reference to the Sql2o object
