@@ -27,7 +27,27 @@ public class User {
 				.createQuery(
 						"SELECT ID, Firstname, Lastname, Email FROM users WHERE Email = :email")
 				.addParameter("email", email).executeAndFetch(User.class);
-		if (results != null && !results.isEmpty()) {
+		if (Database.hasResults(results)) {
+			user = results.get(0);
+		}
+		return user;
+	}
+
+	/**
+	 * Create a user object given an id
+	 * 
+	 * @param email
+	 *            the user's id
+	 * @return the User object, null if user with given id does not exist
+	 */
+	public static User userFromID(int id) {
+		User user = null;
+		List<User> results = Database
+				.getInstance()
+				.createQuery(
+						"SELECT ID, Firstname, Lastname, Email FROM users WHERE ID = :id")
+				.addParameter("id", id).executeAndFetch(User.class);
+		if (Database.hasResults(results)) {
 			user = results.get(0);
 		}
 		return user;

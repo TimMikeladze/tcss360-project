@@ -19,10 +19,9 @@ public class Login {
 	 * @return true if user is registered
 	 */
 	public static boolean isRegistered(String email) {
-		return Database.getInstance()
+		return Database.hasResults(Database.getInstance()
 				.createQuery("SELECT 1 FROM users WHERE Email = :email")
-				.addParameter("email", email).executeAndFetchTable().rows()
-				.size() > 0;
+				.addParameter("email", email).executeAndFetchTable());
 	}
 
 	/**

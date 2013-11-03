@@ -4,9 +4,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Properties;
 
 import org.sql2o.Sql2o;
+import org.sql2o.data.Table;
 
 /**
  * This is a singleton class which provides static access to an instance of the
@@ -79,4 +81,22 @@ public class Database {
 		return sql;
 	}
 
+	/**
+	 * Wrapper method to see if there are results
+	 * 
+	 * @param list
+	 * @return true if there are results
+	 */
+	// TODO This is a dirty way of determining results. Ideally a
+	// ConcurrentHashMap is needed keyed by thread id and the corresponding
+	// value being a Stack of query results which is flushed every so often to
+	// keep memory free. Having this we'll be able to store and access previous
+	// query results in a thread safe manner.
+	public static synchronized boolean hasResults(List<?> list) {
+		return list != null && !list.isEmpty();
+	}
+
+	public static synchronized boolean hasResults(Table table) {
+		return table != null && hasResults(table.rows());
+	}
 }
