@@ -43,10 +43,9 @@ public class Conference {
 	 * @return the program chair's User object
 	 */
 	public User getProgramChair() {
-		if (programChair == null) {
-			programChair = User.userFromID(programChairID);
-		}
-		return programChair;
+		return programChair == null ? User.userFromID(programChairID)
+				: programChair;
+
 	}
 
 	/**
@@ -96,8 +95,11 @@ public class Conference {
 
 	@Override
 	public String toString() {
-		return "Conference [id=" + id + ", name=" + name + ", location="
-				+ location + ", date=" + date + ", programChairID="
-				+ programChairID + ", programChair=" + programChair + "]";
+		return "Conference [getProgramChair()=" + getProgramChair()
+				+ ", getID()=" + getID() + ", getName()=" + getName()
+				+ ", getLocation()=" + getLocation() + ", getDate()="
+				+ getDate() + ", getProgramChairID()=" + getProgramChairID()
+				+ "]";
 	}
+
 }
