@@ -3,6 +3,8 @@ package model.login;
 import java.sql.SQLException;
 
 import model.database.Database;
+import model.database.Errors;
+import model.users.User;
 
 /**
  * Handles user login and registration.
@@ -45,7 +47,26 @@ public class Login {
 					.addParameter("lastName", lastName)
 					.addParameter("email", email).executeUpdate();
 		} else {
-			throw new SQLException("This email already exists in the database");
+			throw new SQLException(Errors.EMAIL_EXISTS);
 		}
+	}
+
+	/**
+	 * Logs in a user and returns the corresponding User object
+	 * 
+	 * @param email
+	 *            the user's email
+	 * @return the User object or null if user for given email doesn't exist
+	 * @throws SQLException
+	 *             if email doesn't exist in DB
+	 */
+	public static User loginUser(String email) throws SQLException {
+		User user = null;
+		if (isRegistered(email)) {
+			user = User.userFromEmail(email);
+		} else {
+			throw new SQLException(Errors.EMAIL_DOES_NOT_EXIST);
+		}
+		return user;
 	}
 }
