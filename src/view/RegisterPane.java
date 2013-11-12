@@ -24,19 +24,19 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 /**
- * JavaFX pane for displaying the login window.
+ * JavaFX pane for displaying the registration window.
  * 
  * @author Mohammad Juma
  * @version 11-11-2013
  */
-public class LoginPane extends GridPane {
+public class RegisterPane extends GridPane {
 
     /**
-     * Constructs a new LoginPane pane that extends GridPane and displays a prompt
-     * for the user to login or register.
+     * Constructs a new RegisterPane pane that extends GridPane and allows a new
+     * user to register.
      */
-    public LoginPane() {
-        this.setAlignment(Pos.CENTER);
+    public RegisterPane() {
+        this.setAlignment(Pos.TOP_LEFT);
         this.setHgap(10);
         this.setVgap(10);
         this.setPadding(new Insets(25, 25, 25, 25));
@@ -45,41 +45,53 @@ public class LoginPane extends GridPane {
     }
     
     /**
-     * Creates the main components of the LoginPane pane.
+     * Creates the main components of the RegisterPane pane.
      */
     private void create() {
-        Text scenetitle = new Text("Welcome");
+        Text scenetitle = new Text("Registration");
         scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-        this.add(scenetitle, 0, 0, 2, 1);
+        this.add(scenetitle, 0, 0);
+        
+        Label firstName = new Label("First Name:");
+        this.add(firstName, 0, 1);
 
+        TextField firstNameTextField = new TextField();
+        this.add(firstNameTextField, 1, 1);
+        
+        Label lastName = new Label("Last Name:");
+        this.add(lastName, 0, 2);
+
+        TextField lastNameTextField = new TextField();
+        this.add(lastNameTextField, 1, 2);
+        
         Label email = new Label("Email:");
-        this.add(email, 0, 1);
+        this.add(email, 0, 3);
 
         TextField emailTextField = new TextField();
-        this.add(emailTextField, 1, 1);
+        this.add(emailTextField, 1, 3);
 
         Label password = new Label("Password:");
-        this.add(password, 0, 2);
+        this.add(password, 0, 4);
 
         PasswordField passwordField = new PasswordField();
-        this.add(passwordField, 1, 2);
+        this.add(passwordField, 1, 4);
         
-        Button signInButton = new Button("Sign in");
         Button registerButton = new Button("Register");
+        Button returnButton = new Button("Go Back");
         HBox buttonHBox = new HBox(10);
         buttonHBox.setAlignment(Pos.BOTTOM_RIGHT);
-        buttonHBox.getChildren().add(signInButton);
         buttonHBox.getChildren().add(registerButton);
-        this.add(buttonHBox, 1, 4);
+        buttonHBox.getChildren().add(returnButton);
+        this.add(buttonHBox, 1, 5);
         
-        final Text signInText = new Text();
-        this.add(signInText, 1, 6);
+        final Text registrationText = new Text();
+        this.add(registrationText, 1, 6);
         
-        signInButton.setOnAction(new EventHandler<ActionEvent>() {
+        registerButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                signInText.setFill(Color.FIREBRICK);
-                signInText.setText("Sign in button pressed");
+                registrationText.setFill(Color.FIREBRICK);
+                registrationText.setText("Sign in button pressed");
             }
         });
     }
