@@ -46,7 +46,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("TCSS360 Project");
 
-        Scene scene = new Scene(new RegisterPane(), 950, 600);
+        Scene scene = new Scene(new MainPane(), 950, 600);
         primaryStage.setScene(scene);
         
         primaryStage.show();
