@@ -39,6 +39,7 @@ public class LoginTest {
 		email = "youknownothingjonsnow@gmail.com";
 		
 		// Add the user 'Jon Snow' to the database
+		// Need to remove from database
 		Database.getInstance()
 		.createQuery(
 				"INSERT INTO users (Firstname, Lastname, Email) VALUES (:firstName, :lastName, :email)")
@@ -82,6 +83,9 @@ public class LoginTest {
 		fail("Not yet implemented");
 	}
 
+	/**
+	 * Tests the loginUser() method of Login class.
+	 */
 	@Test
 	public void testLoginUser() {
 		fail("Not yet implemented");
