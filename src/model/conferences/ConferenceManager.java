@@ -62,54 +62,70 @@ public class ConferenceManager {
 	/**
 	 * Removes a conference from the database.
 	 * 
-	 * @param conferenceID The id of the conference to remove.
+	 * @param conferenceID
+	 *            The id of the conference to remove.
 	 */
 	public static void removeConference(int conferenceID) {
-        Database.getInstance().createQuery("DELETE FROM conferences WHERE ID = :conferenceID").addParameter("conferenceID", conferenceID).executeUpdate();
-        Database.getInstance().createQuery("DELETE FROM conference_users WHERE ID = :conferenceID").addParameter("conferenceID", conferenceID).executeUpdate();
+		Database.getInstance()
+				.createQuery("DELETE FROM conferences WHERE ID = :conferenceID")
+				.addParameter("conferenceID", conferenceID).executeUpdate();
+		Database.getInstance()
+				.createQuery(
+						"DELETE FROM conference_users WHERE ID = :conferenceID")
+				.addParameter("conferenceID", conferenceID).executeUpdate();
 	}
 
 	/**
 	 * Adds a user to the conference.
 	 * 
-	 * @param conferenceID The id of the conference to add the user to.
-	 * @throws SQLException 
+	 * @param conferenceID
+	 *            The id of the conference to add the user to.
+	 * @throws SQLException
 	 */
-	public static void addUserToConference(int conferenceID, int userID, Permissions permissionID) throws SQLException {
-	    if (conferenceExists(conferenceID)) {
-	        Database.getInstance().createQuery("INSERT INTO conference_users (ConferenceID, UserID, PermissionID) VALUES (:conferenceID, :userID, :permissionID)")
-            .addParameter("conferenceID", conferenceID)
-            .addParameter("userID", userID)
-            .addParameter("permissionID", permissionID.getPermission())
-            .executeUpdate();
-	    }
-	    else {
-	        throw new SQLException(Errors.CONFERENCE_DOES_NOT_EXIST);
-	    }
+	public static void addUserToConference(int conferenceID, int userID,
+			Permissions permissionID) throws SQLException {
+		if (conferenceExists(conferenceID)) {
+			Database.getInstance()
+					.createQuery(
+							"INSERT INTO conference_users (ConferenceID, UserID, PermissionID) VALUES (:conferenceID, :userID, :permissionID)")
+					.addParameter("conferenceID", conferenceID)
+					.addParameter("userID", userID)
+					.addParameter("permissionID", permissionID.getPermission())
+					.executeUpdate();
+		} else {
+			throw new SQLException(Errors.CONFERENCE_DOES_NOT_EXIST);
+		}
 	}
 
 	/**
 	 * Removes a user from the conference.
 	 * 
-	 * @param conferenceID The id of the conference to remove the user from.
+	 * @param conferenceID
+	 *            The id of the conference to remove the user from.
 	 */
 	public static void removeUserFromConference(int conferenceID, int userID) {
-	    Database.getInstance().createQuery("DELETE FROM conference_users WHERE UserID = :userID AND ConferenceID = :conferenceID")
-	    .addParameter("userID", userID)
-	    .addParameter("conferenceID", conferenceID)
-	    .executeUpdate();
+		Database.getInstance()
+				.createQuery(
+						"DELETE FROM conference_users WHERE UserID = :userID AND ConferenceID = :conferenceID")
+				.addParameter("userID", userID)
+				.addParameter("conferenceID", conferenceID).executeUpdate();
 	}
-	
+
 	public static boolean conferenceExists(int conferenceID) {
-	    return Database.hasResults(Database.getInstance().createQuery("SELECT 1 FROM conferences WHERE ID = :conferenceID")
-	            .addParameter("conferenceID", conferenceID).executeAndFetchTable());
+		return Database.hasResults(Database
+				.getInstance()
+				.createQuery(
+						"SELECT 1 FROM conferences WHERE ID = :conferenceID")
+				.addParameter("conferenceID", conferenceID)
+				.executeAndFetchTable());
 	}
 
 	/**
 	 * Gets a list of users in a conference represented as ConferenceUser
 	 * objects
 	 * 
-	 * @param id The id of the conference get users for
+	 * @param id
+	 *            The id of the conference get users for
 	 * @return the list of users
 	 */
 	// TODO change from a list to a map
