@@ -8,7 +8,11 @@
 
 package view;
 
+import java.sql.SQLException;
+
+import model.login.Login;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -29,8 +33,48 @@ import javafx.scene.text.Text;
  * @author Mohammad Juma
  * @version 11-11-2013
  */
-public class LoginPane extends GridPane {
+public class LoginPane extends GridPane implements EventHandler {
 
+    /**
+     * Text component for showing the welcome text.
+     */
+    private Text welcomeText;
+    
+    /**
+     * Label for showing the email label text.
+     */
+    private Label emailLabel;
+    
+    /** 
+     * TextField for inputing the email.
+     */
+    private TextField emailTextField;
+    
+    /**
+     * Label for showing the password label text.
+     */
+    private Label passwordLabel;
+    
+    /**
+     * PasswordField for inputing the password.
+     */
+    private PasswordField passwordField;
+    
+    /**
+     * Button for signing into the application.
+     */
+    private Button signInButton;
+    
+    /** 
+     * Button for registering for an account.
+     */
+    private Button registerButton;
+    
+    /**
+     * Text for displaying sign in errors.
+     */
+    private Text signInText;
+    
     /**
      * Constructs a new LoginPane pane that extends GridPane and displays a prompt
      * for the user to login or register.
@@ -48,39 +92,57 @@ public class LoginPane extends GridPane {
      * Creates the main components of the LoginPane pane.
      */
     private void create() {
-        Text scenetitle = new Text("Welcome");
-        scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-        this.add(scenetitle, 0, 0, 2, 1);
+        welcomeText = new Text("Welcome");
+        welcomeText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+        this.add(welcomeText, 0, 0, 2, 1);
 
-        Label email = new Label("Email:");
-        this.add(email, 0, 1);
+        emailLabel = new Label("Email:");
+        this.add(emailLabel, 0, 1);
 
-        TextField emailTextField = new TextField();
+        emailTextField = new TextField();
         this.add(emailTextField, 1, 1);
 
-        Label password = new Label("Password:");
-        this.add(password, 0, 2);
+        passwordLabel = new Label("Password:");
+        this.add(passwordLabel, 0, 2);
 
-        PasswordField passwordField = new PasswordField();
+        passwordField = new PasswordField();
         this.add(passwordField, 1, 2);
         
-        Button signInButton = new Button("Sign in");
-        Button registerButton = new Button("Register");
-        HBox buttonHBox = new HBox(10);
+        signInButton = new Button("Sign in");
+        signInButton.setOnAction(this);
+        
+        registerButton = new Button("Register");
+        registerButton.setOnAction(this);
+        
+        final HBox buttonHBox = new HBox(10);
         buttonHBox.setAlignment(Pos.BOTTOM_RIGHT);
         buttonHBox.getChildren().add(signInButton);
         buttonHBox.getChildren().add(registerButton);
         this.add(buttonHBox, 1, 4);
         
-        final Text signInText = new Text();
+        signInText = new Text();
         this.add(signInText, 1, 6);
-        
-        signInButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                signInText.setFill(Color.FIREBRICK);
-                signInText.setText("Sign in button pressed");
+    }
+    
+    /**
+     * 
+     * @param event
+     */
+    @Override
+    public void handle(Event event) {
+            if (event.getSource() == signInButton) {
+                try {
+                    Login.loginUser(signInButton.getText());
+                } catch (SQLException exception) {
+                    //exception.printStackTrace();
+                    signInText.setFill(Color.FIREBRICK);
+                    signInText.setText("Sign in button pressed");
+                }
             }
-        });
+            
+            if (event.getSource() == registerButton) {
+                
+            }
+
     }
 }
