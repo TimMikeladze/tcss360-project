@@ -14,7 +14,6 @@ import java.util.List;
 import model.database.Database;
 import model.permissions.Permissions;
 
-
 /**
  * The Class ConferenceManager.
  * 
@@ -26,10 +25,15 @@ public class ConferenceManager {
 	/**
 	 * Create a conference
 	 * 
-	 * @param name the name of the conference
-	 * @param location the location of the conference
-	 * @param date the date the conference is to take place
-	 * @param programChairID the ID of program chair, this is the user who creates the conference
+	 * @param name
+	 *            the name of the conference
+	 * @param location
+	 *            the location of the conference
+	 * @param date
+	 *            the date the conference is to take place
+	 * @param programChairID
+	 *            the ID of program chair, this is the user who creates the
+	 *            conference
 	 * @return returns the ID of the created conference
 	 */
 	public static int createConference(String name, String location, Date date,
@@ -52,36 +56,43 @@ public class ConferenceManager {
 				.executeUpdate();
 		return id;
 	}
-	
+
 	/**
 	 * Removes a conference from the database.
-	 * @param conferenceID The id of the conference to remove.
+	 * 
+	 * @param conferenceID
+	 *            The id of the conference to remove.
 	 */
-	public static void removeConference(int conferenceID) {
-	    
+	public static void removeConference(int conferenceID, int userID) {
+
 	}
-	
+
 	/**
 	 * Adds a user to the conference.
-	 * @param conferenceID The id of the conference to add the user to.
+	 * 
+	 * @param conferenceID
+	 *            The id of the conference to add the user to.
 	 */
-	public static void addUserToConference(int conferenceID) {
-	    
+	public static void addUserToConference(int conferenceID, int userID) {
+
 	}
-	
+
 	/**
 	 * Removes a user from the conference.
-	 * @param conferenceID The id of the conference to remove the user from.
+	 * 
+	 * @param conferenceID
+	 *            The id of the conference to remove the user from.
 	 */
-	public static void removeUserFromConference(int conferenceID) {
-	    
+	public static void removeUserFromConference(int conferenceID, int userID) {
+
 	}
 
 	/**
 	 * Gets a list of users in a conference represented as ConferenceUser
 	 * objects
 	 * 
-	 * @param id the id of the conference get users for
+	 * @param id
+	 *            the id of the conference get users for
 	 * @return the list of users
 	 */
 	// TODO change from a list to a map
