@@ -36,18 +36,22 @@ public class Login {
 	 * @throws SQLException
 	 *             if email already exists in DB
 	 */
-	public static void registerUser(String firstName, String lastName,
-			String email) throws SQLException {
+	public int registerUser(String firstName, String lastName, String email)
+			throws SQLException {
+		int id;
 		if (!isRegistered(email)) {
-			Database.getInstance()
+			id = Database
+					.getInstance()
 					.createQuery(
 							"INSERT INTO users (Firstname, Lastname, Email) VALUES (:firstName, :lastName, :email)")
 					.addParameter("firstName", firstName)
 					.addParameter("lastName", lastName)
-					.addParameter("email", email).executeUpdate();
+					.addParameter("email", email).executeUpdate()
+					.getKey(Integer.class);
 		} else {
 			throw new SQLException(Errors.EMAIL_EXISTS);
 		}
+		return id;
 	}
 
 	/**
