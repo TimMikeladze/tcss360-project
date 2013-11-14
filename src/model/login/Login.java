@@ -36,7 +36,7 @@ public class Login {
 	 * @throws SQLException
 	 *             if email already exists in DB
 	 */
-	public int registerUser(String firstName, String lastName, String email)
+	public static int registerUser(String firstName, String lastName, String email)
 			throws SQLException {
 		int id;
 		if (!isRegistered(email)) {
