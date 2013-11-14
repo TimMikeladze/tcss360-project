@@ -62,9 +62,13 @@ public class HomePane extends GridPane {
         this.add(table, 0, 1);
         
         
-        
-        
-
+        /*
+        for (i = 0 i < numberOfComponents; i++) {
+            if (component[1].getMinPermission() <= theUser.getPermission()) {
+                pane.add(component[i]);
+            }
+        }
+        */
         
         /*
         TextArea activitiesTextArea = new TextArea("Example Activity 1\nExample Activity 2\netc...");

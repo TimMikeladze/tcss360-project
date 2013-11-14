@@ -1,10 +1,15 @@
 package model.permissions;
 
-public class Permissions {
-	// Convenience sake, not a good design.
-	public static final int AUTHOR = 100;
-	public static final int REVIEWER = 200;
-	public static final int SUB_PROGRAM_CHAIR = 300;
-	public static final int PROGRAM_CHAIR = 400;
-	public static final int ADMIN = 500;
+public enum Permissions {
+    REVIEWER(100),
+    AUTHOR(200),
+    SUBPROGRAM_CHAR(300),
+    PROGRAM_CHAIR(400),
+    ADMIN(500);
+    
+    int permission;
+    
+    private Permissions(int permission) {
+        this.permission = permission;
+    } 
 }

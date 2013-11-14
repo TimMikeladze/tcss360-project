@@ -1,3 +1,11 @@
+/*
+ * Tim Mikeladze
+ * 
+ * TCSS 360 - Winter 2013
+ * TCSS 360 Project
+ * November 3, 2013
+ */
+
 package model.conferences;
 
 import java.sql.Date;
@@ -6,8 +14,13 @@ import java.util.List;
 import model.database.Database;
 import model.permissions.Permissions;
 
+
 /**
  * The Class ConferenceManager.
+ * 
+ * @author Tim Mikeladze
+ * @author Mohammad Juma
+ * @version 11-11-2013
  */
 public class ConferenceManager {
 	/**
