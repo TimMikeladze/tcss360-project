@@ -5,4 +5,6 @@ public class Errors {
 
 	public static final String EMAIL_DOES_NOT_EXIST = "This email does not exist";
 
+    public static final String CONFERENCE_DOES_NOT_EXIST = "This conference does not exist";
+
 }
