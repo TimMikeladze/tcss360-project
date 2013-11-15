@@ -32,9 +32,7 @@ import model.login.Login;
  * @author Mohammad Juma
  * @version 11-11-2013
  */
-public class LoginPane extends GridPane implements EventHandler {
-
-	private Callbacks callbacks;
+public class LoginPane extends GenericPane<GridPane> implements EventHandler {
 
 	/**
 	 * Text component for showing the welcome text.
@@ -81,16 +79,13 @@ public class LoginPane extends GridPane implements EventHandler {
 	 * prompt for the user to login or register.
 	 */
 	public LoginPane() {
-		this.setAlignment(Pos.CENTER);
-		this.setHgap(10);
-		this.setVgap(10);
-		this.setPadding(new Insets(25, 25, 25, 25));
+		super(new GridPane());
+		pane.setAlignment(Pos.CENTER);
+		pane.setHgap(10);
+		pane.setVgap(10);
+		pane.setPadding(new Insets(25, 25, 25, 25));
 
 		create();
-	}
-
-	public void addCallbacks(Callbacks callbacks) {
-		this.callbacks = callbacks;
 	}
 
 	/**
@@ -99,19 +94,19 @@ public class LoginPane extends GridPane implements EventHandler {
 	private void create() {
 		welcomeText = new Text("Welcome");
 		welcomeText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-		this.add(welcomeText, 0, 0, 2, 1);
+		pane.add(welcomeText, 0, 0, 2, 1);
 
 		emailLabel = new Label("Email:");
-		this.add(emailLabel, 0, 1);
+		pane.add(emailLabel, 0, 1);
 
 		emailTextField = new TextField();
-		this.add(emailTextField, 1, 1);
+		pane.add(emailTextField, 1, 1);
 
 		passwordLabel = new Label("Password:");
-		this.add(passwordLabel, 0, 2);
+		pane.add(passwordLabel, 0, 2);
 
 		passwordField = new PasswordField();
-		this.add(passwordField, 1, 2);
+		pane.add(passwordField, 1, 2);
 
 		signInButton = new Button("Sign in");
 		signInButton.setOnAction(this);
@@ -123,10 +118,10 @@ public class LoginPane extends GridPane implements EventHandler {
 		buttonHBox.setAlignment(Pos.BOTTOM_RIGHT);
 		buttonHBox.getChildren().add(signInButton);
 		buttonHBox.getChildren().add(registerButton);
-		this.add(buttonHBox, 1, 4);
+		pane.add(buttonHBox, 1, 4);
 
 		signInText = new Text();
-		this.add(signInText, 1, 6);
+		pane.add(signInText, 1, 6);
 	}
 
 	/**

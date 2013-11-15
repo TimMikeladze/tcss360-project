@@ -7,10 +7,10 @@
  */
 
 import javafx.application.Application;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import view.Callbacks;
+import view.GenericPane;
 import view.LoginPane;
 
 /**
@@ -21,6 +21,8 @@ import view.LoginPane;
  */
 public class Main extends Application implements Callbacks {
 
+	private static final int DEFAULT_WIDTH = 950;
+	private static final int DEFAULT_HEIGHT = 600;
 	/**
 	 * Private constructor, to prevent instantiation of this class.
 	 * 
@@ -54,15 +56,21 @@ public class Main extends Application implements Callbacks {
 
 		LoginPane loginPane = new LoginPane();
 		loginPane.addCallbacks(this);
-		scene = new Scene(loginPane, 950, 600);
+		scene = new Scene(loginPane.getPane(), DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		primaryStage.setScene(scene);
 
 		primaryStage.show();
 	}
 
 	@Override
-	public void changeScene(Parent parent) {
-		scene = new Scene(parent, 950, 600);
+	public void changeScene(GenericPane<?> genericPane) {
+		changeScene(genericPane, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+	}
+
+	@Override
+	public void changeScene(GenericPane<?> genericPane, int width, int height) {
+		genericPane.addCallbacks(this);
+		scene = new Scene(genericPane.getPane(), width, height);
 		primaryStage.setScene(scene);
 
 		primaryStage.show();

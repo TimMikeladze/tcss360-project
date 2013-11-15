@@ -1,7 +1,7 @@
 package view;
 
-import javafx.scene.Parent;
-
 public interface Callbacks {
-	public void changeScene(Parent parent);
+	public void changeScene(GenericPane<?> genericPane);
+
+	public void changeScene(GenericPane<?> genericPane, int width, int height);
 }
