@@ -8,8 +8,6 @@
 
 package view;
 
-import java.sql.SQLException;
-
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -24,6 +22,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import model.database.DatabaseException;
 import model.login.Login;
 
 /**
@@ -136,7 +135,7 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
 				if (callbacks != null) {
 					callbacks.changeScene(new MainPane());
 				}
-			} catch (SQLException e) {
+			} catch (DatabaseException e) {
 				signInText.setFill(Color.FIREBRICK);
 				signInText.setText(e.getMessage());
 			}

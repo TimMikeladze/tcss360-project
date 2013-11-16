@@ -3,6 +3,7 @@ package model.login;
 import java.sql.SQLException;
 
 import model.database.Database;
+import model.database.DatabaseException;
 import model.database.Errors;
 import model.users.User;
 
@@ -36,8 +37,8 @@ public class Login {
 	 * @throws SQLException
 	 *             if email already exists in DB
 	 */
-	public static int registerUser(String firstName, String lastName, String email)
-			throws SQLException {
+	public static int registerUser(String firstName, String lastName,
+			String email) throws DatabaseException {
 		int id;
 		if (!isRegistered(email)) {
 			id = Database
@@ -49,7 +50,7 @@ public class Login {
 					.addParameter("email", email).executeUpdate()
 					.getKey(Integer.class);
 		} else {
-			throw new SQLException(Errors.EMAIL_EXISTS);
+			throw new DatabaseException(Errors.EMAIL_EXISTS);
 		}
 		return id;
 	}
@@ -63,12 +64,12 @@ public class Login {
 	 * @throws SQLException
 	 *             if email doesn't exist in DB
 	 */
-	public static User loginUser(String email) throws SQLException {
+	public static User loginUser(String email) throws DatabaseException {
 		User user = null;
 		if (isRegistered(email)) {
 			user = User.userFromEmail(email);
 		} else {
-			throw new SQLException(Errors.EMAIL_DOES_NOT_EXIST);
+			throw new DatabaseException(Errors.EMAIL_DOES_NOT_EXIST);
 		}
 		return user;
 	}

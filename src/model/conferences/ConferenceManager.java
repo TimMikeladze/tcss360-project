@@ -9,10 +9,10 @@
 package model.conferences;
 
 import java.sql.Date;
-import java.sql.SQLException;
 import java.util.List;
 
 import model.database.Database;
+import model.database.DatabaseException;
 import model.database.Errors;
 import model.permissions.Permissions;
 
@@ -50,6 +50,7 @@ public class ConferenceManager {
 				.addParameter("date", date)
 				.addParameter("programChairID", programChairID).executeUpdate()
 				.getKey(Integer.class);
+
 		Database.getInstance()
 				.createQuery(
 						"INSERT INTO conference_users (ConferenceID, UserID, PermissionID) VALUES (:id, :userID, :permissionID)")
@@ -80,20 +81,20 @@ public class ConferenceManager {
 	 * 
 	 * @param conferenceID
 	 *            The id of the conference to add the user to.
-	 * @throws SQLException
+	 * @throws DatabaseException
 	 */
 	public static void addUserToConference(int conferenceID, int userID,
-			Permissions permissionID) throws SQLException {
+			Permissions permissionID) throws DatabaseException {
 		if (conferenceExists(conferenceID)) {
 			Database.getInstance()
 					.createQuery(
-							"INSERT INTO conference_users (ConferenceID, UserID, PermissionID) VALUES (:conferenceID, :userID, :permissionID)")
+							"INSERT IGNORE INTO conference_users (ConferenceID, UserID, PermissionID) VALUES (:conferenceID, :userID, :permissionID)")
 					.addParameter("conferenceID", conferenceID)
 					.addParameter("userID", userID)
 					.addParameter("permissionID", permissionID.getPermission())
 					.executeUpdate();
 		} else {
-			throw new SQLException(Errors.CONFERENCE_DOES_NOT_EXIST);
+			throw new DatabaseException(Errors.CONFERENCE_DOES_NOT_EXIST);
 		}
 	}
 

@@ -1,10 +1,23 @@
 package model.database;
 
-public class Errors {
-	public static final String EMAIL_EXISTS = "This email already exists in the database";
+public enum Errors {
+	EMAIL_EXISTS("This email already exists in the database"),
+	EMAIL_DOES_NOT_EXIST("This email does not exist"),
+	CONFERENCE_DOES_NOT_EXIST("This conference does not exist"),
+	MAX_PAPER_SUBMISSIONS_EXCEEDED("You've submitted the maximum amount of papers allowed into this conference");
 
-	public static final String EMAIL_DOES_NOT_EXIST = "This email does not exist";
+	private String error;
 
-    public static final String CONFERENCE_DOES_NOT_EXIST = "This conference does not exist";
+	Errors(String error) {
+		this.error = error;
+	}
+
+	public String getError() {
+		return error;
+	}
+
+	public String toString() {
+		return error;
+	}
 
 }
