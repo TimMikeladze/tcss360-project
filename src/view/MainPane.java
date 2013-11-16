@@ -17,6 +17,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
+import model.conferences.ConferenceManager;
+import model.permissions.Permissions;
 
 /**
  * Main JavaFX pane for holding the applications UI upon successful login.
@@ -86,11 +88,16 @@ public class MainPane extends GenericPane<BorderPane> {
 		Button usersButton = new Button("Users");
 		usersButton.setMaxWidth(Double.MAX_VALUE);
 
-		Button messagesButton = new Button("Messages");
-		messagesButton.setMaxWidth(Double.MAX_VALUE);
-
 		tilePane.getChildren().addAll(homeButton, conferencesButton,
-				submissionsButton, usersButton, messagesButton);
+				submissionsButton, usersButton);
+
+		// Example of how the Permissions class works
+		if (Permissions.hasPermission(ConferenceManager.class,
+				"getUsersInConference", Permissions.ADMIN)) {
+			Button messagesButton = new Button("Messages");
+			messagesButton.setMaxWidth(Double.MAX_VALUE);
+			tilePane.getChildren().add(messagesButton);
+		}
 
 		return tilePane;
 	}

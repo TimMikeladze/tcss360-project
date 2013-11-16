@@ -14,6 +14,7 @@ import java.util.List;
 import model.database.Database;
 import model.database.DatabaseException;
 import model.database.Errors;
+import model.permissions.Permission;
 import model.permissions.Permissions;
 
 /**
@@ -130,6 +131,7 @@ public class ConferenceManager {
 	 * @return the list of users
 	 */
 	// TODO change from a list to a map
+	@Permission(level = 400)
 	public static List<ConferenceUser> getUsersInConference(int id) {
 		return Database
 				.getInstance()

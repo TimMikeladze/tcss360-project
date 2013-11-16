@@ -12,6 +12,7 @@ import model.permissions.Permissions;
  * The Class PaperManager.
  */
 public class PaperManager {
+
 	private static final int MAX_PAPERS = 4;
 
 	/**
@@ -49,6 +50,7 @@ public class PaperManager {
 			throw new DatabaseException(Errors.MAX_PAPER_SUBMISSIONS_EXCEEDED);
 		}
 	}
+
 	/**
 	 * Gets the number of papers an author has submitted to a conference
 	 * 
