@@ -146,4 +146,21 @@ public class ConferenceManager {
 						"SELECT ConferenceID, UserID, PermissionID FROM conference_users WHERE ConferenceID = :id")
 				.addParameter("id", id).executeAndFetch(ConferenceUser.class);
 	}
+
+	/**
+	 * Get a list of conferences represented by Conference objects
+	 * 
+	 * @return returns List<Conference>
+	 */
+	public static List<Conference> getConferences() {
+		return Database
+				.getInstance()
+				.createQuery(
+						"SELECT c.ID, c.Name, c.Location, c.Date, c.ProgramChairID,"
+								+ "(SELECT COUNT(1) FROM conference_users AS cu WHERE cu.ConferenceID = c.ID AND cu.PermissionID = 100) AS Reviewers,"
+								+ "(SELECT COUNT(1) FROM conference_users AS cu WHERE cu.ConferenceID = c.ID AND cu.PermissionID = 200) AS Authors "
+								+ "FROM conferences AS c ORDER BY c.Date DESC")
+				.executeAndFetch(Conference.class);
+	}
+
 }

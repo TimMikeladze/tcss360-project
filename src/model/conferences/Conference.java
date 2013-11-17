@@ -1,6 +1,6 @@
 package model.conferences;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 import model.database.Database;
@@ -13,9 +13,11 @@ public class Conference {
 	private int id;
 	private String name;
 	private String location;
-	private Date date;
+	private Timestamp date;
 	private int programChairID;
 	private User programChair;
+	private int authors;
+	private int reviewers;
 
 	/**
 	 * Create a conference object given and ID
@@ -29,21 +31,24 @@ public class Conference {
 		List<Conference> results = Database
 				.getInstance()
 				.createQuery(
-						"SELECT ID, Name, Location, Date, ProgramChairID FROM users WHERE ID = :id")
+						"SELECT c.ID, c.Name, c.Location, c.Date, c.ProgramChairID,"
+								+ "(SELECT COUNT(1) FROM conference_users AS cu WHERE cu.ConferenceID = c.ID AND cu.PermissionID = 100) AS Reviewers,"
+								+ "(SELECT COUNT(1) FROM conference_users AS cu WHERE cu.ConferenceID = c.ID AND cu.PermissionID = 200) AS Authors "
+								+ "FROM conferences AS c WHERE c.ID = :id ORDER BY c.Date DESC")
 				.addParameter("id", id).executeAndFetch(Conference.class);
 		if (Database.hasResults(results)) {
 			conference = results.get(0);
 		}
 		return conference;
 	}
-
 	/**
 	 * Get the User object for the program chair
 	 * 
 	 * @return the program chair's User object
 	 */
 	public User getProgramChair() {
-		return programChair == null ? User.userFromID(programChairID)
+		return programChair == null
+				? User.userFromID(programChairID)
 				: programChair;
 
 	}
@@ -80,7 +85,7 @@ public class Conference {
 	 * 
 	 * @return the date
 	 */
-	public Date getDate() {
+	public Timestamp getDate() {
 		return date;
 	}
 
@@ -93,13 +98,33 @@ public class Conference {
 		return programChairID;
 	}
 
+	/**
+	 * @return the number of authors
+	 */
+	public int getAuthors() {
+		return authors;
+	}
+
+	/**
+	 * @return the number of reviewers
+	 */
+	public int getReviewers() {
+		return reviewers;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return "Conference [getProgramChair()=" + getProgramChair()
 				+ ", getID()=" + getID() + ", getName()=" + getName()
 				+ ", getLocation()=" + getLocation() + ", getDate()="
 				+ getDate() + ", getProgramChairID()=" + getProgramChairID()
-				+ "]";
+				+ ", getAuthors()=" + getAuthors() + ", getReviewers()="
+				+ getReviewers() + "]";
 	}
 
 }

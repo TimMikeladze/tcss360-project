@@ -78,8 +78,7 @@ public class HomePane extends GenericPane<GridPane> {
 
 	public static ObservableList<TempTable> getTable() {
 		ObservableList<TempTable> data = FXCollections.observableArrayList();
-
-		data.addAll(new TempTable("TCSS 305", "Daniel Zimmerman", 1, 74,
+		data.add(new TempTable("TCSS 305", "Daniel Zimmerman", 1, 74,
 				new Date()));
 		data.addAll(new TempTable("TCSS 342", "Alan Fowler", 3, 32, new Date()));
 		data.addAll(new TempTable("TCSS 360", "The Queen", 6, 42, new Date()));
