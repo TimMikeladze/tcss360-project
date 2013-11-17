@@ -9,9 +9,9 @@
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import view.Callbacks;
-import view.GenericPane;
-import view.LoginPane;
+import view.login.LoginPane;
+import view.util.Callbacks;
+import view.util.GenericPane;
 
 /**
  * Begins the program by instantiating and starting the JavaFX GUI.

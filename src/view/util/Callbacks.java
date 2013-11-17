@@ -1,4 +1,4 @@
-package view;
+package view.util;
 
 public interface Callbacks {
 	public void changeScene(GenericPane<?> genericPane);

@@ -6,7 +6,7 @@
  * November 11, 2013
  */
 
-package view;
+package view.main;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -19,6 +19,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import model.conferences.ConferenceManager;
 import model.permissions.Permissions;
+import view.home.HomePane;
+import view.util.GenericPane;
 
 /**
  * Main JavaFX pane for holding the applications UI upon successful login.

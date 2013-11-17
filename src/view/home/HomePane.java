@@ -6,7 +6,7 @@
  * November 11, 2013
  */
 
-package view;
+package view.home;
 
 import java.util.Date;
 
@@ -19,6 +19,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import view.util.GenericPane;
 
 /**
  * JavaFX pane responsible for displaying the users home interface.

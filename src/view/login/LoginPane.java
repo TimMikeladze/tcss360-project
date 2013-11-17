@@ -6,7 +6,7 @@
  * November 11, 2013
  */
 
-package view;
+package view.login;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -24,6 +24,8 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import model.database.DatabaseException;
 import model.login.Login;
+import view.main.MainPane;
+import view.util.GenericPane;
 
 /**
  * JavaFX pane for displaying the login window.
