@@ -7,29 +7,12 @@ import java.util.HashMap;
 import model.util.PackageReflector;
 
 /**
- * The Permissions enum
+ * This class handles permission checks
+ * 
+ * 
  */
-public enum Permissions {
-
-	REVIEWER(100), AUTHOR(200), SUBPROGRAM_CHAR(300), PROGRAM_CHAIR(400), ADMIN(
-			500);
-
+public class Permissions {
 	private static final HashMap<Class<?>, HashMap<String, PermissionMethod>> classMap = loadClassMap();
-
-	private final int permission;
-
-	private Permissions(int permission) {
-		this.permission = permission;
-	}
-
-	/**
-	 * Gets the permission.
-	 * 
-	 * @return the permission
-	 */
-	public int getPermission() {
-		return permission;
-	}
 
 	/**
 	 * Does a non strict permission check
@@ -43,7 +26,7 @@ public enum Permissions {
 	 * @return returns true if can access
 	 */
 	public static boolean hasPermission(Class<?> className, String method,
-			Permissions permission) {
+			PermissionLevel permission) {
 		return hasPermission(className, method, permission, false);
 	}
 
@@ -62,7 +45,7 @@ public enum Permissions {
 	 * @return returns true if can access
 	 */
 	public static boolean hasPermission(Class<?> className, String method,
-			Permissions permission, boolean strict) {
+			PermissionLevel permission, boolean strict) {
 		boolean hasPermission = false;
 		int givenPermission = permission.getPermission();
 

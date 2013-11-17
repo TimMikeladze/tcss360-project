@@ -15,7 +15,7 @@ import model.database.Database;
 import model.database.DatabaseException;
 import model.database.Errors;
 import model.permissions.Permission;
-import model.permissions.Permissions;
+import model.permissions.PermissionLevel;
 
 /**
  * The Class ConferenceManager.
@@ -56,7 +56,7 @@ public class ConferenceManager {
 				.createQuery(
 						"INSERT INTO conference_users (ConferenceID, UserID, PermissionID) VALUES (:id, :userID, :permissionID)")
 				.addParameter("id", id).addParameter("userID", programChairID)
-				.addParameter("permissionID", Permissions.PROGRAM_CHAIR)
+				.addParameter("permissionID", PermissionLevel.PROGRAM_CHAIR)
 				.executeUpdate();
 		return id;
 	}
@@ -85,7 +85,7 @@ public class ConferenceManager {
 	 * @throws DatabaseException
 	 */
 	public static void addUserToConference(int conferenceID, int userID,
-			Permissions permissionID) throws DatabaseException {
+			PermissionLevel permissionID) throws DatabaseException {
 		if (conferenceExists(conferenceID)) {
 			Database.getInstance()
 					.createQuery(
@@ -113,6 +113,13 @@ public class ConferenceManager {
 				.addParameter("conferenceID", conferenceID).executeUpdate();
 	}
 
+	/**
+	 * Checks if conference exists
+	 * 
+	 * @param conferenceID
+	 *            conference id to check
+	 * @return returns true if conference exists
+	 */
 	public static boolean conferenceExists(int conferenceID) {
 		return Database.hasResults(Database
 				.getInstance()

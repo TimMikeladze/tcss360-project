@@ -6,7 +6,7 @@ import model.conferences.ConferenceManager;
 import model.database.Database;
 import model.database.DatabaseException;
 import model.database.Errors;
-import model.permissions.Permissions;
+import model.permissions.PermissionLevel;
 
 /**
  * The Class PaperManager.
@@ -45,7 +45,7 @@ public class PaperManager {
 					.addParameter("description", description).executeUpdate()
 					.getKey(Integer.class);
 			ConferenceManager.addUserToConference(conferenceID, authorID,
-					Permissions.AUTHOR);
+					PermissionLevel.AUTHOR);
 		} else {
 			throw new DatabaseException(Errors.MAX_PAPER_SUBMISSIONS_EXCEEDED);
 		}
