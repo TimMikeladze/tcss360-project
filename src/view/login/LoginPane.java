@@ -14,7 +14,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -49,16 +48,6 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
 	 * TextField for inputing the email.
 	 */
 	private TextField emailTextField;
-
-	/**
-	 * Label for showing the password label text.
-	 */
-	private Label passwordLabel;
-
-	/**
-	 * PasswordField for inputing the password.
-	 */
-	private PasswordField passwordField;
 
 	/**
 	 * Button for signing into the application.
@@ -102,12 +91,6 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
 
 		emailTextField = new TextField();
 		pane.add(emailTextField, 1, 1);
-
-		passwordLabel = new Label("Password:");
-		pane.add(passwordLabel, 0, 2);
-
-		passwordField = new PasswordField();
-		pane.add(passwordField, 1, 2);
 
 		signInButton = new Button("Sign in");
 		signInButton.setOnAction(this);

@@ -89,6 +89,10 @@ public class User {
 		return email;
 	}
 
+	public String getFullName() {
+		return firstName + " " + lastName;
+	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", firstName=" + firstName + ", lastName="

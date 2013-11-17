@@ -76,4 +76,13 @@ public class Main extends Application implements Callbacks {
 		primaryStage.show();
 
 	}
+
+	@Override
+	public Scene getScene() {
+		return scene;
+	}
+	@Override
+	public Stage getPrimaryStage() {
+		return primaryStage;
+	}
 }
