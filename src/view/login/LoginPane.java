@@ -8,6 +8,7 @@
 
 package view.login;
 
+import javafx.concurrent.Task;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -21,10 +22,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import model.database.DatabaseException;
 import model.login.Login;
 import view.main.MainPane;
 import view.util.GenericPane;
+import view.util.ProgressService;
+import view.util.Validator;
 
 /**
  * JavaFX pane for displaying the login window.
@@ -65,8 +69,7 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
 	private Text signInText;
 
 	/**
-	 * Constructs a new LoginPane pane that extends GridPane and displays a
-	 * prompt for the user to login or register.
+	 * Constructs a new LoginPane pane that extends GridPane and displays a prompt for the user to login or register.
 	 */
 	public LoginPane() {
 		super(new GridPane());
@@ -105,6 +108,7 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
 		pane.add(buttonHBox, 1, 4);
 
 		signInText = new Text();
+		signInText.setFill(Color.FIREBRICK);
 		pane.add(signInText, 1, 6);
 	}
 
@@ -115,19 +119,45 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
 	@Override
 	public void handle(Event event) {
 		if (event.getSource() == signInButton) {
-			try {
-				Login.loginUser(emailTextField.getText().trim());
-				if (callbacks != null) {
-					callbacks.changeScene(new MainPane());
-				}
-			} catch (DatabaseException e) {
-				signInText.setFill(Color.FIREBRICK);
-				signInText.setText(e.getMessage());
+			String email = emailTextField.getText().trim();
+			if (email.isEmpty()) {
+				signInText.setText("Forgot to enter an email");
+			} else if (!Validator.isValidEmail(email)) {
+				signInText.setText("Not a valid email");
+			} else {
+				new LoginService(callbacks.getPrimaryStage()).start();
 			}
 		}
 
 		if (event.getSource() == registerButton) {
+		}
+	}
 
+	class LoginService extends ProgressService {
+
+		public LoginService(Stage primaryStage) {
+			super(primaryStage);
+		}
+
+		@Override
+		protected Task<String> createTask() {
+			return new Task<String>() {
+				@Override
+				protected String call() {
+					try {
+						Login.loginUser(emailTextField.getText().trim());
+					} catch (DatabaseException e) {
+						signInText.setText(e.getMessage());
+					}
+					return null;
+				}
+			};
+		}
+
+		@Override
+		protected void succeeded() {
+			super.succeeded();
+			callbacks.changeScene(new MainPane());
 		}
 
 	}
