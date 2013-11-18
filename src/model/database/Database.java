@@ -16,6 +16,7 @@ import org.sql2o.data.Table;
  * 
  * 
  */
+//TODO suppress logging
 public class Database {
 
 	/**

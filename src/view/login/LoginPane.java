@@ -149,6 +149,7 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
 					try {
 						User user = Login.loginUser(emailTextField.getText().trim());
 						LoggedUser.getInstance().setUser(user);
+						callbacks.changeScene(new MainPane());
 					} catch (DatabaseException e) {
 						signInText.setText(e.getMessage());
 					}
@@ -160,7 +161,7 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
 		@Override
 		protected void succeeded() {
 			super.succeeded();
-			callbacks.changeScene(new MainPane());
+			
 		}
 
 	}
