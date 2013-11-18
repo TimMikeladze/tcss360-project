@@ -1,11 +1,13 @@
 package model.papers;
 
 import java.io.File;
+import java.util.List;
 
 import model.conferences.ConferenceManager;
 import model.database.Database;
 import model.database.DatabaseException;
 import model.database.Errors;
+import model.permissions.Permission;
 import model.permissions.PermissionLevel;
 
 /**
@@ -49,6 +51,11 @@ public class PaperManager {
 		} else {
 			throw new DatabaseException(Errors.MAX_PAPER_SUBMISSIONS_EXCEEDED);
 		}
+	}
+	
+	@Permission(level = 400)
+	public static List<Paper> getPapers(int conferenceID) {
+	    return Database.getInstance().createQuery("SELECT ConferenceID, Title, Description, AuthorID, SubmissionDate, Status, Revised, FileExtension, File, RevisionDate FROM papers WHERE ConferenceID = :conferenceID").addParameter("conferenceID", conferenceID).executeAndFetch(Paper.class);
 	}
 
 	/**
