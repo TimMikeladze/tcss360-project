@@ -1,6 +1,6 @@
 package test;
 
-import model.conferences.ConferenceManager;
+import model.papers.PaperManager;
 
 //TODO delete class when project is finished
 
@@ -11,6 +11,6 @@ import model.conferences.ConferenceManager;
  */
 public class Tester {
 	public static void main(String[] args) {
-		System.out.println(ConferenceManager.getConferences());
+		System.out.println(PaperManager.getPapers(36));
 	}
 }
