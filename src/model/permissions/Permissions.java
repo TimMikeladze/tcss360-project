@@ -3,6 +3,7 @@ package model.permissions;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.List;
 
 import model.util.PackageReflector;
 
@@ -25,8 +26,7 @@ public class Permissions {
 	 *            the permission required to access method
 	 * @return returns true if can access
 	 */
-	public static boolean hasPermission(Class<?> className, String method,
-			PermissionLevel permission) {
+	public static boolean hasPermission(Class<?> className, String method, PermissionLevel permission) {
 		return hasPermission(className, method, permission, false);
 	}
 
@@ -40,20 +40,17 @@ public class Permissions {
 	 * @param permission
 	 *            the permission required to access method
 	 * @param strict
-	 *            if true the permission level given must match the permission
-	 *            level of the method
+	 *            if true the permission level given must match the permission level of the method
 	 * @return returns true if can access
 	 */
-	public static boolean hasPermission(Class<?> className, String method,
-			PermissionLevel permission, boolean strict) {
+	public static boolean hasPermission(Class<?> className, String method, PermissionLevel permission, boolean strict) {
 		boolean hasPermission = false;
 		int givenPermission = permission.getPermission();
 
 		HashMap<String, PermissionMethod> methods = classMap.get(className);
 		if (methods != null && methods.containsKey(method)) {
 			int methodPermission = methods.get(method).getPermission().level();
-			if ((strict && givenPermission == methodPermission)
-					|| (!strict && givenPermission >= methodPermission)) {
+			if ((strict && givenPermission == methodPermission) || (!strict && givenPermission >= methodPermission)) {
 				hasPermission = true;
 			}
 		}
@@ -61,22 +58,20 @@ public class Permissions {
 	}
 
 	/**
-	 * Loads all a map of classes and methods which contain the the Permission
-	 * annotation
+	 * Loads all a map of classes and methods which contain the the Permission annotation
 	 * 
 	 * @return
 	 */
 	private static HashMap<Class<?>, HashMap<String, PermissionMethod>> loadClassMap() {
 		HashMap<Class<?>, HashMap<String, PermissionMethod>> map = new HashMap<Class<?>, HashMap<String, PermissionMethod>>();
 		try {
-			Class<?>[] classes = PackageReflector.getClasses("model");
+			List<Class<?>> classes = PackageReflector.getClasses("model");
 			for (Class<?> c : classes) {
 				HashMap<String, PermissionMethod> methods = new HashMap<String, PermissionMethod>();
 				for (Method m : c.getMethods()) {
 					Permission permission = m.getAnnotation(Permission.class);
 					if (permission != null) {
-						methods.put(m.getName(), new PermissionMethod(m,
-								permission));
+						methods.put(m.getName(), new PermissionMethod(m, permission));
 					}
 				}
 				map.put(c, methods);
