@@ -25,10 +25,12 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.database.DatabaseException;
 import model.login.Login;
+import model.users.User;
 import view.main.MainPane;
 import view.util.GenericPane;
 import view.util.ProgressService;
 import view.util.Validator;
+import controller.user.LoggedUser;
 
 /**
  * JavaFX pane for displaying the login window.
@@ -145,7 +147,8 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
 				@Override
 				protected String call() {
 					try {
-						Login.loginUser(emailTextField.getText().trim());
+						User user = Login.loginUser(emailTextField.getText().trim());
+						LoggedUser.getInstance().setUser(user);
 					} catch (DatabaseException e) {
 						signInText.setText(e.getMessage());
 					}
