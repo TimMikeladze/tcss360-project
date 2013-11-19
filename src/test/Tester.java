@@ -11,6 +11,7 @@ import model.papers.PaperManager;
  */
 public class Tester {
 	public static void main(String[] args) {
+	    PaperManager.assignPaperToSubprogramChair(6, 2);
 		System.out.println(PaperManager.getPapers(36));
 	}
 }

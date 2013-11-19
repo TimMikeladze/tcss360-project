@@ -15,9 +15,9 @@ public class Paper {
     
     private int authorID;
     
-    private boolean status;
+    private int status;
     
-    private boolean revised;
+    private int revised;
     
     private String fileExtension;
     
@@ -49,11 +49,18 @@ public class Paper {
         return authorID;
     }
 
-    public boolean getStatus() {
+    public PaperStatus getStatus() {
+        PaperStatus status = PaperStatus.UNDECIDED;
+        if (this.status == 1) {
+            status = PaperStatus.REJECTED;
+        }
+        else if (this.status == 2) {
+            status = PaperStatus.ACCEPTED;
+        }
         return status;
     }
 
-    public boolean getRevised() {
+    public int getRevised() {
         return revised;
     }
 

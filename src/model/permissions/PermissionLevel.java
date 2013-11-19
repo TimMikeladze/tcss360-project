@@ -1,7 +1,7 @@
 package model.permissions;
 
 public enum PermissionLevel {
-	REVIEWER(100), AUTHOR(200), SUBPROGRAM_CHAR(300), PROGRAM_CHAIR(400), ADMIN(
+	REVIEWER(200), AUTHOR(100), SUBPROGRAM_CHAR(300), PROGRAM_CHAIR(400), ADMIN(
 			500);
 
 	private final int permission;
