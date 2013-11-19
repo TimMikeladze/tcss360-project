@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 public abstract class ProgressService extends Service<String> {
 
 	private Stage primaryStage;
+	private boolean success;
 
 	public ProgressService(Stage primaryStage) {
 		super();
@@ -20,6 +21,14 @@ public abstract class ProgressService extends Service<String> {
 	public void start() {
 		super.start();
 		new ProgressDialog(this, primaryStage).showDialog();
+	}
+
+	public void setSuccess(boolean success) {
+		this.success = success;
+	}
+
+	public boolean getSuccess() {
+		return success;
 	}
 
 	@Override
