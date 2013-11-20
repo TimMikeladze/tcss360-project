@@ -111,8 +111,7 @@ public class LoginTest {
 		
 		assertTrue(Database.hasResults(Database
 				.getInstance()
-				.createQuery(
-						"SELECT 1 FROM users WHERE email = :email")
+				.createQuery("SELECT 1 FROM users WHERE email = :email")
 				.addParameter("email", email2)
 				.executeAndFetchTable()));
 		
@@ -149,5 +148,4 @@ public class LoginTest {
 		Database.getInstance().createQuery("DELETE FROM users WHERE Email = :email")
 			.addParameter("email", email2).executeUpdate();
 	}
-
 }
