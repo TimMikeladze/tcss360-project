@@ -1,8 +1,6 @@
 package model.papers;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.nio.file.Files;
 import java.util.List;
 
 import model.conferences.ConferenceManager;
@@ -12,6 +10,7 @@ import model.database.Errors;
 import model.permissions.Permission;
 import model.permissions.PermissionLevel;
 import model.reviews.Review;
+import model.util.FileHandler;
 
 /**
  * The Class PaperManager.
@@ -41,17 +40,19 @@ public class PaperManager {
             throws DatabaseException {
         // TODO needs to check if papers submission isn't past conference date
         // TODO convert file to bytes and store in database
-    	byte[] convertedFile = convertFileToBytes(file);
+    	byte[] convertedFile = FileHandler.convertFileToBytes(file);
+    	String fileExtension = FileHandler.getFileExtension(file);
     	
         if (MAX_PAPERS > getNumberOfSubmittedPapers(conferenceID, authorID)) {
             Database.getInstance()
                     .createQuery(
-                            "INSERT INTO papers (ConferenceID, AuthorID, Title, Description, SubmissionDate, File) VALUES (:conferenceID, :authorID, :title, :description, NOW(), :file)")
+                            "INSERT INTO papers (ConferenceID, AuthorID, Title, Description, SubmissionDate, File, FileExtension) VALUES (:conferenceID, :authorID, :title, :description, NOW(), :file, :fileExtension)")
                     .addParameter("conferenceID", conferenceID)
                     .addParameter("authorID", authorID)
                     .addParameter("title", title)
                     .addParameter("description", description)
-                    .addParameter("file", convertedFile).executeUpdate()
+                    .addParameter("file", convertedFile)
+                    .addParameter("fileExtension", fileExtension).executeUpdate()
                     .getKey(Integer.class);
             ConferenceManager.addUserToConference(conferenceID, authorID,
                     PermissionLevel.AUTHOR);
@@ -60,26 +61,6 @@ public class PaperManager {
         }
     }
     
-    /**
-     * Converts a file to byte array.
-     * 
-     * @param f The file to convert
-     * @return A byte array representation of the given file.
-     */
-    private static byte[] convertFileToBytes(File f) {
-    	FileInputStream fis = null;
-    	byte[] byteArray = new byte[(int) f.length()];
-    	
-    	try {
-    		// convert file into array of bytes
-    		fis = new FileInputStream(f);
-    		fis.read(byteArray);
-    		fis.close();
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    	}
-		return byteArray;
-    }
     
     @Permission(level = 400)
     public static List<Paper> getAssignedPapersForSubprogramChair(int userID) {
@@ -138,14 +119,16 @@ public class PaperManager {
             throws DatabaseException {
         // TODO needs to check if papers submission isn't past conference date
         // TODO convert file to bytes and store in database
-    	byte[] convertedFile = convertFileToBytes(file);
+    	byte[] convertedFile = FileHandler.convertFileToBytes(file);
+    	String fileExtension = FileHandler.getFileExtension(file);
     	
         Database.getInstance()
                 .createQuery(
-                        "INSERT INTO reviews (PaperID, ReviewerID, SubmissionDate, File) VALUES (:paperID, :reviewerID, NOW(), :file)")
+                        "INSERT INTO reviews (PaperID, ReviewerID, SubmissionDate, File, FileExtension) VALUES (:paperID, :reviewerID, NOW(), :file, :fileExtension)")
                 .addParameter("paperID", paperID)
                 .addParameter("reviewerID", reviewerID)
-                .addParameter("file", convertedFile).executeUpdate();
+                .addParameter("file", convertedFile)
+                .addParameter("fileExtension", fileExtension).executeUpdate();
     }
 
     @Permission(level = 400)
