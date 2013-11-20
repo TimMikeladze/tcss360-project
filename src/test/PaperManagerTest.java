@@ -3,6 +3,7 @@ package test;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -109,6 +110,9 @@ public class PaperManagerTest {
             PaperManager.submitPaper(conferenceID, userID, "The Title1", "The Description1", new File(""));
             PaperManager.submitPaper(conferenceID, userID, "The Title2", "The Description2", new File(""));
             PaperManager.submitPaper(conferenceID, userID, "The Title3", "The Description3", new File(""));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         } catch (DatabaseException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -131,6 +135,9 @@ public class PaperManagerTest {
         } catch (final DatabaseException e ) {
             final String msg = "You've submitted the maximum amount of papers allowed into this conference";
             assertEquals("The max has been reached", msg, e.getMessage());
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 }
