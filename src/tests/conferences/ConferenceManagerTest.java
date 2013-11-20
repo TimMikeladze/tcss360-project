@@ -28,14 +28,22 @@ public class ConferenceManagerTest {
     private static int userID = 2;
     private static int userIDForConference = 3;
     
-    
-    @Test
-    public void testCreateConference() {
+    @BeforeClass
+    public static void setup() {
         name = "Test Conference";
         location = "Test conference location";
         date = new Timestamp(Long.valueOf("1384923537242"));
         programChairID = 1;
         permissionID = PermissionLevel.SUBPROGRAM_CHAIR;
+    }
+    
+    @AfterClass
+    public static void cleanup() {
+        
+    }
+    
+    @Test
+    public void testCreateConference() {
         
         id = ConferenceManager.createConference(name, location, date, programChairID);
         System.out.println(id);
