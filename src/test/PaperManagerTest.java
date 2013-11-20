@@ -20,7 +20,6 @@ import org.junit.Test;
  * @author Jordan Matthews
  *
  */
-
 public class PaperManagerTest {
     /**
      * User's first name for testing.
