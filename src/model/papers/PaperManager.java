@@ -40,9 +40,15 @@ public class PaperManager {
             throws DatabaseException {
         // TODO needs to check if papers submission isn't past conference date
         // TODO convert file to bytes and store in database
+<<<<<<< HEAD
         byte[] convertedFile = FileHandler.convertFileToBytes(file);
         String fileExtension = FileHandler.getFileExtension(file);
         
+=======
+    	byte[] convertedFile = FileHandler.convertFileToBytes(file);
+    	String fileExtension = FileHandler.getFileExtension(file);
+    	
+>>>>>>> f470a3b71c89d8d706f70bc675bbcf1549b34cc9
         if (MAX_PAPERS > getNumberOfSubmittedPapers(conferenceID, authorID)) {
             Database.getInstance()
                     .createQuery(
@@ -119,9 +125,15 @@ public class PaperManager {
             throws DatabaseException {
         // TODO needs to check if papers submission isn't past conference date
         // TODO convert file to bytes and store in database
+<<<<<<< HEAD
         byte[] convertedFile = FileHandler.convertFileToBytes(file);
         String fileExtension = FileHandler.getFileExtension(file);
         
+=======
+    	byte[] convertedFile = FileHandler.convertFileToBytes(file);
+    	String fileExtension = FileHandler.getFileExtension(file);
+    	
+>>>>>>> f470a3b71c89d8d706f70bc675bbcf1549b34cc9
         Database.getInstance()
                 .createQuery(
                         "INSERT INTO reviews (PaperID, ReviewerID, SubmissionDate, File, FileExtension) VALUES (:paperID, :reviewerID, NOW(), :file, :fileExtension)")
