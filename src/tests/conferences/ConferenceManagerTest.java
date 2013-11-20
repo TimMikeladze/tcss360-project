@@ -19,13 +19,13 @@ import org.sql2o.data.Table;
 public class ConferenceManagerTest {
     
     //1384923537242
-    private int id;
+    private static int id;
     private static PermissionLevel permissionID;
     private static int programChairID;
     private static String name;
     private static String location;
     private static Timestamp date;
-    private static int userID = 2;
+    private static int userID;
     private static int userIDForConference = 3;
     
     @BeforeClass
@@ -35,6 +35,9 @@ public class ConferenceManagerTest {
         date = new Timestamp(Long.valueOf("1384923537242"));
         programChairID = 1;
         permissionID = PermissionLevel.SUBPROGRAM_CHAIR;
+        userID = 2;
+        userIDForConference = 3;
+        id = 58;
     }
     
     @AfterClass
@@ -44,9 +47,7 @@ public class ConferenceManagerTest {
     
     @Test
     public void testCreateConference() {
-        
         id = ConferenceManager.createConference(name, location, date, programChairID);
-        System.out.println(id);
         Table t = Database.getInstance()
                 .createQuery("SELECT COUNT(1) FROM conferences WHERE ID = :id")
                 .addParameter("id", id).executeAndFetchTable();
@@ -56,7 +57,6 @@ public class ConferenceManagerTest {
     @Test
     public void testAddUserToConference() {
         try {
-            System.out.println(id);
             ConferenceManager.addUserToConference(id, userIDForConference, permissionID);
             Table t = Database
                     .getInstance()
@@ -73,7 +73,11 @@ public class ConferenceManagerTest {
     
     @Test
     public void testRemoveUserFromConference() {
-        fail("Not yet implemented");
+        ConferenceManager.removeConference(id);
+        Table t = Database.getInstance()
+                .createQuery("SELECT COUNT(1) FROM conferences WHERE ID = :id")
+                .addParameter("id", id).executeAndFetchTable();
+        assertTrue("Conference removed", !Database.hasResults(t));
     }
     
     @Test
