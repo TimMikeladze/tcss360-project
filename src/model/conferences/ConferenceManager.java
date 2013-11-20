@@ -41,12 +41,15 @@ public class ConferenceManager {
 	 */
 	public static int createConference(String name, String location, Date date,
 			int programChairID) {
+		// TODO why is there a column for ProgramChairID when that is stored in
+		// conference_users. Redundant?
 		int id = Database
 				.getInstance()
 				.createQuery(
-						"INSERT INTO conferences (Name, Location, Date) VALUES (:name, :location, :date)")
+						"INSERT INTO conferences (Name, Location, Date, ProgramChairID) VALUES (:name, :location, :date, :programChairID)")
 				.addParameter("name", name).addParameter("location", location)
-				.addParameter("date", date).executeUpdate()
+				.addParameter("date", date)
+				.addParameter("programChairID", programChairID).executeUpdate()
 				.getKey(Integer.class);
 
 		Database.getInstance()
