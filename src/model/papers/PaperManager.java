@@ -2,6 +2,7 @@
 package model.papers;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import model.conferences.ConferenceManager;
@@ -37,11 +38,12 @@ public class PaperManager {
      * @param description the paper description
      * @param file the paper's file
      * @throws DatabaseException
+     * @throws IOException 
      */
     @Permission(level = 100)
     public static void submitPaper(int conferenceID, int authorID, String title,
-            String description, File file) throws DatabaseException {
-        byte[] convertedFile = FileHandler.convertFileToBytes(file);
+            String description, File file) throws DatabaseException, IOException {
+        String convertedFile = FileHandler.convertFileToBytes(file);
         String fileExtension = FileHandler.getFileExtension(file);
         
         if (MAX_PAPERS > getNumberOfSubmittedPapers(conferenceID, authorID)) {
@@ -150,11 +152,12 @@ public class PaperManager {
      * @param file
      *            the paper's file
      * @throws DatabaseException
+     * @throws IOException 
      */
     @Permission(level = 200)
     public static void submitReview(int paperID, int reviewerID, File file)
-            throws DatabaseException {
-        byte[] convertedFile = FileHandler.convertFileToBytes(file);
+            throws DatabaseException, IOException {
+        String convertedFile = FileHandler.convertFileToBytes(file);
         String fileExtension = FileHandler.getFileExtension(file);
         Database.getInstance()
                 .createQuery(

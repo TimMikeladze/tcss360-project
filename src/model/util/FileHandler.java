@@ -3,33 +3,56 @@ package model.util;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
- * Handles conversion of files to byte arrays and gets file extensions.
+ * Handles conversion of files and gets file extensions.
  */
 public class FileHandler {
     
     /**
-     * Converts a file to byte array.
+     * Converts a file to a String.
      * 
      * @param f The file to convert
-     * @return A byte array representation of the given file.
+     * @return A String representation of the given file.
+     * @throws IOException 
      */
-    public static byte[] convertFileToBytes(File f) {
+    public static String convertFileToBytes(File f) throws IOException {
         FileInputStream fis = null;
         byte[] byteArray = new byte[(int) f.length()];
         
-        try {
-            // convert file into array of bytes
-            fis = new FileInputStream(f);
-            fis.read(byteArray);
-            fis.close();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        return byteArray;
+        // convert file into array of bytes
+        fis = new FileInputStream(f);
+        fis.read(byteArray);
+        fis.close();
+            
+        
+        String result = new String(byteArray);
+        
+        return result;
     }
+    
+    /**
+     * Converts a String to a file.
+     * 
+     * @param bArray The String to convert.
+     * @param extension The file extension.
+     * @return A file created from the given String.
+     * @throws IOException 
+     */
+    public static File convertBytesToFile(String bArray, String extension) throws IOException {
+    	
+    	File f = File.createTempFile("output", "." + extension);
+		byte[] bytes = bArray.getBytes();
+		
+		FileOutputStream fos = new FileOutputStream(f);
+		fos.write(bytes);
+		fos.close();
+    	
+    	return f;
+    }
+    
     
     /**
      * Finds and returns the file extension of the given file.
