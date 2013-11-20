@@ -1,6 +1,8 @@
+
 package model.papers;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import model.conferences.ConferenceManager;
@@ -10,51 +12,64 @@ import model.database.Errors;
 import model.permissions.Permission;
 import model.permissions.PermissionLevel;
 import model.reviews.Review;
+import model.util.FileHandler;
 
 /**
- * The Class PaperManager.
+ * This class manages papers for the conferences.
+ * 
+ * @author Mohammad Juma
+ * @author Tim Mikeladze
+ * @author Srdjan Stojcic
+ * @version 11-18-2013
  */
 public class PaperManager {
-
-    private static final int MAX_PAPERS = 4;
-
+    
     /**
-     * Submits a paper to the conference
+     * The maximum number of papers that can be submitted to a conference.
+     */
+    private static final int MAX_PAPERS = 4;
+    
+    /**
+     * Submits a paper to the conference.
      * 
-     * @param conferenceID
-     *            the conference id to submit to
-     * @param authorID
-     *            the author's id
-     * @param title
-     *            the paper title
-     * @param description
-     *            the paper description
-     * @param file
-     *            the paper's file
+     * @param conferenceID the conference id to submit to
+     * @param authorID the author's id
+     * @param title the paper title
+     * @param description the paper description
+     * @param file the paper's file
      * @throws DatabaseException
+     * @throws IOException 
      */
     @Permission(level = 100)
-    public static void submitPaper(int conferenceID, int authorID,
-            String title, String description, File file)
-            throws DatabaseException {
-        // TODO needs to check if papers submission isn't past conference date
-        // TODO convert file to bytes and store in database
+    public static void submitPaper(int conferenceID, int authorID, String title,
+            String description, File file) throws DatabaseException, IOException {
+        String convertedFile = FileHandler.convertFileToBytes(file);
+        String fileExtension = FileHandler.getFileExtension(file);
+        
         if (MAX_PAPERS > getNumberOfSubmittedPapers(conferenceID, authorID)) {
             Database.getInstance()
                     .createQuery(
-                            "INSERT INTO papers (ConferenceID, AuthorID, Title, Description, SubmissionDate) VALUES (:conferenceID, :authorID, :title, :description, NOW())")
+                            "INSERT INTO papers (ConferenceID, AuthorID, Title, Description, SubmissionDate, File, FileExtension) VALUES (:conferenceID, :authorID, :title, :description, NOW(), :file, :fileExtension)")
                     .addParameter("conferenceID", conferenceID)
-                    .addParameter("authorID", authorID)
-                    .addParameter("title", title)
-                    .addParameter("description", description).executeUpdate()
+                    .addParameter("authorID", authorID).addParameter("title", title)
+                    .addParameter("description", description)
+                    .addParameter("file", convertedFile)
+                    .addParameter("fileExtension", fileExtension).executeUpdate()
                     .getKey(Integer.class);
             ConferenceManager.addUserToConference(conferenceID, authorID,
                     PermissionLevel.AUTHOR);
-        } else {
+        }
+        else {
             throw new DatabaseException(Errors.MAX_PAPER_SUBMISSIONS_EXCEEDED);
         }
     }
     
+    /**
+     * Gets all the papers that were assigned to a Subprogram Chair in a conference.
+     * 
+     * @param userID he user id of the Subprogram Chair
+     * @return list of papers
+     */
     @Permission(level = 400)
     public static List<Paper> getAssignedPapersForSubprogramChair(int userID) {
         return Database
@@ -64,11 +79,15 @@ public class PaperManager {
                 .addParameter("userID", userID).executeAndFetch(Paper.class);
     }
     
-    /*
-     * TODO whatever you just said. Something about a left join maybe?
+    /**
+     * Gets all the papers that were assigned to a reviewer in a conference.
+     * 
+     * @param userID The user id of the reviewer
+     * @return The list of papers
      */
+    // TODO whatever you just said. Something about a left join maybe?
     @Permission(level = 200)
-    public static List<Paper> getAssignedPapersForReviewer(int userID) {
+    public static List<Paper> getAssignedPapersForReviewer(final int userID) {
         return Database
                 .getInstance()
                 .createQuery(
@@ -76,26 +95,53 @@ public class PaperManager {
                 .addParameter("userID", userID).executeAndFetch(Paper.class);
     }
     
+    /**
+     * Assigns a paper to a subprogram chair.
+     * 
+     * @param paperID the papers id
+     * @param userID the Subprogram Chairs id
+     */
     @Permission(level = 400)
     public static void assignPaperToSubprogramChair(final int paperID, final int userID) {
-        Database.getInstance().createQuery("INSERT IGNORE INTO assigned_papers (PaperID, UserID) VALUES (:paperID, :userID)")
-                .addParameter("paperID", paperID)
-                .addParameter("userID", userID)
+        Database.getInstance()
+                .createQuery(
+                        "INSERT IGNORE INTO assigned_papers (PaperID, UserID) VALUES (:paperID, :userID)")
+                .addParameter("paperID", paperID).addParameter("userID", userID)
                 .executeUpdate();
     }
     
+    /**
+     * 
+     * Assigns a paper to a reviewer.
+     * 
+     * @param paperID the papers id
+     * @param userID the reviewers id
+     */
     @Permission(level = 400)
     public static void assignPaperToReviewer(final int paperID, final int userID) {
-        Database.getInstance().createQuery("INSERT IGNORE INTO assigned_papers (PaperID, UserID) VALUES (:paperID, :userID)")
-                .addParameter("paperID", paperID)
-                .addParameter("userID", userID)
+        Database.getInstance()
+                .createQuery(
+                        "INSERT IGNORE INTO assigned_papers (PaperID, UserID) VALUES (:paperID, :userID)")
+                .addParameter("paperID", paperID).addParameter("userID", userID)
                 .executeUpdate();
     }
     
+    /**
+     * Returns all the reviews for an author.
+     * 
+     * @param conferenceID The conference id the reviews are in
+     * @param authorID The authors id
+     * @return The list of reviews
+     */
     public static List<Review> getReviews(final int conferenceID, final int authorID) {
-        return Database.getInstance().createQuery("SELECT r.ID, r.PaperID, r.ReviewerID, r.File, r.FileExtension, p.Status FROM reviews AS r JOIN papers p.ID = r.PaperID WHERE p.ConferenceID = :conferenceID AND p.AuthorID = :authorID AND p.Status != 0").addParameter("conferenceID", conferenceID).addParameter("authorID", authorID).executeAndFetch(Review.class);
+        return Database
+                .getInstance()
+                .createQuery(
+                        "SELECT r.ID, r.PaperID, r.ReviewerID, r.File, r.FileExtension, p.Status FROM reviews AS r JOIN papers p.ID = r.PaperID WHERE p.ConferenceID = :conferenceID AND p.AuthorID = :authorID AND p.Status != 0")
+                .addParameter("conferenceID", conferenceID).addParameter("authorID", authorID)
+                .executeAndFetch(Review.class);
     }
-
+    
     /**
      * Submits a review to the conference
      * 
@@ -106,65 +152,83 @@ public class PaperManager {
      * @param file
      *            the paper's file
      * @throws DatabaseException
+     * @throws IOException 
      */
     @Permission(level = 200)
     public static void submitReview(int paperID, int reviewerID, File file)
-            throws DatabaseException {
-        // TODO needs to check if papers submission isn't past conference date
-        // TODO convert file to bytes and store in database
+            throws DatabaseException, IOException {
+        String convertedFile = FileHandler.convertFileToBytes(file);
+        String fileExtension = FileHandler.getFileExtension(file);
         Database.getInstance()
                 .createQuery(
-                        "INSERT INTO papers (PaperID, ReviewerID, SubmissionDate) VALUES (:paperID, :reviewerID, NOW())")
-                .addParameter("paperID", paperID)
-                .addParameter("reviewerID", reviewerID).executeUpdate();
+                        "INSERT INTO reviews (PaperID, ReviewerID, SubmissionDate, File, FileExtension) VALUES (:paperID, :reviewerID, NOW(), :file, :fileExtension)")
+                .addParameter("paperID", paperID).addParameter("reviewerID", reviewerID)
+                .addParameter("file", convertedFile)
+                .addParameter("fileExtension", fileExtension).executeUpdate();
     }
-
+    
+    /**
+     * Changes the status of a paper to accepted.
+     * 
+     * @param paperID the papers id
+     */
     @Permission(level = 400)
-    public static void acceptPaper(int paperID) {
+    public static void acceptPaper(final int paperID) {
         setPaperStatus(paperID, true);
     }
-
+    
+    /**
+     * Changes the status of the paper to rejected.
+     * 
+     * @param paperID the papers id
+     */
     @Permission(level = 400)
-    public static void rejectPaper(int paperID) {
+    public static void rejectPaper(final int paperID) {
         setPaperStatus(paperID, false);
     }
-
-    private static void setPaperStatus(int paperID, boolean status) {
+    
+    /**
+     * Sets the papers status.
+     * 
+     * @param paperID the papers id
+     * @param status the status of the paper
+     */
+    private static void setPaperStatus(final int paperID, final boolean status) {
         int paperStatus = status ? 2 : 1;
         Database.getInstance()
-                .createQuery(
-                        "UPDATE papers SET Status = :paperStatus WHERE ID = :id")
-                .addParameter("paperStatus", paperStatus)
-                .addParameter("id", paperID).executeUpdate();
+                .createQuery("UPDATE papers SET Status = :paperStatus WHERE ID = :id")
+                .addParameter("paperStatus", paperStatus).addParameter("id", paperID)
+                .executeUpdate();
     }
-
+    
+    /**
+     * Gets all the papers in a conference.
+     * 
+     * @param conferenceID the conferences id
+     * @return the list of papers
+     */
     @Permission(level = 400)
-    public static List<Paper> getPapers(int conferenceID) {
+    public static List<Paper> getPapers(final int conferenceID) {
         return Database
                 .getInstance()
                 .createQuery(
                         "SELECT ConferenceID, ID AS PaperID, Title, Description, AuthorID, SubmissionDate, Status, Revised, FileExtension, File, RevisionDate FROM papers WHERE ConferenceID = :conferenceID")
-                .addParameter("conferenceID", conferenceID)
-                .executeAndFetch(Paper.class);
+                .addParameter("conferenceID", conferenceID).executeAndFetch(Paper.class);
     }
-
+    
     /**
-     * Gets the number of papers an author has submitted to a conference
+     * Gets the number of papers an author has submitted to a conference.
      * 
-     * @param conferenceID
-     *            the conference id
-     * @param authorID
-     *            the authors id
+     * @param conferenceID the conference id
+     * @param authorID the authors id
      * @return number of papers author has submitted
      */
-    public static int getNumberOfSubmittedPapers(int conferenceID, int authorID) {
+    public static int getNumberOfSubmittedPapers(final int conferenceID, final int authorID) {
         return Database
                 .getInstance()
                 .createQuery(
                         "SELECT COUNT(1) FROM papers WHERE ConferenceID = :conferenceID AND AuthorID = :authorID")
-                .addParameter("conferenceID", conferenceID)
-                .addParameter("authorID", authorID).executeAndFetchTable()
-                .rows().get(0).getInteger(0);
+                .addParameter("conferenceID", conferenceID).addParameter("authorID", authorID)
+                .executeAndFetchTable().rows().get(0).getInteger(0);
     }
-
 }

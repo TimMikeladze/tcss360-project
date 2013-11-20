@@ -7,10 +7,22 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Permissions interface.
+ * 
+ * @author Tim Mikeladze
+ * @version 11-16-2013
+ */
 @Documented
 @Target(ElementType.METHOD)
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Permission {
+    
+    /**
+     * Gets the permission level.
+     * 
+     * @return the permission level
+     */
 	int level() default 0;
 }
