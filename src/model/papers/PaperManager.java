@@ -14,10 +14,11 @@ import model.reviews.Review;
 import model.util.FileHandler;
 
 /**
- * This class PaperManager.
+ * This class manages papers for the conferences.
  * 
  * @author Mohammad Juma
  * @author Tim Mikeladze
+ * @author Srdjan Stojcic
  * @version 11-18-2013
  */
 public class PaperManager {
