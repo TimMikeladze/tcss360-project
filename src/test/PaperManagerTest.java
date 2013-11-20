@@ -81,6 +81,7 @@ public class PaperManagerTest {
                 .addParameter("email", email).executeUpdate()
                 .getKey(Integer.class);
     }
+    
     /**
      * Initializes a conference for testing.
      */
