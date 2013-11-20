@@ -22,7 +22,7 @@ public enum PermissionLevel {
     /**
      * The Subprogram Chair permission level.
      */
-    SUBPROGRAM_CHAR(300),
+    SUBPROGRAM_CHAIR(300),
     
     /**
      * The Program Chair permission level.
