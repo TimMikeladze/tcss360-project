@@ -11,6 +11,7 @@ import org.junit.Test;
 import model.database.Database;
 import model.database.DatabaseException;
 import model.login.Login;
+import model.users.User;
 
 
 public class LoginTest {
@@ -122,7 +123,18 @@ public class LoginTest {
 	 */
 	@Test
 	public void testLoginUser() {
-		fail("Not yet implemented");
+		User user = null;
+		try {
+			user = Login.loginUser(email1);
+		} catch (DatabaseException e) {
+			fail("Unsuccessful login test: The user does not exist");
+			e.printStackTrace();
+		}
+		
+		// Check if the right user is logged in
+		assertEquals("Match attempt for first name", firstName1, user.getFirstName());
+		assertEquals("Match attempt for last name", lastName1, user.getLastName());
+		assertEquals("Match attempt for email", email1, user.getEmail());
 	}
 	
 	/**
