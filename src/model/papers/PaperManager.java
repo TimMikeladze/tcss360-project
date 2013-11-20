@@ -2,8 +2,6 @@
 package model.papers;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.nio.file.Files;
 import java.util.List;
 
 import model.conferences.ConferenceManager;
@@ -13,6 +11,7 @@ import model.database.Errors;
 import model.permissions.Permission;
 import model.permissions.PermissionLevel;
 import model.reviews.Review;
+import model.util.FileHandler;
 
 /**
  * This class PaperManager.
