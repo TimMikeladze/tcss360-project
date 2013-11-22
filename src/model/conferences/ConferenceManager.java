@@ -25,22 +25,20 @@ public class ConferenceManager {
      * @param name the name of the conference
      * @param location the location of the conference
      * @param date the date the conference is to take place
+     * @param programChairID the program chair id
      * @return returns the ID of the created conference
      */
-    public static int createConference(final String name, final String location,
-            final Timestamp date, final int programChairID) {
+    public static int createConference(final String name, final String location, final Timestamp date, final int programChairID) {
         String sqlDate = date.toString();
         int id = Database.getInstance()
-                         .createQuery(
-                                 "INSERT INTO conferences (Name, Location, Date) VALUES (:name, :location, :date)")
+                         .createQuery("INSERT INTO conferences (Name, Location, Date) VALUES (:name, :location, :date)")
                          .addParameter("name", name)
                          .addParameter("location", location)
                          .addParameter("date", sqlDate)
                          .executeUpdate()
                          .getKey(Integer.class);
         Database.getInstance()
-                .createQuery(
-                        "INSERT INTO conference_users (ConferenceID, UserID, PermissionID) VALUES (:id, :userID, :permissionID)")
+                .createQuery("INSERT INTO conference_users (ConferenceID, UserID, PermissionID) VALUES (:id, :userID, :permissionID)")
                 .addParameter("id", id)
                 .addParameter("userID", programChairID)
                 .addParameter("permissionID", PermissionLevel.PROGRAM_CHAIR.getPermission())
@@ -70,24 +68,74 @@ public class ConferenceManager {
      * 
      * @param conferenceID The id of the conference to add the user to
      * @param userID The id of the user being added
-     * @param permissionID The permission of the user being added
-     * @throws DatabaseException
+     * @param permission the permission
+     * @throws DatabaseException the database exception
      */
-    @Permission(level = 400)
-    public static void addUserToConference(final int conferenceID, final int userID,
-            final PermissionLevel permissionID) throws DatabaseException {
+    public static void addUserToConference(final int conferenceID, final int userID, final PermissionLevel permission) throws DatabaseException {
         if (conferenceExists(conferenceID)) {
-            Database.getInstance()
-                    .createQuery(
-                            "INSERT IGNORE INTO conference_users (ConferenceID, UserID, PermissionID) VALUES (:conferenceID, :userID, :permissionID)")
-                    .addParameter("conferenceID", conferenceID)
-                    .addParameter("userID", userID)
-                    .addParameter("permissionID", permissionID.getPermission())
-                    .executeUpdate();
+            if (!userInConference(conferenceID, userID, permission)) {
+                Database.getInstance()
+                        .createQuery(
+                                "INSERT IGNORE INTO conference_users (ConferenceID, UserID, PermissionID) VALUES (:conferenceID, :userID, :permissionID)")
+                        .addParameter("conferenceID", conferenceID)
+                        .addParameter("userID", userID)
+                        .addParameter("permissionID", permission.getPermission())
+                        .executeUpdate();
+            }
+            else {
+                throw new DatabaseException(Errors.USER_ALREADY_IN_CONFERENCE);
+            }
         }
         else {
             throw new DatabaseException(Errors.CONFERENCE_DOES_NOT_EXIST);
         }
+    }
+    
+    /**
+     * Adds the reviewer to conference.
+     * 
+     * @param conferenceID the conference id
+     * @param userID the user id
+     * @throws DatabaseException the database exception
+     */
+    @Permission(level = 300)
+    public static void addReviewerToConference(final int conferenceID, final int userID) throws DatabaseException {
+        addUserToConference(conferenceID, userID, PermissionLevel.REVIEWER);
+    }
+    
+    /**
+     * Adds the sub program chair to conference.
+     * 
+     * @param conferenceID the conference id
+     * @param userID the user id
+     * @throws DatabaseException the database exception
+     */
+    @Permission(level = 400)
+    public static void addSubProgramChairToConference(final int conferenceID, final int userID) throws DatabaseException {
+        if (userInConference(conferenceID, userID, PermissionLevel.REVIEWER)) {
+            addUserToConference(conferenceID, userID, PermissionLevel.SUBPROGRAM_CHAIR);
+        }
+        else {
+            throw new DatabaseException(Errors.USER_NOT_REVIEWER);
+        }
+    }
+    
+    /**
+     * Check if user in conference.
+     * 
+     * @param conferenceID the conference id
+     * @param userID the user id
+     * @param permission the permission
+     * @return true, if successful
+     */
+    public static boolean userInConference(final int conferenceID, final int userID, final PermissionLevel permission) {
+        return Database.hasResults(Database.getInstance()
+                                           .createQuery(
+                                                   "SELECT 1 FROM conference_users WHERE ConferenceID = :conferenceID AND UserID = :userID AND PermissionID = :permissionID")
+                                           .addParameter("conferenceID", conferenceID)
+                                           .addParameter("userID", userID)
+                                           .addParameter("permissionID", permission.getPermission())
+                                           .executeAndFetchTable());
     }
     
     /**
@@ -99,8 +147,7 @@ public class ConferenceManager {
     @Permission(level = 400)
     public static void removeUserFromConference(final int conferenceID, final int userID) {
         Database.getInstance()
-                .createQuery(
-                        "DELETE FROM conference_users WHERE UserID = :userID AND ConferenceID = :conferenceID")
+                .createQuery("DELETE FROM conference_users WHERE UserID = :userID AND ConferenceID = :conferenceID")
                 .addParameter("userID", userID)
                 .addParameter("conferenceID", conferenceID)
                 .executeUpdate();
@@ -114,8 +161,7 @@ public class ConferenceManager {
      */
     public static boolean conferenceExists(final int conferenceID) {
         return Database.hasResults(Database.getInstance()
-                                           .createQuery(
-                                                   "SELECT 1 FROM conferences WHERE ID = :conferenceID")
+                                           .createQuery("SELECT 1 FROM conferences WHERE ID = :conferenceID")
                                            .addParameter("conferenceID", conferenceID)
                                            .executeAndFetchTable());
     }
@@ -129,8 +175,7 @@ public class ConferenceManager {
     @Permission(level = 300)
     public static List<ConferenceUser> getUsersInConference(final int id) {
         return Database.getInstance()
-                       .createQuery(
-                               "SELECT ConferenceID, UserID, PermissionID FROM conference_users WHERE ConferenceID = :id")
+                       .createQuery("SELECT ConferenceID, UserID, PermissionID FROM conference_users WHERE ConferenceID = :id")
                        .addParameter("id", id)
                        .executeAndFetch(ConferenceUser.class);
     }
@@ -149,4 +194,5 @@ public class ConferenceManager {
                                        + "FROM conferences AS c ORDER BY c.Date DESC")
                        .executeAndFetch(Conference.class);
     }
+    
 }

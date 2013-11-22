@@ -45,7 +45,7 @@ public class RecommendationManager {
      * @return the recommendation
      * @throws DatabaseException the database exception
      */
-    @Permission(level = 400)
+    @Permission(level = 300)
     public Recommendation getRecommendation(final int paperID) throws DatabaseException {
         List<Recommendation> list = Database.getInstance()
                                             .createQuery(

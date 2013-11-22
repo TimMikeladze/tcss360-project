@@ -196,11 +196,18 @@ public class PaperManagerTest {
      */
     @Test
     public void testAssignPaperToSubprogramChair() {
-        PaperManager.assignPaper(paperID, userID2, PermissionLevel.PROGRAM_CHAIR);
-        assertEquals("The paper has been assigned to the subprogram chair", paperID,
-                PaperManager.getAssignedPapersForSubprogramChair(conferenceID, userID2)
-                            .get(0)
-                            .getPaperID());
+        try {
+            PaperManager.assignPaper(paperID, userID2, PermissionLevel.PROGRAM_CHAIR);
+            assertEquals("The paper has been assigned to the subprogram chair", paperID,
+                    PaperManager.getAssignedPapersForSubprogramChair(conferenceID, userID2)
+                                .get(0)
+                                .getPaperID());
+        }
+        catch (DatabaseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
     }
     
     /**

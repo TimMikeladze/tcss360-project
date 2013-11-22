@@ -13,6 +13,8 @@ import model.permissions.Permission;
 import model.permissions.PermissionLevel;
 import model.util.FileHandler;
 
+import org.sql2o.data.Table;
+
 /**
  * This class manages papers for the conferences.
  * 
@@ -26,7 +28,11 @@ public class PaperManager {
     /**
      * The maximum number of papers that can be submitted to a conference.
      */
-    private static final int MAX_PAPERS = 4;
+    private static final int MAX_PAPER_SUBMISSIONS = 4;
+    
+    private static final int MAX_REVIEW_ASSIGNMENTS = 4;
+    
+    private static final int MAX_SUB_PROGRAM_CHAIR_ASSIGNMENTS = 4;
     
     /**
      * Submits a paper to the conference.
@@ -42,7 +48,7 @@ public class PaperManager {
     @Permission(level = 100)
     public static void submitPaper(final int conferenceID, final int authorID, final String title, final String description, final File file)
             throws DatabaseException, IOException {
-        if (MAX_PAPERS > getNumberOfSubmittedPapers(conferenceID, authorID)) {
+        if (MAX_PAPER_SUBMISSIONS > getNumberOfSubmittedPapers(conferenceID, authorID)) {
             Database.getInstance()
                     .createQuery(
                             "INSERT INTO papers (ConferenceID, AuthorID, Title, Description, SubmissionDate, File, FileExtension) VALUES (:conferenceID, :authorID, :title, :description, NOW(), :file, :fileExtension)")
@@ -66,7 +72,7 @@ public class PaperManager {
      * 
      * @param paperID the paper's id
      */
-    @Permission(level = 100)
+    @Permission(level = 100, strict = true)
     public static void removePaper(final int paperID) {
         Database.getInstance()
                 .createQuery("DELETE FROM papers WHERE ID = :paperID")
@@ -123,15 +129,36 @@ public class PaperManager {
      * @param paperID the paper id
      * @param userID the user id
      * @param permission the user's permission level
+     * @throws DatabaseException
      */
     @Permission(level = 300)
-    public static void assignPaper(final int paperID, final int userID, final PermissionLevel permission) {
-        Database.getInstance()
-                .createQuery("INSERT IGNORE INTO assigned_papers (PaperID, UserID, PermissionID) VALUES (:paperID, :userID, :permissionID)")
-                .addParameter("paperID", paperID)
-                .addParameter("userID", userID)
-                .addParameter("permissionID", permission.getPermission())
-                .executeUpdate();
+    public static void assignPaper(final int paperID, final int userID, final PermissionLevel permission) throws DatabaseException {
+        if (getPaperAuthorID(paperID) != userID) {
+            Database.getInstance()
+                    .createQuery("INSERT IGNORE INTO assigned_papers (PaperID, UserID, PermissionID) VALUES (:paperID, :userID, :permissionID)")
+                    .addParameter("paperID", paperID)
+                    .addParameter("userID", userID)
+                    .addParameter("permissionID", permission.getPermission())
+                    .executeUpdate();
+        }
+        else {
+            throw new DatabaseException(Errors.CANT_ASSIGN_PAPER);
+        }
+    }
+    
+    public static int getPaperAuthorID(final int paperID) throws DatabaseException {
+        Table t = Database.getInstance()
+                          .createQuery("SELECT AuthorID FROM papers WHERE ID = :paperID")
+                          .addParameter("paperID", paperID)
+                          .executeAndFetchTable();
+        if (Database.hasResults(t)) {
+            return t.rows()
+                    .get(0)
+                    .getInteger(0);
+        }
+        else {
+            throw new DatabaseException(Errors.PAPER_DOES_NOT_EXIST);
+        }
     }
     
     /**

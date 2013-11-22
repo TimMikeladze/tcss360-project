@@ -7,6 +7,8 @@ import java.util.List;
 
 import model.database.Database;
 import model.database.DatabaseException;
+import model.database.Errors;
+import model.papers.PaperManager;
 import model.permissions.Permission;
 import model.util.FileHandler;
 
@@ -21,7 +23,7 @@ import model.util.FileHandler;
 public class ReviewManager {
     
     /**
-     * Submits a review to the conference.
+     * Submits a review for a paper.
      * 
      * @param paperID the paper id to submit to
      * @param reviewerID the reviewer's id
@@ -32,15 +34,20 @@ public class ReviewManager {
      */
     @Permission(level = 100)
     public static int submitReview(final int paperID, final int reviewerID, final File file) throws DatabaseException, IOException {
-        return Database.getInstance()
-                       .createQuery(
-                               "INSERT INTO reviews (PaperID, ReviewerID, SubmissionDate, File, FileExtension) VALUES (:paperID, :reviewerID, NOW(), :file, :fileExtension)")
-                       .addParameter("paperID", paperID)
-                       .addParameter("reviewerID", reviewerID)
-                       .addParameter("file", FileHandler.convertFileToBytes(file))
-                       .addParameter("fileExtension", FileHandler.getFileExtension(file))
-                       .executeUpdate()
-                       .getKey(Integer.class);
+        if (PaperManager.getPaperAuthorID(paperID) != reviewerID) {
+            return Database.getInstance()
+                           .createQuery(
+                                   "INSERT INTO reviews (PaperID, ReviewerID, SubmissionDate, File, FileExtension) VALUES (:paperID, :reviewerID, NOW(), :file, :fileExtension)")
+                           .addParameter("paperID", paperID)
+                           .addParameter("reviewerID", reviewerID)
+                           .addParameter("file", FileHandler.convertFileToBytes(file))
+                           .addParameter("fileExtension", FileHandler.getFileExtension(file))
+                           .executeUpdate()
+                           .getKey(Integer.class);
+        }
+        else {
+            throw new DatabaseException(Errors.CANT_REVIEW_PAPER);
+        }
     }
     
     /**
@@ -57,4 +64,20 @@ public class ReviewManager {
                        .executeAndFetchFirst(Review.class);
     }
     
+    /**
+     * Gets the submitted reviews submitted by the reviewer for a paper
+     * 
+     * @param paperID the paper's id
+     * @param userID the reviewer's id
+     * @return the submitted reviews
+     */
+    @Permission(level = 200)
+    public static Review getSubmittedReviews(final int paperID, final int userID) {
+        return Database.getInstance()
+                       .createQuery(
+                               "SELECT ID, PaperID, ReviewerID, File, FileExtension FROM reviews WHERE PaperID = :paperID AND reviewerID = :userID")
+                       .addParameter("paperID", paperID)
+                       .addParameter("userID", userID)
+                       .executeAndFetchFirst(Review.class);
+    }
 }

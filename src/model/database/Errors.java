@@ -29,7 +29,17 @@ public enum Errors {
      */
     MAX_PAPER_SUBMISSIONS_EXCEEDED("You've submitted the maximum amount of papers allowed into this conference"),
     
-    RECOMMENDATION_DOES_NOT_EXIST("A recommendation hasn't been submitted for this paper");
+    RECOMMENDATION_DOES_NOT_EXIST("A recommendation hasn't been submitted for this paper"),
+    
+    USER_ALREADY_IN_CONFERENCE("A user with this permission level already exists in this conference"),
+    
+    USER_NOT_REVIEWER("A user must be a reviewer to be designated a subprogram chair"),
+    
+    PAPER_DOES_NOT_EXIST("This paper does not exist"),
+    
+    CANT_ASSIGN_PAPER("A user can't be assigned to a paper that they authored"),
+    
+    CANT_REVIEW_PAPER("A user can't review a paper that they authord");
     
     /**
      * The error.
