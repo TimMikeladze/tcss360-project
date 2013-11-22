@@ -1,3 +1,4 @@
+
 package tests.papers;
 
 import static org.junit.Assert.*;
@@ -24,6 +25,7 @@ import org.junit.Test;
  * 
  */
 public class PaperManagerTest {
+    
     /**
      * User's first name for testing.
      */
@@ -76,23 +78,23 @@ public class PaperManagerTest {
         
         // Add the user 'Jon Snow' to the database
         userID1 = Database.getInstance()
-                  .createQuery("INSERT INTO users (Firstname, Lastname, Email) VALUES (:firstName, :lastName, :email)")
-                  .addParameter("firstName", firstName)
-                  .addParameter("lastName", lastName)
-                  .addParameter("email", email)
-                  .executeUpdate()
-                  .getKey(Integer.class);
+                          .createQuery("INSERT INTO users (Firstname, Lastname, Email) VALUES (:firstName, :lastName, :email)")
+                          .addParameter("firstName", firstName)
+                          .addParameter("lastName", lastName)
+                          .addParameter("email", email)
+                          .executeUpdate()
+                          .getKey(Integer.class);
         // Add the user 'Jon Snow' to the database
         firstName = "Daenerys";
         lastName = "Targaryen";
         email = "ilikedragons@gmail.com";
         userID2 = Database.getInstance()
-                 .createQuery("INSERT INTO users (Firstname, Lastname, Email) VALUES (:firstName, :lastName, :email)")
-                 .addParameter("firstName", firstName)
-                 .addParameter("lastName", lastName)
-                 .addParameter("email", email)
-                 .executeUpdate()
-                 .getKey(Integer.class);
+                          .createQuery("INSERT INTO users (Firstname, Lastname, Email) VALUES (:firstName, :lastName, :email)")
+                          .addParameter("firstName", firstName)
+                          .addParameter("lastName", lastName)
+                          .addParameter("email", email)
+                          .executeUpdate()
+                          .getKey(Integer.class);
     }
     
     /**
@@ -103,12 +105,12 @@ public class PaperManagerTest {
         name = "Conference1";
         location = "Seattle";
         conferenceID = Database.getInstance()
-                 .createQuery("INSERT INTO conferences (Name, Location, Date) VALUES (:name, :location, :date)")
-                 .addParameter("name", name)
-                 .addParameter("location", location)
-                 .addParameter("date", new Date())
-                 .executeUpdate()
-                 .getKey(Integer.class);
+                               .createQuery("INSERT INTO conferences (Name, Location, Date) VALUES (:name, :location, :date)")
+                               .addParameter("name", name)
+                               .addParameter("location", location)
+                               .addParameter("date", new Date())
+                               .executeUpdate()
+                               .getKey(Integer.class);
         
         Database.getInstance()
                 .createQuery("INSERT INTO conference_users (ConferenceID, UserID, PermissionID) VALUES (:id, :userID, :permissionID)")
@@ -130,14 +132,16 @@ public class PaperManagerTest {
     @Before
     public void initializePaper() {
         paperID = Database.getInstance()
-                .createQuery(
-                        "INSERT INTO papers (ConferenceID, AuthorID, Title, Description, SubmissionDate, File, FileExtension) VALUES (:conferenceID, :authorID, :title, :description, NOW(), :file, :fileExtension)")
-                .addParameter("conferenceID", conferenceID)
-                .addParameter("authorID", 2).addParameter("title", "The title")
-                .addParameter("description", "the description")
-                .addParameter("file", new File("tests/paper.txt"))
-                .addParameter("fileExtension", "/path.txt").executeUpdate()
-                .getKey(Integer.class);
+                          .createQuery(
+                                  "INSERT INTO papers (ConferenceID, AuthorID, Title, Description, SubmissionDate, File, FileExtension) VALUES (:conferenceID, :authorID, :title, :description, NOW(), :file, :fileExtension)")
+                          .addParameter("conferenceID", conferenceID)
+                          .addParameter("authorID", 2)
+                          .addParameter("title", "The title")
+                          .addParameter("description", "the description")
+                          .addParameter("file", new File("tests/paper.txt"))
+                          .addParameter("fileExtension", "/path.txt")
+                          .executeUpdate()
+                          .getKey(Integer.class);
     }
     
     /**
@@ -157,7 +161,9 @@ public class PaperManagerTest {
         }
         // get the list of papers
         paperList = PaperManager.getPapers(conferenceID);
-        assertEquals("The paper is in the list", "The Description1", paperList.get(0).getDescription().toString());
+        assertEquals("The paper is in the list", "The Description1", paperList.get(0)
+                                                                              .getDescription()
+                                                                              .toString());
     }
     
     /**
@@ -173,21 +179,26 @@ public class PaperManagerTest {
             PaperManager.submitPaper(conferenceID, userID2, "The Title7", "The Description7", new File("tests/paper.txt"));
             PaperManager.submitPaper(conferenceID, userID2, "The Title8", "The Description8", new File("tests/paper.txt"));
             fail("Should have thrown DataBaseException but did not!");
-        } catch (final DatabaseException e) {
+        }
+        catch (final DatabaseException e) {
             final String msg = "You've submitted the maximum amount of papers allowed into this conference";
             assertEquals("The max has been reached", msg, e.getMessage());
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
     }
+    
     /**
-     * Test the method assignPaperToSubprogramChair() & getAssignedPapersForSubprogramChair() from PaperManager 
+     * Test the method assignPaperToSubprogramChair() & getAssignedPapersForSubprogramChair()
+     * from PaperManager
      */
     @Test
     public void testAssignPaperToSubprogramChair() {
-        PaperManager.assignPaperToSubprogramChair(paperID, userID2);
+        PaperManager.assignPaper(paperID, userID2, PermissionLevel.PROGRAM_CHAIR);
         assertEquals("The paper has been assigned to the subprogram chair", paperID, PaperManager.getAssignedPapersForSubprogramChair(userID2).get(0).getPaperID());  
     }
+    
     /**
      * Remove all of the entries to the database that were used for testing
      */

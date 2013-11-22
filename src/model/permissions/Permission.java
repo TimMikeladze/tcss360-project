@@ -1,3 +1,4 @@
+
 package model.permissions;
 
 import java.lang.annotation.Documented;
@@ -20,9 +21,17 @@ import java.lang.annotation.Target;
 public @interface Permission {
     
     /**
-     * Gets the permission level.
+     * Sets the permission level required to access a method
      * 
      * @return the permission level
      */
-	int level() default 0;
+    int level() default 0;
+    
+    /**
+     * Sets whether the given permission level must be equal to the method's permission level or
+     * be equal and greater than
+     * 
+     * @return true, if successful
+     */
+    boolean strict() default false;
 }

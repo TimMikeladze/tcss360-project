@@ -11,7 +11,6 @@ import model.database.DatabaseException;
 import model.database.Errors;
 import model.permissions.Permission;
 import model.permissions.PermissionLevel;
-import model.reviews.Review;
 import model.util.FileHandler;
 
 /**
@@ -37,31 +36,42 @@ public class PaperManager {
      * @param title the paper title
      * @param description the paper description
      * @param file the paper's file
-     * @throws DatabaseException
-     * @throws IOException 
+     * @throws DatabaseException the database exception
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     @Permission(level = 100)
-    public static void submitPaper(int conferenceID, int authorID, String title,
-            String description, File file) throws DatabaseException, IOException {
-        String convertedFile = FileHandler.convertFileToBytes(file);
-        String fileExtension = FileHandler.getFileExtension(file);
-        
+    public static void submitPaper(final int conferenceID, final int authorID, final String title, final String description, final File file)
+            throws DatabaseException, IOException {
         if (MAX_PAPERS > getNumberOfSubmittedPapers(conferenceID, authorID)) {
             Database.getInstance()
                     .createQuery(
                             "INSERT INTO papers (ConferenceID, AuthorID, Title, Description, SubmissionDate, File, FileExtension) VALUES (:conferenceID, :authorID, :title, :description, NOW(), :file, :fileExtension)")
                     .addParameter("conferenceID", conferenceID)
-                    .addParameter("authorID", authorID).addParameter("title", title)
+                    .addParameter("authorID", authorID)
+                    .addParameter("title", title)
                     .addParameter("description", description)
-                    .addParameter("file", convertedFile)
-                    .addParameter("fileExtension", fileExtension).executeUpdate()
+                    .addParameter("file", FileHandler.convertFileToBytes(file))
+                    .addParameter("fileExtension", FileHandler.getFileExtension(file))
+                    .executeUpdate()
                     .getKey(Integer.class);
-            ConferenceManager.addUserToConference(conferenceID, authorID,
-                    PermissionLevel.AUTHOR);
+            ConferenceManager.addUserToConference(conferenceID, authorID, PermissionLevel.AUTHOR);
         }
         else {
             throw new DatabaseException(Errors.MAX_PAPER_SUBMISSIONS_EXCEEDED);
         }
+    }
+    
+    /**
+     * Removes the paper.
+     * 
+     * @param paperID the paper's id
+     */
+    @Permission(level = 100)
+    public static void removePaper(final int paperID) {
+        Database.getInstance()
+                .createQuery("DELETE FROM papers WHERE ID = :paperID")
+                .addParameter("paperID", paperID)
+                .executeUpdate();
     }
     
     /**
@@ -71,12 +81,12 @@ public class PaperManager {
      * @return list of papers
      */
     @Permission(level = 400)
-    public static List<Paper> getAssignedPapersForSubprogramChair(int userID) {
-        return Database
-                .getInstance()
-                .createQuery(
-                        "SELECT p.ConferenceID, p.ID AS PaperID, p.Title, p.Description, p.AuthorID, p.SubmissionDate, p.Status, p.Revised, p.FileExtension, p.File, p.RevisionDate FROM papers AS p JOIN assigned_papers AS a ON a.PaperID = p.ID WHERE a.UserID = :userID")
-                .addParameter("userID", userID).executeAndFetch(Paper.class);
+    public static List<Paper> getAssignedPapersForSubprogramChair(final int userID) {
+        return Database.getInstance()
+                       .createQuery(
+                               "SELECT p.ConferenceID, p.ID AS PaperID, p.Title, p.Description, p.AuthorID, p.SubmissionDate, p.Status, p.Revised, p.FileExtension, p.File, p.RevisionDate FROM papers AS p JOIN assigned_papers AS a ON a.PaperID = p.ID WHERE a.UserID = :userID")
+                       .addParameter("userID", userID)
+                       .executeAndFetch(Paper.class);
     }
     
     /**
@@ -88,83 +98,28 @@ public class PaperManager {
     // TODO whatever you just said. Something about a left join maybe?
     @Permission(level = 200)
     public static List<Paper> getAssignedPapersForReviewer(final int userID) {
-        return Database
-                .getInstance()
-                .createQuery(
-                        "SELECT p.ConferenceID, p.ID AS PaperID, p.Title, p.Description, p.AuthorID, p.SubmissionDate, p.Status, p.Revised, p.FileExtension, p.File, p.RevisionDate FROM papers AS p JOIN assigned_papers AS a ON a.PaperID = p.ID WHERE a.UserID = :userID")
-                .addParameter("userID", userID).executeAndFetch(Paper.class);
+        return Database.getInstance()
+                       .createQuery(
+                               "SELECT p.ConferenceID, p.ID AS PaperID, p.Title, p.Description, p.AuthorID, p.SubmissionDate, p.Status, p.Revised, p.FileExtension, p.File, p.RevisionDate FROM papers AS p JOIN assigned_papers AS a ON a.PaperID = p.ID WHERE a.UserID = :userID")
+                       .addParameter("userID", userID)
+                       .executeAndFetch(Paper.class);
     }
     
     /**
-     * Assigns a paper to a subprogram chair.
+     * Assign paper to a user.
      * 
-     * @param paperID the papers id
-     * @param userID the Subprogram Chairs id
+     * @param paperID the paper id
+     * @param userID the user id
+     * @param permission the user's permission level
      */
-    @Permission(level = 400)
-    public static void assignPaperToSubprogramChair(final int paperID, final int userID) {
+    @Permission(level = 300)
+    public static void assignPaper(final int paperID, final int userID, final PermissionLevel permission) {
         Database.getInstance()
-                .createQuery(
-                        "INSERT IGNORE INTO assigned_papers (PaperID, UserID) VALUES (:paperID, :userID)")
-                .addParameter("paperID", paperID).addParameter("userID", userID)
+                .createQuery("INSERT IGNORE INTO assigned_papers (PaperID, UserID, PermissionID) VALUES (:paperID, :userID, :permissionID)")
+                .addParameter("paperID", paperID)
+                .addParameter("userID", userID)
+                .addParameter("permissionID", permission.getPermission())
                 .executeUpdate();
-    }
-    
-    /**
-     * 
-     * Assigns a paper to a reviewer.
-     * 
-     * @param paperID the papers id
-     * @param userID the reviewers id
-     */
-    @Permission(level = 400)
-    public static void assignPaperToReviewer(final int paperID, final int userID) {
-        Database.getInstance()
-                .createQuery(
-                        "INSERT IGNORE INTO assigned_papers (PaperID, UserID) VALUES (:paperID, :userID)")
-                .addParameter("paperID", paperID).addParameter("userID", userID)
-                .executeUpdate();
-    }
-    
-    /**
-     * Returns all the reviews for an author.
-     * 
-     * @param conferenceID The conference id the reviews are in
-     * @param authorID The authors id
-     * @return The list of reviews
-     */
-    public static List<Review> getReviews(final int conferenceID, final int authorID) {
-        return Database
-                .getInstance()
-                .createQuery(
-                        "SELECT r.ID, r.PaperID, r.ReviewerID, r.File, r.FileExtension, p.Status FROM reviews AS r JOIN papers p.ID = r.PaperID WHERE p.ConferenceID = :conferenceID AND p.AuthorID = :authorID AND p.Status != 0")
-                .addParameter("conferenceID", conferenceID).addParameter("authorID", authorID)
-                .executeAndFetch(Review.class);
-    }
-    
-    /**
-     * Submits a review to the conference
-     * 
-     * @param paperID
-     *            the paper id to submit to
-     * @param reviewerID
-     *            the reviewer's id
-     * @param file
-     *            the paper's file
-     * @throws DatabaseException
-     * @throws IOException 
-     */
-    @Permission(level = 200)
-    public static void submitReview(int paperID, int reviewerID, File file)
-            throws DatabaseException, IOException {
-        String convertedFile = FileHandler.convertFileToBytes(file);
-        String fileExtension = FileHandler.getFileExtension(file);
-        Database.getInstance()
-                .createQuery(
-                        "INSERT INTO reviews (PaperID, ReviewerID, SubmissionDate, File, FileExtension) VALUES (:paperID, :reviewerID, NOW(), :file, :fileExtension)")
-                .addParameter("paperID", paperID).addParameter("reviewerID", reviewerID)
-                .addParameter("file", convertedFile)
-                .addParameter("fileExtension", fileExtension).executeUpdate();
     }
     
     /**
@@ -197,7 +152,8 @@ public class PaperManager {
         int paperStatus = status ? 2 : 1;
         Database.getInstance()
                 .createQuery("UPDATE papers SET Status = :paperStatus WHERE ID = :id")
-                .addParameter("paperStatus", paperStatus).addParameter("id", paperID)
+                .addParameter("paperStatus", paperStatus)
+                .addParameter("id", paperID)
                 .executeUpdate();
     }
     
@@ -209,11 +165,11 @@ public class PaperManager {
      */
     @Permission(level = 400)
     public static List<Paper> getPapers(final int conferenceID) {
-        return Database
-                .getInstance()
-                .createQuery(
-                        "SELECT ConferenceID, ID AS PaperID, Title, Description, AuthorID, SubmissionDate, Status, Revised, FileExtension, File, RevisionDate FROM papers WHERE ConferenceID = :conferenceID")
-                .addParameter("conferenceID", conferenceID).executeAndFetch(Paper.class);
+        return Database.getInstance()
+                       .createQuery(
+                               "SELECT ConferenceID, ID AS PaperID, Title, Description, AuthorID, SubmissionDate, Status, Revised, FileExtension, File, RevisionDate FROM papers WHERE ConferenceID = :conferenceID")
+                       .addParameter("conferenceID", conferenceID)
+                       .executeAndFetch(Paper.class);
     }
     
     /**
@@ -224,11 +180,13 @@ public class PaperManager {
      * @return number of papers author has submitted
      */
     public static int getNumberOfSubmittedPapers(final int conferenceID, final int authorID) {
-        return Database
-                .getInstance()
-                .createQuery(
-                        "SELECT COUNT(1) FROM papers WHERE ConferenceID = :conferenceID AND AuthorID = :authorID")
-                .addParameter("conferenceID", conferenceID).addParameter("authorID", authorID)
-                .executeAndFetchTable().rows().get(0).getInteger(0);
+        return Database.getInstance()
+                       .createQuery("SELECT COUNT(1) FROM papers WHERE ConferenceID = :conferenceID AND AuthorID = :authorID")
+                       .addParameter("conferenceID", conferenceID)
+                       .addParameter("authorID", authorID)
+                       .executeAndFetchTable()
+                       .rows()
+                       .get(0)
+                       .getInteger(0);
     }
 }

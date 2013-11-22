@@ -1,8 +1,6 @@
 
 package model.login;
 
-import java.sql.SQLException;
-
 import model.database.Database;
 import model.database.DatabaseException;
 import model.database.Errors;
@@ -24,8 +22,9 @@ public class Login {
      */
     public static boolean isRegistered(final String email) {
         return Database.hasResults(Database.getInstance()
-                .createQuery("SELECT 1 FROM users WHERE Email = :email")
-                .addParameter("email", email).executeAndFetchTable());
+                                           .createQuery("SELECT 1 FROM users WHERE Email = :email")
+                                           .addParameter("email", email)
+                                           .executeAndFetchTable());
     }
     
     /**
@@ -36,16 +35,16 @@ public class Login {
      * @param email the user's email
      * @throws DatabaseException if email already exists in DB
      */
-    public static int registerUser(final String firstName, final String lastName, final String email)
-            throws DatabaseException {
+    public static int registerUser(final String firstName, final String lastName, final String email) throws DatabaseException {
         int id;
         if (!isRegistered(email)) {
-            id = Database
-                    .getInstance()
-                    .createQuery(
-                            "INSERT INTO users (Firstname, Lastname, Email) VALUES (:firstName, :lastName, :email)")
-                    .addParameter("firstName", firstName).addParameter("lastName", lastName)
-                    .addParameter("email", email).executeUpdate().getKey(Integer.class);
+            id = Database.getInstance()
+                         .createQuery("INSERT INTO users (Firstname, Lastname, Email) VALUES (:firstName, :lastName, :email)")
+                         .addParameter("firstName", firstName)
+                         .addParameter("lastName", lastName)
+                         .addParameter("email", email)
+                         .executeUpdate()
+                         .getKey(Integer.class);
         }
         else {
             throw new DatabaseException(Errors.EMAIL_EXISTS);

@@ -1,3 +1,4 @@
+
 package tests;
 
 import model.papers.PaperManager;
@@ -10,8 +11,8 @@ import model.papers.PaperManager;
  * 
  */
 public class Tester {
-	public static void main(String[] args) {
-	    PaperManager.assignPaperToSubprogramChair(6, 2);
-		System.out.println(PaperManager.getPapers(36));
-	}
+    
+    public static void main(final String[] args) {
+        System.out.println(PaperManager.getPapers(36));
+    }
 }

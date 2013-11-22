@@ -22,37 +22,26 @@ public class Permissions {
     private static final HashMap<Class<?>, HashMap<String, PermissionMethod>> classMap = loadClassMap();
     
     /**
-     * Does a non strict permission check.
-     * 
-     * @param className the class where the method is
-     * @param method method trying to access
-     * @param permission the permission required to access method
-     * @return returns true if can access
-     */
-    public static boolean hasPermission(final Class<?> className, final String method,
-            final PermissionLevel permission) {
-        return hasPermission(className, method, permission, false);
-    }
-    
-    /**
      * Does a permission check.
      * 
      * @param className the class where the method is
      * @param method method trying to access
      * @param permission the permission required to access method
-     * @param strict if true the permission level given must match the permission level of the method
      * @return returns true if can access
      */
-    public static boolean hasPermission(final Class<?> className, final String method,
-            final PermissionLevel permission, final boolean strict) {
+    public static boolean hasPermission(final Class<?> className, final String method, final PermissionLevel permission) {
         boolean hasPermission = false;
         int givenPermission = permission.getPermission();
         
         HashMap<String, PermissionMethod> methods = classMap.get(className);
         if (methods != null && methods.containsKey(method)) {
-            int methodPermission = methods.get(method).getPermission().level();
-            if ((strict && givenPermission == methodPermission)
-                    || (!strict && givenPermission >= methodPermission)) {
+            int methodPermission = methods.get(method)
+                                          .getPermission()
+                                          .level();
+            boolean strict = methods.get(method)
+                                    .getPermission()
+                                    .strict();
+            if ((strict && givenPermission == methodPermission) || (!strict && givenPermission >= methodPermission)) {
                 hasPermission = true;
             }
         }
