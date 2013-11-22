@@ -77,31 +77,43 @@ public class PaperManager {
     /**
      * Gets all the papers that were assigned to a Subprogram Chair in a conference.
      * 
+     * @param conferenceID the conference id
      * @param userID he user id of the Subprogram Chair
      * @return list of papers
      */
     @Permission(level = 400)
-    public static List<Paper> getAssignedPapersForSubprogramChair(final int userID) {
-        return Database.getInstance()
-                       .createQuery(
-                               "SELECT p.ConferenceID, p.ID AS PaperID, p.Title, p.Description, p.AuthorID, p.SubmissionDate, p.Status, p.Revised, p.FileExtension, p.File, p.RevisionDate FROM papers AS p JOIN assigned_papers AS a ON a.PaperID = p.ID WHERE a.UserID = :userID")
-                       .addParameter("userID", userID)
-                       .executeAndFetch(Paper.class);
+    public static List<Paper> getAssignedPapersForSubprogramChair(final int conferenceID, final int userID) {
+        return getAssignedPapers(conferenceID, userID, PermissionLevel.SUBPROGRAM_CHAIR);
     }
     
     /**
      * Gets all the papers that were assigned to a reviewer in a conference.
      * 
+     * @param conferenceID the conference id
      * @param userID The user id of the reviewer
+     * @param permission the permission
      * @return The list of papers
      */
-    // TODO whatever you just said. Something about a left join maybe?
     @Permission(level = 200)
-    public static List<Paper> getAssignedPapersForReviewer(final int userID) {
+    public static List<Paper> getAssignedPapersForReviewer(final int conferenceID, final int userID, final PermissionLevel permission) {
+        return getAssignedPapers(conferenceID, userID, PermissionLevel.REVIEWER);
+    }
+    
+    /**
+     * Gets the assigned papers for a user
+     * 
+     * @param conferenceID the conference id
+     * @param userID the user id
+     * @param permission the permission
+     * @return the assigned papers
+     */
+    private static List<Paper> getAssignedPapers(final int conferenceID, final int userID, final PermissionLevel permission) {
         return Database.getInstance()
                        .createQuery(
-                               "SELECT p.ConferenceID, p.ID AS PaperID, p.Title, p.Description, p.AuthorID, p.SubmissionDate, p.Status, p.Revised, p.FileExtension, p.File, p.RevisionDate FROM papers AS p JOIN assigned_papers AS a ON a.PaperID = p.ID WHERE a.UserID = :userID")
+                               "SELECT p.ConferenceID, p.ID AS PaperID, p.Title, p.Description, p.AuthorID, p.SubmissionDate, p.Status, p.Revised, p.FileExtension, p.File, p.RevisionDate FROM papers AS p JOIN assigned_papers AS a ON a.PaperID = p.ID WHERE p.ConferenceID = :conferenceID AND a.UserID = :userID AND a.PermissionID = :permissionID")
+                       .addParameter("conferenceID", conferenceID)
                        .addParameter("userID", userID)
+                       .addParameter("permissionID", permission.getPermission())
                        .executeAndFetch(Paper.class);
     }
     

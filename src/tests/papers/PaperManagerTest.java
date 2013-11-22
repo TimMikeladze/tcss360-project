@@ -1,7 +1,8 @@
 
 package tests.papers;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -196,7 +197,10 @@ public class PaperManagerTest {
     @Test
     public void testAssignPaperToSubprogramChair() {
         PaperManager.assignPaper(paperID, userID2, PermissionLevel.PROGRAM_CHAIR);
-        assertEquals("The paper has been assigned to the subprogram chair", paperID, PaperManager.getAssignedPapersForSubprogramChair(userID2).get(0).getPaperID());  
+        assertEquals("The paper has been assigned to the subprogram chair", paperID,
+                PaperManager.getAssignedPapersForSubprogramChair(conferenceID, userID2)
+                            .get(0)
+                            .getPaperID());
     }
     
     /**
