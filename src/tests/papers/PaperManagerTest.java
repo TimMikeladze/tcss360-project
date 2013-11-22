@@ -1,7 +1,6 @@
-
 package tests.papers;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,17 +24,14 @@ import org.junit.Test;
  * 
  */
 public class PaperManagerTest {
-    
     /**
      * User's first name for testing.
      */
     private String firstName;
-    
     /**
      * User's last name for testing.
      */
     private String lastName;
-    
     /**
      * User's email for testing.
      */
@@ -49,17 +45,25 @@ public class PaperManagerTest {
      */
     private String location;
     /**
-     * The program chair id
-     */
-    private int programChairID;
-    /**
      * The conference ID
      */
     private int conferenceID;
     /**
-     * The user ID
+     * The first user ID
      */
-    private int userID;
+    private int userID1;
+    /**
+     * The second user ID
+     */
+    private int userID2;
+    /**
+     * List of submitted papers
+     */
+    List<Paper> paperList;
+    /**
+     * The paper ID
+     */
+    private int paperID;
     
     /**
      * Initializes the Author for the tests.
@@ -71,14 +75,24 @@ public class PaperManagerTest {
         email = "youknownothingjonsnow@gmail.com";
         
         // Add the user 'Jon Snow' to the database
-        // Need to remove from database
-        userID = Database.getInstance()
-                         .createQuery("INSERT INTO users (Firstname, Lastname, Email) VALUES (:firstName, :lastName, :email)")
-                         .addParameter("firstName", firstName)
-                         .addParameter("lastName", lastName)
-                         .addParameter("email", email)
-                         .executeUpdate()
-                         .getKey(Integer.class);
+        userID1 = Database.getInstance()
+                  .createQuery("INSERT INTO users (Firstname, Lastname, Email) VALUES (:firstName, :lastName, :email)")
+                  .addParameter("firstName", firstName)
+                  .addParameter("lastName", lastName)
+                  .addParameter("email", email)
+                  .executeUpdate()
+                  .getKey(Integer.class);
+        // Add the user 'Jon Snow' to the database
+        firstName = "Daenerys";
+        lastName = "Targaryen";
+        email = "ilikedragons@gmail.com";
+        userID2 = Database.getInstance()
+                 .createQuery("INSERT INTO users (Firstname, Lastname, Email) VALUES (:firstName, :lastName, :email)")
+                 .addParameter("firstName", firstName)
+                 .addParameter("lastName", lastName)
+                 .addParameter("email", email)
+                 .executeUpdate()
+                 .getKey(Integer.class);
     }
     
     /**
@@ -89,78 +103,95 @@ public class PaperManagerTest {
         name = "Conference1";
         location = "Seattle";
         conferenceID = Database.getInstance()
-                               .createQuery("INSERT INTO conferences (Name, Location, Date) VALUES (:name, :location, :date)")
-                               .addParameter("name", name)
-                               .addParameter("location", location)
-                               .addParameter("date", new Date())
-                               .executeUpdate()
-                               .getKey(Integer.class);
+                 .createQuery("INSERT INTO conferences (Name, Location, Date) VALUES (:name, :location, :date)")
+                 .addParameter("name", name)
+                 .addParameter("location", location)
+                 .addParameter("date", new Date())
+                 .executeUpdate()
+                 .getKey(Integer.class);
         
         Database.getInstance()
                 .createQuery("INSERT INTO conference_users (ConferenceID, UserID, PermissionID) VALUES (:id, :userID, :permissionID)")
                 .addParameter("id", conferenceID)
-                .addParameter("userID", programChairID)
+                .addParameter("userID", userID1)
+                .addParameter("permissionID", PermissionLevel.PROGRAM_CHAIR.getPermission())
+                .executeUpdate();
+        Database.getInstance()
+                .createQuery("INSERT INTO conference_users (ConferenceID, UserID, PermissionID) VALUES (:id, :userID, :permissionID)")
+                .addParameter("id", conferenceID)
+                .addParameter("userID", userID2)
                 .addParameter("permissionID", PermissionLevel.PROGRAM_CHAIR.getPermission())
                 .executeUpdate();
     }
     
     /**
-     * Testing the submission of 3 papers
-     * 
-     * @throws IOException
+     * Initializes a paper
      */
+    @Before
+    public void initializePaper() {
+        paperID = Database.getInstance()
+                .createQuery(
+                        "INSERT INTO papers (ConferenceID, AuthorID, Title, Description, SubmissionDate, File, FileExtension) VALUES (:conferenceID, :authorID, :title, :description, NOW(), :file, :fileExtension)")
+                .addParameter("conferenceID", conferenceID)
+                .addParameter("authorID", 2).addParameter("title", "The title")
+                .addParameter("description", "the description")
+                .addParameter("file", new File("tests/paper.txt"))
+                .addParameter("fileExtension", "/path.txt").executeUpdate()
+                .getKey(Integer.class);
+    }
     
+    /**
+     * Testing the submission of 3 papers
+     */
     @Test
     public void testSubmitPapersLessThanFour() {
         try {
-            // add three papers
-            PaperManager.submitPaper(conferenceID, userID, "The Title1", "The Description1", new File("tests/paper.txt"));
-            //PaperManager.submitPaper(conferenceID, userID, "The Title2", "The Description2", file);
-            //PaperManager.submitPaper(conferenceID, userID, "The Title3", "The Description3", file);
+            // add a paper
+            PaperManager.submitPaper(conferenceID, userID1, "The Title1", "The Description1", new File("tests/paper.txt"));
         }
         catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         catch (DatabaseException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         // get the list of papers
-        List<Paper> test = PaperManager.getPapers(conferenceID);
-        assertEquals("The paper is in the list", "The Description1", test.get(0)
-                                                                         .getDescription()
-                                                                         .toString());
-        //assertEquals("The paper is in the list", "The Description2", test.get(1).getDescription());
-        //assertEquals("The paper is in the list", "The Description3", test.get(2).getDescription());
+        paperList = PaperManager.getPapers(conferenceID);
+        assertEquals("The paper is in the list", "The Description1", paperList.get(0).getDescription().toString());
     }
     
     /**
      * Tests the submission if the author has submitted too many papers
      * 
-     * @throws IOException
      */
-    /*
     @Test
     public void shouldThrowDatabaseExceptionWhenSubmitPapersReachesMax() {
         try {
-            PaperManager.submitPaper(conferenceID, userID, "The Title4", "The Description4", new File("src/tests/papers/test.txt"));
-            PaperManager.submitPaper(conferenceID, userID, "The Title5", "The Description5", new File("src/tests/papers/test.txt"));
-            PaperManager.submitPaper(conferenceID, userID, "The Title6", "The Description6", new File("src/tests/papers/test.txt"));
-            PaperManager.submitPaper(conferenceID, userID, "The Title7", "The Description7", new File("src/tests/papers/test.txt"));
+            PaperManager.submitPaper(conferenceID, userID2, "The Title4", "The Description4", new File("tests/paper.txt"));
+            PaperManager.submitPaper(conferenceID, userID2, "The Title5", "The Description5", new File("tests/paper.txt"));
+            PaperManager.submitPaper(conferenceID, userID2, "The Title6", "The Description6", new File("tests/paper.txt"));
+            PaperManager.submitPaper(conferenceID, userID2, "The Title7", "The Description7", new File("tests/paper.txt"));
+            PaperManager.submitPaper(conferenceID, userID2, "The Title8", "The Description8", new File("tests/paper.txt"));
             fail("Should have thrown DataBaseException but did not!");
-        } catch (final DatabaseException e ) {
+        } catch (final DatabaseException e) {
             final String msg = "You've submitted the maximum amount of papers allowed into this conference";
             assertEquals("The max has been reached", msg, e.getMessage());
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
-    */
-    
+    /**
+     * Test the method assignPaperToSubprogramChair() & getAssignedPapersForSubprogramChair() from PaperManager 
+     */
+    @Test
+    public void testAssignPaperToSubprogramChair() {
+        PaperManager.assignPaperToSubprogramChair(paperID, userID2);
+        assertEquals("The paper has been assigned to the subprogram chair", paperID, PaperManager.getAssignedPapersForSubprogramChair(userID2).get(0).getPaperID());  
+    }
+    /**
+     * Remove all of the entries to the database that were used for testing
+     */
     @After
-    // TODO take down the user as well, and submitted papers
     public void takeDown() {
         Database.getInstance()
                 .createQuery("DELETE FROM conferences WHERE ID = :conferenceID")
@@ -173,7 +204,21 @@ public class PaperManagerTest {
         Database.getInstance()
                 .createQuery("DELETE FROM conference_users WHERE ConferenceID = :conferenceID AND UserID = :userID")
                 .addParameter("conferenceID", conferenceID)
-                .addParameter("userID", userID)
+                .addParameter("userID", userID1)
+                .executeUpdate();
+        Database.getInstance()
+                .createQuery("DELETE FROM conference_users WHERE ConferenceID = :conferenceID AND UserID = :userID")
+                .addParameter("conferenceID", conferenceID)
+                .addParameter("userID", userID2)
+                .executeUpdate();
+        Database.getInstance()
+                .createQuery("DELETE FROM assigned_papers WHERE PaperID = :paperID AND UserID = :userID")
+                .addParameter("paperID", conferenceID)
+                .addParameter("userID", userID2)
+                .executeUpdate();
+        Database.getInstance()
+                .createQuery("DELETE FROM papers WHERE ID = :paperID")
+                .addParameter("paperID", paperID)
                 .executeUpdate();
     }
 }
