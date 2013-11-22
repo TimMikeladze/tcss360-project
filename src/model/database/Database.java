@@ -12,7 +12,8 @@ import org.sql2o.Sql2o;
 import org.sql2o.data.Table;
 
 /**
- * This is a singleton class which provides static access to an instance of the database connection.
+ * This is a singleton class which provides static access to an instance of the database
+ * connection.
  * 
  * @author Tim Mikeladze
  * @version 11-18-2013
@@ -51,9 +52,8 @@ public class Database {
         try {
             // Loads properties file
             p.load(new FileInputStream(CONFIG_PATH));
-            sql = new Sql2o("jdbc:mysql://" + p.getProperty("host") + ":"
-                    + p.getProperty("port") + "/" + p.getProperty("database"),
-                    p.getProperty("username"), p.getProperty("password"));
+            sql = new Sql2o("jdbc:mysql://" + p.getProperty("host") + ":" + p.getProperty("port") + "/" + p.getProperty("database")
+                    + "?zeroDateTimeBehavior=convertToNull", p.getProperty("username"), p.getProperty("password"));
         }
         catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -71,7 +71,8 @@ public class Database {
     public static synchronized boolean isConnected() {
         boolean isConnected = false;
         try {
-            getInstance().getDataSource().getConnection();
+            getInstance().getDataSource()
+                         .getConnection();
             isConnected = true;
         }
         catch (SQLException e) {

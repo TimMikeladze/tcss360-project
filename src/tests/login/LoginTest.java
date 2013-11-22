@@ -65,7 +65,7 @@ public class LoginTest {
         // Add the user 'Jon Snow' to the database
         Database.getInstance()
                 .createQuery(
-                        "INSERT INTO users (Firstname, Lastname, Email) VALUES (:firstName, :lastName, :email)")
+                        "INSERT c users (Firstname, Lastname, Email) VALUES (:firstName, :lastName, :email)")
                 .addParameter("firstName", firstName1).addParameter("lastName", lastName1)
                 .addParameter("email", email1).executeUpdate();
     }
