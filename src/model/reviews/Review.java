@@ -1,6 +1,11 @@
 
 package model.reviews;
 
+import java.io.File;
+import java.io.IOException;
+
+import model.util.FileHandler;
+
 /**
  * This class holds all the information for a review.
  * 
@@ -25,11 +30,6 @@ public class Review {
     private int reviewerID;
     
     /**
-     * The status of the review.
-     */
-    private int status;
-    
-    /**
      * The file extension of the review.
      */
     private String fileExtension;
@@ -38,6 +38,8 @@ public class Review {
      * The file location of the review.
      */
     private String file;
+    
+    private File review;
     
     /**
      * Gets the paper id.
@@ -67,15 +69,6 @@ public class Review {
     }
     
     /**
-     * Gets the status of the review.
-     * 
-     * @return the status of the review
-     */
-    public int getStatus() {
-        return status;
-    }
-    
-    /**
      * Gets the file extension of the review.
      * 
      * @return the file extension of the review
@@ -94,16 +87,12 @@ public class Review {
     }
     
     /**
-     * Gets the toString of the review.
+     * Gets the review.
      * 
-     * @return all relevant information about the review
+     * @return the review
+     * @throws IOException Signals that an I/O exception has occurred.
      */
-    @Override
-    public String toString() {
-        return "Review [getPaperID()=" + getPaperID() + ", getId()=" + getId()
-                + ", getReviewerID()=" + getReviewerID() + ", getStatus()=" + getStatus()
-                + ", getFileExtension()=" + getFileExtension() + ", getFile()=" + getFile()
-                + "]";
+    public File getReview() throws IOException {
+        return review == null ? (review = FileHandler.convertBytesToFile(file, fileExtension)) : review;
     }
-    
 }

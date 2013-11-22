@@ -1,8 +1,6 @@
 
 package tests;
 
-import model.papers.PaperManager;
-
 //TODO delete class when project is finished
 
 /**
@@ -13,6 +11,7 @@ import model.papers.PaperManager;
 public class Tester {
     
     public static void main(final String[] args) {
-        System.out.println(PaperManager.getPapers(36));
+        
     }
+    
 }

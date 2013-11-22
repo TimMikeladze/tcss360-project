@@ -1,7 +1,11 @@
 
 package model.papers;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
+
+import model.util.FileHandler;
 
 /**
  * This class holds all the information for a paper.
@@ -66,6 +70,8 @@ public class Paper {
      * The revision date.
      */
     private Timestamp revisionDate;
+    
+    private File paper;
     
     /**
      * Returns the papers id.
@@ -174,18 +180,14 @@ public class Paper {
     }
     
     /**
-     * Returns the papers toString
+     * Gets the paper.
      * 
-     * @return all relevant information about the paper
+     * @return the paper
+     * @throws IOException Signals that an I/O exception has occurred.
      */
-    @Override
-    public String toString() {
-        return "Paper [getPaperID()=" + getPaperID() + ", getConferenceID()="
-                + getConferenceID() + ", getTitle()=" + getTitle() + ", getDescription()="
-                + getDescription() + ", getSubmissionDate()=" + getSubmissionDate()
-                + ", getAuthorID()=" + getAuthorID() + ", getStatus()=" + getStatus()
-                + ", getRevised()=" + getRevised() + ", getFileExtension()="
-                + getFileExtension() + ", getFile()=" + getFile() + ", getRevisionDate()="
-                + getRevisionDate() + "]";
+    public File getPaper() throws IOException {
+        return paper == null ? (paper = FileHandler.convertBytesToFile(file, fileExtension)) : paper;
+        
     }
+    
 }
