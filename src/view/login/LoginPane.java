@@ -99,10 +99,8 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
         
         final HBox buttonHBox = new HBox(10);
         buttonHBox.setAlignment(Pos.BOTTOM_RIGHT);
-        buttonHBox.getChildren()
-                  .add(signInButton);
-        buttonHBox.getChildren()
-                  .add(registerButton);
+        buttonHBox.getChildren().add(signInButton);
+        buttonHBox.getChildren().add(registerButton);
         pane.add(buttonHBox, 1, 4);
         
         signInText = new StatusText();
@@ -118,8 +116,7 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
     @Override
     public void handle(final Event event) {
         if (event.getSource() == signInButton) {
-            String email = emailTextField.getText()
-                                         .trim();
+            String email = emailTextField.getText().trim();
             if (email.isEmpty()) {
                 signInText.setErrorText("Forgot to enter an email");
             }
@@ -166,10 +163,8 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
                 @Override
                 protected String call() {
                     try {
-                        User user = Login.loginUser(emailTextField.getText()
-                                                                  .trim());
-                        LoggedUser.getInstance()
-                                  .setUser(user);
+                        User user = Login.loginUser(emailTextField.getText().trim());
+                        LoggedUser.getInstance().setUser(user);
                         setSuccess(true);
                     }
                     catch (DatabaseException e) {

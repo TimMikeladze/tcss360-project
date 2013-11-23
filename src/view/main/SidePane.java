@@ -35,7 +35,7 @@ public class SidePane extends GenericPane<TilePane> {
         usersButton.setMaxWidth(Double.MAX_VALUE);
         
         pane.getChildren()
-            .addAll(homeButton, conferencesButton, submissionsButton, usersButton);
+                .addAll(homeButton, conferencesButton, submissionsButton, usersButton);
         
     }
 }

@@ -86,11 +86,9 @@ public class RegisterPane extends GenericPane<GridPane> implements EventHandler<
         HBox buttonHBox = new HBox(10);
         buttonHBox.setAlignment(Pos.BOTTOM_RIGHT);
         
-        buttonHBox.getChildren()
-                  .add(returnButton);
+        buttonHBox.getChildren().add(returnButton);
         
-        buttonHBox.getChildren()
-                  .add(registerButton);
+        buttonHBox.getChildren().add(registerButton);
         
         pane.add(buttonHBox, 1, 5);
         
@@ -115,14 +113,13 @@ public class RegisterPane extends GenericPane<GridPane> implements EventHandler<
                 registrationText.setErrorText("Not a valid email");
             }
             else {
-                new RegistrationService(callbacks.getPrimaryStage(), firstName, lastName, email).start();
+                new RegistrationService(callbacks.getPrimaryStage(), firstName, lastName, email)
+                        .start();
             }
         }
         else if (event.getSource() == returnButton) {
             callbacks.changeScene(new LoginPane());
-            
         }
-        
     }
     
     private class RegistrationService extends ProgressService {
@@ -131,7 +128,8 @@ public class RegisterPane extends GenericPane<GridPane> implements EventHandler<
         private String lastName;
         private String email;
         
-        public RegistrationService(final Stage primaryStage, final String firstName, final String lastName, final String email) {
+        public RegistrationService(final Stage primaryStage, final String firstName,
+                final String lastName, final String email) {
             super(primaryStage);
             this.firstName = firstName;
             this.lastName = lastName;

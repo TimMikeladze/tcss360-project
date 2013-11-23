@@ -33,8 +33,7 @@ public class MainPane extends GenericPane<BorderPane> {
         final StackPane stackPane = new StackPane();
         
         // stackPane.getStylesheets().add("style.css");
-        stackPane.getChildren()
-                 .add(new HomePane().getPane());
+        stackPane.getChildren().add(new HomePane().getPane());
         
         return stackPane;
     }

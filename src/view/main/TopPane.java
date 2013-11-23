@@ -36,29 +36,22 @@ public class TopPane extends GenericPane<StackPane> implements EventHandler<Acti
     
     private void create() {
         leftBox.setAlignment(Pos.CENTER_LEFT);
-        welcomeLabel = new Label("Welcome " + LoggedUser.getInstance()
-                                                        .getUser()
-                                                        .getFullName());
-        leftBox.getChildren()
-               .add(welcomeLabel);
+        welcomeLabel = new Label("Welcome " + LoggedUser.getInstance().getUser().getFullName());
+        leftBox.getChildren().add(welcomeLabel);
         
         rightBox.setAlignment(Pos.CENTER_RIGHT);
         logoutButton = new Button("Logout");
         logoutButton.setOnAction(this);
-        rightBox.getChildren()
-                .add(logoutButton);
+        rightBox.getChildren().add(logoutButton);
         
-        pane.getChildren()
-            .add(leftBox);
-        pane.getChildren()
-            .add(rightBox);
+        pane.getChildren().add(leftBox);
+        pane.getChildren().add(rightBox);
     }
     
     @Override
     public void handle(final ActionEvent event) {
         if (event.getSource() == logoutButton) {
-            LoggedUser.getInstance()
-                      .logout();
+            LoggedUser.getInstance().logout();
             callbacks.changeScene(new LoginPane());
         }
     }
