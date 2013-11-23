@@ -63,14 +63,14 @@ public class Conference {
      */
     public static Conference conferenceFromID(final int id) {
         Conference conference = null;
-        List<Conference> results = Database
-                .getInstance()
-                .createQuery(
-                        "SELECT c.ID, c.Name, c.Location, c.Date, c.ProgramChairID,"
-                                + "(SELECT COUNT(1) FROM conference_users AS cu WHERE cu.ConferenceID = c.ID AND cu.PermissionID = 100) AS Reviewers,"
-                                + "(SELECT COUNT(1) FROM conference_users AS cu WHERE cu.ConferenceID = c.ID AND cu.PermissionID = 200) AS Authors "
-                                + "FROM conferences AS c WHERE c.ID = :id ORDER BY c.Date DESC")
-                .addParameter("id", id).executeAndFetch(Conference.class);
+        List<Conference> results = Database.getInstance()
+                                           .createQuery(
+                                                   "SELECT c.ID, c.Name, c.Location, c.Date, c.ProgramChairID,"
+                                                           + "(SELECT COUNT(1) FROM conference_users AS cu WHERE cu.ConferenceID = c.ID AND cu.PermissionID = 100) AS Reviewers,"
+                                                           + "(SELECT COUNT(1) FROM conference_users AS cu WHERE cu.ConferenceID = c.ID AND cu.PermissionID = 200) AS Authors "
+                                                           + "FROM conferences AS c WHERE c.ID = :id ORDER BY c.Date DESC")
+                                           .addParameter("id", id)
+                                           .executeAndFetch(Conference.class);
         if (Database.hasResults(results)) {
             conference = results.get(0);
         }
@@ -156,10 +156,9 @@ public class Conference {
      */
     @Override
     public String toString() {
-        return "Conference [getProgramChair()=" + getProgramChair() + ", getID()=" + getID()
-                + ", getName()=" + getName() + ", getLocation()=" + getLocation()
-                + ", getDate()=" + getDate() + ", getProgramChairID()=" + getProgramChairID()
-                + ", getAuthors()=" + getAuthors() + ", getReviewers()=" + getReviewers() + "]";
+        return "Conference [getProgramChair()=" + getProgramChair() + ", getID()=" + getID() + ", getName()=" + getName() + ", getLocation()="
+                + getLocation() + ", getDate()=" + getDate() + ", getProgramChairID()=" + getProgramChairID() + ", getAuthors()=" + getAuthors()
+                + ", getReviewers()=" + getReviewers() + "]";
     }
     
 }

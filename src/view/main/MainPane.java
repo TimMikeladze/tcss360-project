@@ -14,6 +14,7 @@ import model.conferences.ConferenceManager;
 import model.permissions.PermissionLevel;
 import model.permissions.Permissions;
 import view.util.GenericPane;
+import controller.user.LoggedUser;
 
 /**
  * Main JavaFX pane for holding the applications UI upon successful login.
@@ -24,8 +25,8 @@ import view.util.GenericPane;
 public class MainPane extends GenericPane<BorderPane> {
     
     /**
-     * Constructs a new MainPane pane that extends BorderPane and displays the
-     * main user interface that all other panes are placed upon.
+     * Constructs a new MainPane pane that extends BorderPane and displays the main user
+     * interface that all other panes are placed upon.
      */
     public MainPane() {
         super(new BorderPane());
@@ -35,8 +36,8 @@ public class MainPane extends GenericPane<BorderPane> {
     }
     
     /**
-     * Creates a pane that runs horizontal along the windows north border and
-     * displays the users name along with the logout button.
+     * Creates a pane that runs horizontal along the windows north border and displays the users
+     * name along with the logout button.
      * 
      * @return stackPane The top pane of MainPane's BorderPane.
      */
@@ -46,23 +47,29 @@ public class MainPane extends GenericPane<BorderPane> {
         
         final HBox leftBox = new HBox(10);
         leftBox.setAlignment(Pos.CENTER_LEFT);
-        Label welcomeLabel = new Label("Welcome User");
-        leftBox.getChildren().add(welcomeLabel);
+        Label welcomeLabel = new Label("Welcome " + LoggedUser.getInstance()
+                                                              .getUser()
+                                                              .getFullName());
+        leftBox.getChildren()
+               .add(welcomeLabel);
         
         final HBox rightBox = new HBox(10);
         rightBox.setAlignment(Pos.CENTER_RIGHT);
         Button logoutButton = new Button("Logout");
-        rightBox.getChildren().add(logoutButton);
+        rightBox.getChildren()
+                .add(logoutButton);
         
-        stackPane.getChildren().add(leftBox);
-        stackPane.getChildren().add(rightBox);
+        stackPane.getChildren()
+                 .add(leftBox);
+        stackPane.getChildren()
+                 .add(rightBox);
         
         return stackPane;
     }
     
     /**
-     * Creates a pane that functions as the navigation bar for the application
-     * and runs along the windows left border.
+     * Creates a pane that functions as the navigation bar for the application and runs along
+     * the windows left border.
      * 
      * @return tilePane The left pane of MainPane's BorderPane.
      */
@@ -83,15 +90,15 @@ public class MainPane extends GenericPane<BorderPane> {
         Button usersButton = new Button("Users");
         usersButton.setMaxWidth(Double.MAX_VALUE);
         
-        tilePane.getChildren().addAll(homeButton, conferencesButton, submissionsButton,
-                usersButton);
+        tilePane.getChildren()
+                .addAll(homeButton, conferencesButton, submissionsButton, usersButton);
         
         // Example of how the Permissions class works
-        if (Permissions.hasPermission(ConferenceManager.class, "getUsersInConference",
-                PermissionLevel.ADMIN)) {
+        if (Permissions.hasPermission(ConferenceManager.class, "getUsersInConference", PermissionLevel.ADMIN)) {
             Button messagesButton = new Button("Messages");
             messagesButton.setMaxWidth(Double.MAX_VALUE);
-            tilePane.getChildren().add(messagesButton);
+            tilePane.getChildren()
+                    .add(messagesButton);
         }
         
         return tilePane;
@@ -106,7 +113,8 @@ public class MainPane extends GenericPane<BorderPane> {
         final StackPane stackPane = new StackPane();
         
         // stackPane.getStylesheets().add("style.css");
-        stackPane.getChildren().add(new HomePane().getPane());
+        stackPane.getChildren()
+                 .add(new HomePane().getPane());
         
         return stackPane;
     }

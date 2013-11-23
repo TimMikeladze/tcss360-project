@@ -188,10 +188,11 @@ public class ConferenceManager {
     public static List<Conference> getConferences() {
         return Database.getInstance()
                        .createQuery(
-                               "SELECT c.ID, c.Name, c.Location, c.Date, c.ProgramChairID,"
+                               "SELECT c.ID, c.Name, c.Location, c.Date, cu.UserID AS ProgramChairID,"
                                        + "(SELECT COUNT(1) FROM conference_users AS cu WHERE cu.ConferenceID = c.ID AND cu.PermissionID = 100) AS Reviewers,"
                                        + "(SELECT COUNT(1) FROM conference_users AS cu WHERE cu.ConferenceID = c.ID AND cu.PermissionID = 200) AS Authors "
-                                       + "FROM conferences AS c ORDER BY c.Date DESC")
+                                       + "FROM conferences AS c JOIN conference_users AS cu ON c.ID = cu.ConferenceID AND cu.PermissionID = 400 "
+                                       + "ORDER BY c.Date DESC")
                        .executeAndFetch(Conference.class);
     }
     
