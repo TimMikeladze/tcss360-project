@@ -31,10 +31,16 @@ public class LoggedUser {
     private TreeSet<PermissionLevel> permissions;
     
     /**
+     * Active conference id
+     */
+    private int activeConferenceID;
+    
+    /**
      * Logs a user in and gets their permissions.
      */
     private LoggedUser() {
         permissions = new TreeSet<PermissionLevel>(new PermissionLevelComparator());
+        
     }
     
     /**
@@ -87,7 +93,7 @@ public class LoggedUser {
     }
     
     /**
-     * Removes a permission;
+     * Removes a permission;.
      * 
      * @param permission the permission
      */
@@ -95,12 +101,56 @@ public class LoggedUser {
         permissions.remove(permission);
     }
     
+    /**
+     * Gets the highest permission.
+     * 
+     * @return the highest permission
+     */
     public PermissionLevel getHighestPermission() {
         return permissions.last();
     }
     
+    /**
+     * Gets the lowest permission.
+     * 
+     * @return the lowest permission
+     */
     public PermissionLevel getLowestPermission() {
         return permissions.first();
+    }
+    
+    /**
+     * Sets the active conference id.
+     * 
+     * @param id the new active conference id
+     */
+    public void setActiveConferenceID(final int id) {
+        activeConferenceID = id;
+    }
+    
+    /**
+     * Gets the active conference id.
+     * 
+     * @return the active conference id
+     */
+    public int getActiveConferenceID() {
+        return activeConferenceID;
+    }
+    
+    /**
+     * Checks for active conference id.
+     * 
+     * @return true, if successful
+     */
+    public boolean hasActiveConferenceID() {
+        return activeConferenceID > 0;
+    }
+    
+    /**
+     * Clear active conference id.
+     */
+    public void clearActiveConferenceID() {
+        activeConferenceID = 0;
     }
     
     /**
@@ -109,5 +159,6 @@ public class LoggedUser {
     public void logout() {
         user = null;
         permissions = new TreeSet<PermissionLevel>(new PermissionLevelComparator());
+        activeConferenceID = 0;
     }
 }

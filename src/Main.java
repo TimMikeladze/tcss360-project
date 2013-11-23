@@ -43,9 +43,9 @@ public class Main extends Application implements Callbacks {
     private Stage primaryStage;
     
     /**
-     * Used primarily within the IDE to launch the JavaFX GUI. 
-     * Note: This method is not required for JavaFX applications as the 
-     * JavaFX Packager Tool embeds the JavaFX Launcher in the final JAR file.
+     * Used primarily within the IDE to launch the JavaFX GUI. Note: This method is not required
+     * for JavaFX applications as the JavaFX Packager Tool embeds the JavaFX Launcher in the
+     * final JAR file.
      * 
      * @param args Command line arguments.
      */
@@ -90,7 +90,7 @@ public class Main extends Application implements Callbacks {
      * @param heigth The height of the pane.
      */
     @Override
-    public void changeScene(final GenericPane<?> genericPane, int width, int height) {
+    public void changeScene(final GenericPane<?> genericPane, final int width, final int height) {
         genericPane.addCallbacks(this);
         scene = new Scene(genericPane.getPane(), width, height);
         

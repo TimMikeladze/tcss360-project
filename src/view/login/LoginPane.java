@@ -107,6 +107,7 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
         
         signInText = new StatusText();
         pane.add(signInText, 1, 6);
+        
     }
     
     /**
