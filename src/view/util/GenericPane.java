@@ -37,6 +37,7 @@ public abstract class GenericPane<T extends Pane> {
      */
     public void addCallbacks(final Callbacks callbacks) {
         this.callbacks = callbacks;
+        
     }
     
     /**
