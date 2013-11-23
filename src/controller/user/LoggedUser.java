@@ -1,10 +1,10 @@
 
 package controller.user;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.TreeSet;
 
 import model.permissions.PermissionLevel;
+import model.permissions.PermissionLevelComparator;
 import model.users.User;
 
 /**
@@ -26,15 +26,15 @@ public class LoggedUser {
     private User user;
     
     /**
-     * Data Structure holding the permissions of the user.
+     * Tree set used holding the permissions of the user, automatically sorts.
      */
-    private HashSet<PermissionLevel> permissions;
+    private TreeSet<PermissionLevel> permissions;
     
     /**
      * Logs a user in and gets their permissions.
      */
     private LoggedUser() {
-        permissions = new HashSet<PermissionLevel>();
+        permissions = new TreeSet<PermissionLevel>(new PermissionLevelComparator());
     }
     
     /**
@@ -73,8 +73,34 @@ public class LoggedUser {
      * 
      * @return the permission set
      */
-    public Set<PermissionLevel> getPermissions() {
+    public TreeSet<PermissionLevel> getPermissions() {
         return permissions;
+    }
+    
+    /**
+     * Adds a permission.
+     * 
+     * @param permission the permission
+     */
+    public void addPermission(final PermissionLevel permission) {
+        permissions.add(permission);
+    }
+    
+    /**
+     * Removes a permission;
+     * 
+     * @param permission the permission
+     */
+    public void removePermissions(final PermissionLevel permission) {
+        permissions.remove(permission);
+    }
+    
+    public PermissionLevel getHighestPermission() {
+        return permissions.last();
+    }
+    
+    public PermissionLevel getLowestPermission() {
+        return permissions.first();
     }
     
     /**
@@ -82,6 +108,6 @@ public class LoggedUser {
      */
     public void logout() {
         user = null;
-        permissions = new HashSet<PermissionLevel>();
+        permissions = new TreeSet<PermissionLevel>(new PermissionLevelComparator());
     }
 }

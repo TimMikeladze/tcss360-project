@@ -1,6 +1,8 @@
 
 package tests;
 
+import model.database.DatabaseException;
+
 //TODO delete class when project is finished
 
 /**
@@ -10,8 +12,6 @@ package tests;
  */
 public class Tester {
     
-    public static void main(final String[] args) {
-        
+    public static void main(final String[] args) throws DatabaseException, InterruptedException {
     }
-    
 }

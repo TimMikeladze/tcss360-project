@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeSet;
 
 import model.util.PackageReflector;
 
@@ -29,9 +30,8 @@ public class Permissions {
      * @param permission the permission required to access method
      * @return returns true if can access
      */
-    public static boolean hasPermission(final Class<?> className, final String method, final PermissionLevel permission) {
+    public static boolean hasPermission(final Class<?> className, final String method, final TreeSet<PermissionLevel> permissions) {
         boolean hasPermission = false;
-        int givenPermission = permission.getPermission();
         
         HashMap<String, PermissionMethod> methods = classMap.get(className);
         if (methods != null && methods.containsKey(method)) {
@@ -41,7 +41,9 @@ public class Permissions {
             boolean strict = methods.get(method)
                                     .getPermission()
                                     .strict();
-            if ((strict && givenPermission == methodPermission) || (!strict && givenPermission >= methodPermission)) {
+            if ((strict && permissions.contains(methodPermission))
+                    || (!permissions.isEmpty() && !strict && permissions.last()
+                                                                        .getPermission() >= methodPermission)) {
                 hasPermission = true;
             }
         }

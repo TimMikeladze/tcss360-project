@@ -11,7 +11,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import model.conferences.ConferenceManager;
-import model.permissions.PermissionLevel;
 import model.permissions.Permissions;
 import view.util.GenericPane;
 import controller.user.LoggedUser;
@@ -94,7 +93,8 @@ public class MainPane extends GenericPane<BorderPane> {
                 .addAll(homeButton, conferencesButton, submissionsButton, usersButton);
         
         // Example of how the Permissions class works
-        if (Permissions.hasPermission(ConferenceManager.class, "getUsersInConference", PermissionLevel.ADMIN)) {
+        if (Permissions.hasPermission(ConferenceManager.class, "getUsersInConference", LoggedUser.getInstance()
+                                                                                                 .getPermissions())) {
             Button messagesButton = new Button("Messages");
             messagesButton.setMaxWidth(Double.MAX_VALUE);
             tilePane.getChildren()
