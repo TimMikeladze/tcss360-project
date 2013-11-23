@@ -11,7 +11,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -22,6 +21,7 @@ import model.users.User;
 import view.main.MainPane;
 import view.util.GenericPane;
 import view.util.ProgressService;
+import view.util.StatusText;
 import view.util.Validator;
 import controller.user.LoggedUser;
 
@@ -61,10 +61,11 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
     /**
      * Text for displaying sign in errors.
      */
-    private Text signInText;
+    private StatusText signInText;
     
     /**
-     * Constructs a new LoginPane pane that extends GridPane and displays a prompt for the user to login or register.
+     * Constructs a new LoginPane pane that extends GridPane and displays a prompt for the user
+     * to login or register.
      */
     public LoginPane() {
         super(new GridPane());
@@ -98,12 +99,13 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
         
         final HBox buttonHBox = new HBox(10);
         buttonHBox.setAlignment(Pos.BOTTOM_RIGHT);
-        buttonHBox.getChildren().add(signInButton);
-        buttonHBox.getChildren().add(registerButton);
+        buttonHBox.getChildren()
+                  .add(signInButton);
+        buttonHBox.getChildren()
+                  .add(registerButton);
         pane.add(buttonHBox, 1, 4);
         
-        signInText = new Text();
-        signInText.setFill(Color.FIREBRICK);
+        signInText = new StatusText();
         pane.add(signInText, 1, 6);
     }
     
@@ -115,12 +117,13 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
     @Override
     public void handle(final Event event) {
         if (event.getSource() == signInButton) {
-            String email = emailTextField.getText().trim();
+            String email = emailTextField.getText()
+                                         .trim();
             if (email.isEmpty()) {
-                signInText.setText("Forgot to enter an email");
+                signInText.setErrorText("Forgot to enter an email");
             }
             else if (!Validator.isValidEmail(email)) {
-                signInText.setText("Not a valid email");
+                signInText.setErrorText("Not a valid email");
             }
             else {
                 new LoginService(callbacks.getPrimaryStage()).start();
@@ -128,11 +131,12 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
         }
         
         if (event.getSource() == registerButton) {
+            callbacks.changeScene(new RegisterPane());
         }
     }
     
     /**
-     * Private inner class for loggin into the application.
+     * Private inner class for login into the application.
      * 
      * @author Tim Mikeladze
      * @version 11-17-2013
@@ -161,12 +165,14 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
                 @Override
                 protected String call() {
                     try {
-                        User user = Login.loginUser(emailTextField.getText().trim());
-                        LoggedUser.getInstance().setUser(user);
+                        User user = Login.loginUser(emailTextField.getText()
+                                                                  .trim());
+                        LoggedUser.getInstance()
+                                  .setUser(user);
                         setSuccess(true);
                     }
                     catch (DatabaseException e) {
-                        signInText.setText(e.getMessage());
+                        signInText.setErrorText(e.getMessage());
                     }
                     return null;
                 }

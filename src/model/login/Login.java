@@ -23,7 +23,7 @@ public class Login {
     public static boolean isRegistered(final String email) {
         return Database.hasResults(Database.getInstance()
                                            .createQuery("SELECT 1 FROM users WHERE Email = :email")
-                                           .addParameter("email", email)
+                                           .addParameter("email", email.trim())
                                            .executeAndFetchTable());
     }
     
@@ -40,9 +40,9 @@ public class Login {
         if (!isRegistered(email)) {
             id = Database.getInstance()
                          .createQuery("INSERT INTO users (Firstname, Lastname, Email) VALUES (:firstName, :lastName, :email)")
-                         .addParameter("firstName", firstName)
-                         .addParameter("lastName", lastName)
-                         .addParameter("email", email)
+                         .addParameter("firstName", firstName.trim())
+                         .addParameter("lastName", lastName.trim())
+                         .addParameter("email", email.trim())
                          .executeUpdate()
                          .getKey(Integer.class);
         }
