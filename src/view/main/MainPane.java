@@ -14,14 +14,20 @@ import view.util.GenericPane;
  */
 public class MainPane extends GenericPane<BorderPane> {
     
+    private TopPane topPane;
+    private SidePane sidePane;
+    private HomePane homePane;
+    
     /**
      * Constructs a new MainPane pane that extends BorderPane and displays the main user
      * interface that all other panes are placed upon.
      */
     public MainPane(final Callbacks callbacks) {
         super(new BorderPane(), callbacks);
-        pane.setTop(new TopPane(callbacks).getPane());
-        pane.setLeft(new SidePane(callbacks).getPane());
+        topPane = new TopPane(callbacks);
+        pane.setTop(topPane.getPane());
+        sidePane = new SidePane(callbacks);
+        pane.setLeft(sidePane.getPane());
         pane.setCenter(centerPane());
     }
     
@@ -35,8 +41,9 @@ public class MainPane extends GenericPane<BorderPane> {
         
         // stackPane.getStylesheets().add("style.css");
         //stackPane.getChildren().add(new ConferencePane(Conference.conferenceFromID(151)).getPane());
+        
         stackPane.getChildren()
-                 .add(new HomePane().getPane());
+                 .add(new HomePane(topPane).getPane());
         
         return stackPane;
     }

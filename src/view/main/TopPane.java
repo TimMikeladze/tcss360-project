@@ -1,6 +1,7 @@
 
 package view.main;
 
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -13,6 +14,7 @@ import javafx.scene.layout.StackPane;
 import view.login.LoginPane;
 import view.util.Callbacks;
 import view.util.GenericPane;
+import view.util.ProgressSpinnerCallbacks;
 import controller.user.LoggedUser;
 
 /**
@@ -20,18 +22,23 @@ import controller.user.LoggedUser;
  * name along with the logout button.
  * 
  */
-public class TopPane extends GenericPane<StackPane> implements EventHandler<ActionEvent> {
+public class TopPane extends GenericPane<StackPane> implements EventHandler<ActionEvent>, ProgressSpinnerCallbacks {
     
     private HBox leftBox;
     private HBox rightBox;
     private Button logoutButton;
     private Label welcomeLabel;
+    private ProgressIndicator progressSpinner;
     
     public TopPane(final Callbacks callbacks) {
         super(new StackPane(), callbacks);
+        
         pane.setPadding(new Insets(5, 5, 5, 5));
         leftBox = new HBox(10);
         rightBox = new HBox(10);
+        
+        progressSpinner = new ProgressIndicator();
+        progressSpinner.setVisible(false);
         
         create();
     }
@@ -47,7 +54,7 @@ public class TopPane extends GenericPane<StackPane> implements EventHandler<Acti
         rightBox.setAlignment(Pos.CENTER_RIGHT);
         
         rightBox.getChildren()
-                .add(new ProgressIndicator());
+                .add(progressSpinner);
         
         logoutButton = new Button("Logout");
         logoutButton.setOnAction(this);
@@ -67,6 +74,23 @@ public class TopPane extends GenericPane<StackPane> implements EventHandler<Acti
                       .logout();
             callbacks.changeScene(new LoginPane());
         }
+    }
+    
+    @Override
+    public void stop() {
+        progressSpinner.setVisible(false);
+    }
+    
+    @Override
+    public void start() {
+        progressSpinner.setVisible(true);
+        System.out.println("started");
+    }
+    
+    @Override
+    public void bindTask(final Task<?> task) {
+        progressSpinner.progressProperty()
+                       .bind(task.progressProperty());
     }
     
 }

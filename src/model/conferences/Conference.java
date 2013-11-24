@@ -5,7 +5,6 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import model.database.Database;
-import model.users.User;
 
 /**
  * This class holds all the information for a conference.
@@ -43,7 +42,7 @@ public class Conference {
     /**
      * The conferences Program Chair.
      */
-    private User programChair;
+    private String programChair;
     
     /**
      * The number of authors in the conference.
@@ -65,11 +64,11 @@ public class Conference {
         Conference conference = null;
         List<Conference> results = Database.getInstance()
                                            .createQuery(
-                                                   "SELECT c.ID, c.Name, c.Location, c.Date, cu.UserID AS ProgramChairID,"
+                                                   "SELECT c.ID, c.Name, c.Location, c.Date, cu.UserID AS ProgramChairID, CONCAT(u.Firstname, ' ', u.Lastname) AS ProgramChair, "
                                                            + "(SELECT COUNT(1) FROM conference_users AS cu WHERE cu.ConferenceID = c.ID AND cu.PermissionID = 100) AS Reviewers,"
                                                            + "(SELECT COUNT(1) FROM conference_users AS cu WHERE cu.ConferenceID = c.ID AND cu.PermissionID = 200) AS Authors "
                                                            + "FROM conferences AS c JOIN conference_users AS cu ON c.ID = cu.ConferenceID AND cu.PermissionID = 400 "
-                                                           + "WHERE c.ID = :id ORDER BY c.Date DESC")
+                                                           + "JOIN users AS u ON u.ID = cu.UserID WHERE c.ID = :id ORDER BY c.Date DESC")
                                            .addParameter("id", id)
                                            .executeAndFetch(Conference.class);
         if (Database.hasResults(results)) {
@@ -79,12 +78,12 @@ public class Conference {
     }
     
     /**
-     * Get the User object for the program chair.
+     * The program chair
      * 
-     * @return the program chair's User object
+     * @return the conference's program chair
      */
-    public User getProgramChair() {
-        return programChair == null ? User.userFromID(programChairID) : programChair;
+    public String getProgramChair() {
+        return programChair;
     }
     
     /**
@@ -148,18 +147,6 @@ public class Conference {
      */
     public int getReviewers() {
         return reviewers;
-    }
-    
-    /*
-     * Gets the conferences toString.
-     * 
-     * returns All the relevant information on the conference.
-     */
-    @Override
-    public String toString() {
-        return "Conference [getProgramChair()=" + getProgramChair() + ", getID()=" + getID() + ", getName()=" + getName() + ", getLocation()="
-                + getLocation() + ", getDate()=" + getDate() + ", getProgramChairID()=" + getProgramChairID() + ", getAuthors()=" + getAuthors()
-                + ", getReviewers()=" + getReviewers() + "]";
     }
     
 }

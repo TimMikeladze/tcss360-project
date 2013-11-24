@@ -25,6 +25,7 @@ public abstract class ProgressService extends Service<String> {
     
     /**
      * Creates a new progress service.
+     * 
      * @param primaryStage
      */
     public ProgressService(final Stage primaryStage) {
@@ -60,7 +61,7 @@ public abstract class ProgressService extends Service<String> {
     }
     
     /**
-     * Creates the progres service task.
+     * Creates the progress service task.
      */
     @Override
     protected abstract Task<String> createTask();

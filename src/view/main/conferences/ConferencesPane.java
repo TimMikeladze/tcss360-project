@@ -1,3 +1,4 @@
+
 package view.main.conferences;
 
 import java.util.List;
@@ -40,8 +41,7 @@ public class ConferencesPane extends GenericPane<GridPane> {
     /**
      * Column names of conferences TableView.
      */
-    private String[] columnNames = { "Conference Name", "Program Chair", "Authors",
-            "Reviewers", "Date" };
+    private String[] columnNames = { "Conference Name", "Program Chair", "Authors", "Reviewers", "Date" };
     
     /**
      * The Database variables used to populate the conferences TableView.
@@ -59,7 +59,8 @@ public class ConferencesPane extends GenericPane<GridPane> {
     private List<Conference> conferences;
     
     /**
-     * After selecting a conference in the table this button will take you to that conferences page.
+     * After selecting a conference in the table this button will take you to that conferences
+     * page.
      */
     private Button viewConferenceButton;
     
@@ -69,8 +70,8 @@ public class ConferencesPane extends GenericPane<GridPane> {
     private Button addConferenceButton;
     
     /**
-     * Constructs a new HomePane pane that extends GridPane and displays the
-     * initial user interface the user is greeted with upon login in.
+     * Constructs a new HomePane pane that extends GridPane and displays the initial user
+     * interface the user is greeted with upon login in.
      */
     public ConferencesPane() {
         super(new GridPane());
@@ -103,8 +104,10 @@ public class ConferencesPane extends GenericPane<GridPane> {
         
         final HBox buttonHBox = new HBox(10);
         buttonHBox.setAlignment(Pos.BOTTOM_LEFT);
-        buttonHBox.getChildren().add(viewConferenceButton);
-        buttonHBox.getChildren().add(addConferenceButton);
+        buttonHBox.getChildren()
+                  .add(viewConferenceButton);
+        buttonHBox.getChildren()
+                  .add(addConferenceButton);
         pane.add(buttonHBox, 0, 2);
     }
     
@@ -118,18 +121,18 @@ public class ConferencesPane extends GenericPane<GridPane> {
             column = new TableColumn<ConferenceRow, String>(columnNames[i]);
             // column.setMinWidth(columnWidths[i]);
             column.prefWidthProperty()
-                    .bind(table.widthProperty().divide(100 / columnWidths[i]));
+                  .bind(table.widthProperty()
+                             .divide(100 / columnWidths[i]));
             
-            column.setCellValueFactory(new PropertyValueFactory<ConferenceRow, String>(
-                    variableNames[i]));
+            column.setCellValueFactory(new PropertyValueFactory<ConferenceRow, String>(variableNames[i]));
             
-            table.getColumns().add(column);
+            table.getColumns()
+                 .add(column);
         }
         
         conferences = ConferenceManager.getConferences();
         for (Conference c : conferences) {
-            data.add(new ConferenceRow(c.getName(), c.getLocation(), c.getDate(), c
-                    .getProgramChair().getFullName(), c.getAuthors(), c.getReviewers()));
+            data.add(new ConferenceRow(c.getName(), c.getLocation(), c.getDate(), c.getProgramChair(), c.getAuthors(), c.getReviewers()));
         }
         
         table.setItems(data);

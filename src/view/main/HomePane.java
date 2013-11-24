@@ -1,9 +1,11 @@
+
 package view.main;
 
 import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -18,6 +20,8 @@ import model.conferences.Conference;
 import model.conferences.ConferenceManager;
 import view.main.conferences.ConferenceRow;
 import view.util.GenericPane;
+import view.util.ProgressSpinnerCallbacks;
+import view.util.ProgressSpinnerService;
 
 /**
  * JavaFX pane responsible for displaying the users home interface.
@@ -50,13 +54,12 @@ public class HomePane extends GenericPane<GridPane> {
     /**
      * Column names of conferences TableView.
      */
-    private String[] columnNames = { "Conference Name", "Program Chair", "Authors",
-            "Reviewers", "Date" };
+    private String[] columnNames = { "Conference Name", "Program Chair", "Authors", "Reviewers", "Date" };
     
     /**
      * The Database variables used to populate the conferences TableView.
      */
-    private String[] variableNames = { "name", "programChair", "authors", "reviwers", "date" };
+    private String[] variableNames = { "name", "programChair", "authors", "reviewers", "date" };
     
     /**
      * The widths of the conferences TableView.
@@ -69,11 +72,13 @@ public class HomePane extends GenericPane<GridPane> {
     private List<Conference> conferences;
     
     /**
-     * Constructs a new HomePane pane that extends GridPane and displays the
-     * initial user interface the user is greeted with upon login in.
+     * Constructs a new HomePane pane that extends GridPane and displays the initial user
+     * interface the user is greeted with upon login in.
      */
-    public HomePane() {
+    public HomePane(final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
         super(new GridPane());
+        addProgressSpinnerCallBacks(progressSpinnerCallbacks);
+        
         myConferencesTable = new TableView<ConferenceRow>();
         data = FXCollections.observableArrayList();
         
@@ -95,7 +100,7 @@ public class HomePane extends GenericPane<GridPane> {
      * Creates the main components of the HomePane pane.
      */
     private void create() {
-        populateTable();
+        new LoadConferenceService(progressSpinnerCallbacks).start();
         
         Text myConferencesText = new Text("My Conferences");
         myConferencesText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
@@ -120,26 +125,65 @@ public class HomePane extends GenericPane<GridPane> {
      * Populates the conference table.
      */
     private void populateTable() {
-        
         TableColumn<ConferenceRow, String> column;
         for (int i = 0; i < columnNames.length; i++) {
             column = new TableColumn<ConferenceRow, String>(columnNames[i]);
             // column.setMinWidth(columnWidths[i]);
             column.prefWidthProperty()
-                    .bind(myConferencesTable.widthProperty().divide(100 / columnWidths[i]));
+                  .bind(myConferencesTable.widthProperty()
+                                          .divide(100 / columnWidths[i]));
             
-            column.setCellValueFactory(new PropertyValueFactory<ConferenceRow, String>(
-                    variableNames[i]));
+            column.setCellValueFactory(new PropertyValueFactory<ConferenceRow, String>(variableNames[i]));
             
-            myConferencesTable.getColumns().add(column);
+            myConferencesTable.getColumns()
+                              .add(column);
         }
         
-        conferences = ConferenceManager.getConferences();
         for (Conference c : conferences) {
-            data.add(new ConferenceRow(c.getName(), c.getLocation(), c.getDate(), c
-                    .getProgramChair().getFullName(), c.getAuthors(), c.getReviewers()));
+            data.add(new ConferenceRow(c.getName(), c.getLocation(), c.getDate(), c.getProgramChair(), c.getAuthors(), c.getReviewers()));
         }
         
         myConferencesTable.setItems(data);
     }
+    
+    private class LoadConferenceService extends ProgressSpinnerService {
+        
+        public LoadConferenceService(final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
+            super(progressSpinnerCallbacks);
+        }
+        
+        /**
+         * Starts a new task for logging in.
+         */
+        @Override
+        protected Task<String> createTask() {
+            return new Task<String>() {
+                
+                /**
+                 * Calls the new task.
+                 */
+                @Override
+                protected String call() {
+                    try {
+                        conferences = ConferenceManager.getConferences();
+                        setSuccess(true);
+                    }
+                    catch (Exception e) {
+                        // TODO show error
+                    }
+                    return null;
+                }
+            };
+        }
+        
+        /**
+         * Called when a login is successful to transition the GUI.
+         */
+        @Override
+        protected void succeeded() {
+            super.succeeded();
+            populateTable();
+        }
+    }
+    
 }

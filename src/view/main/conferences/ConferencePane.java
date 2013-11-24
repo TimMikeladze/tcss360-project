@@ -1,21 +1,15 @@
+
 package view.main.conferences;
 
-import java.util.List;
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import model.conferences.Conference;
-import model.conferences.ConferenceManager;
 import view.util.GenericPane;
 
 /**
@@ -65,7 +59,7 @@ public class ConferencePane extends GenericPane<GridPane> {
      * The program chair of the conference.
      */
     private final Text conferenceProgramChairText;
-        
+    
     /**
      * The number of authors in the conference.
      */
@@ -101,16 +95,17 @@ public class ConferencePane extends GenericPane<GridPane> {
     private Button viewUserButton;
     
     /**
-     * Constructs a new Conference Pane that extends GridPane and displays the
-     * information about the given conference.
+     * Constructs a new Conference Pane that extends GridPane and displays the information about
+     * the given conference.
      */
     public ConferencePane(final Conference conference) {
         super(new GridPane());
-
+        
         conferenceNameText = new Text("Conference: " + conference.getName());
         conferenceLocationText = new Text("Location: " + conference.getLocation());
-        conferenceDateText = new Text("Date: " + conference.getDate().toString());
-        conferenceProgramChairText = new Text("Program Chair: " + conference.getProgramChair().getFullName());
+        conferenceDateText = new Text("Date: " + conference.getDate()
+                                                           .toString());
+        conferenceProgramChairText = new Text("Program Chair: " + conference.getProgramChair());
         authorsText = new Text("Authors: " + Integer.toString(conference.getAuthors()));
         reviewersText = new Text("Reviewers: " + Integer.toString(conference.getReviewers()));
         
@@ -126,27 +121,24 @@ public class ConferencePane extends GenericPane<GridPane> {
      * Creates the main components of the ConferencePane pane.
      */
     private void create() {
-         pane.add(conferenceNameText, 0, 0);
-         pane.add(conferenceLocationText, 1, 0);
-         pane.add(conferenceDateText, 0, 1);
-         pane.add(conferenceProgramChairText, 1, 1);
-         pane.add(authorsText, 0, 2);
-         pane.add(reviewersText, 1, 2);
-         
+        pane.add(conferenceNameText, 0, 0);
+        pane.add(conferenceLocationText, 1, 0);
+        pane.add(conferenceDateText, 0, 1);
+        pane.add(conferenceProgramChairText, 1, 1);
+        pane.add(authorsText, 0, 2);
+        pane.add(reviewersText, 1, 2);
+        
         Text conferencePapersText = new Text("Conference Papers");
         conferencePapersText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         pane.add(conferencePapersText, 0, 3);
         conferencePapersTable = new TableView();
         pane.add(conferencePapersTable, 0, 4);
-                    
+        
         Text conferenceUsersText = new Text("Conference Users");
         conferenceUsersText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         pane.add(conferenceUsersText, 0, 5);
         conferenceUsersTable = new TableView();
         pane.add(conferenceUsersTable, 0, 6);
         
-        
-        
-
     }
 }

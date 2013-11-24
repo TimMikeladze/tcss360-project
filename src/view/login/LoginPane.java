@@ -9,6 +9,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
@@ -89,6 +91,7 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
         pane.add(emailLabel, 0, 1);
         
         emailTextField = new TextField();
+        emailTextField.setOnKeyReleased(this);
         pane.add(emailTextField, 1, 1);
         
         signInButton = new Button("Sign in");
@@ -117,22 +120,33 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
      */
     @Override
     public void handle(final Event event) {
+        if (event.getSource() == emailTextField) {
+            KeyEvent keyEvent = (KeyEvent) event;
+            if (keyEvent.getCode() == KeyCode.ENTER) {
+                login();
+            }
+        }
+        
         if (event.getSource() == signInButton) {
-            String email = emailTextField.getText()
-                                         .trim();
-            if (email.isEmpty()) {
-                signInText.setErrorText("Forgot to enter an email");
-            }
-            else if (!Validator.isValidEmail(email)) {
-                signInText.setErrorText("Not a valid email");
-            }
-            else {
-                new LoginService(callbacks.getPrimaryStage()).start();
-            }
+            login();
         }
         
         if (event.getSource() == registerButton) {
             callbacks.changeScene(new RegisterPane());
+        }
+    }
+    
+    private void login() {
+        String email = emailTextField.getText()
+                                     .trim();
+        if (email.isEmpty()) {
+            signInText.setErrorText("Forgot to enter an email");
+        }
+        else if (!Validator.isValidEmail(email)) {
+            signInText.setErrorText("Not a valid email");
+        }
+        else {
+            new LoginService(callbacks.getPrimaryStage()).start();
         }
     }
     
