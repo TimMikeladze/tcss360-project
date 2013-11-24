@@ -1,8 +1,10 @@
 
 package view.main;
 
+import model.conferences.Conference;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import view.main.conferences.ConferencePane;
 import view.util.GenericPane;
 
 /**
@@ -33,6 +35,7 @@ public class MainPane extends GenericPane<BorderPane> {
         final StackPane stackPane = new StackPane();
         
         // stackPane.getStylesheets().add("style.css");
+        //stackPane.getChildren().add(new ConferencePane(Conference.conferenceFromID(151)).getPane());
         stackPane.getChildren().add(new HomePane().getPane());
         
         return stackPane;
