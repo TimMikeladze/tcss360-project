@@ -31,6 +31,16 @@ public abstract class GenericPane<T extends Pane> {
     }
     
     /**
+     * Creates a new Generic Pane.
+     * 
+     * @param t the pane.
+     */
+    public GenericPane(final T t, final Callbacks callbacks) {
+        this.pane = t;
+        this.callbacks = callbacks;
+    }
+    
+    /**
      * Adds a callback.
      * 
      * @param callbacks the callback

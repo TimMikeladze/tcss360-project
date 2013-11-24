@@ -5,6 +5,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.TilePane;
+import view.util.Callbacks;
 import view.util.GenericPane;
 
 /**
@@ -14,8 +15,8 @@ import view.util.GenericPane;
  */
 public class SidePane extends GenericPane<TilePane> {
     
-    public SidePane() {
-        super(new TilePane());
+    public SidePane(final Callbacks callbacks) {
+        super(new TilePane(), callbacks);
         pane.setPadding(new Insets(5, 5, 5, 5));
         pane.setAlignment(Pos.TOP_LEFT);
         create();
@@ -35,7 +36,7 @@ public class SidePane extends GenericPane<TilePane> {
         usersButton.setMaxWidth(Double.MAX_VALUE);
         
         pane.getChildren()
-                .addAll(homeButton, conferencesButton, submissionsButton, usersButton);
+            .addAll(homeButton, conferencesButton, submissionsButton, usersButton);
         
     }
 }

@@ -1,10 +1,9 @@
 
 package view.main;
 
-import model.conferences.Conference;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import view.main.conferences.ConferencePane;
+import view.util.Callbacks;
 import view.util.GenericPane;
 
 /**
@@ -19,10 +18,10 @@ public class MainPane extends GenericPane<BorderPane> {
      * Constructs a new MainPane pane that extends BorderPane and displays the main user
      * interface that all other panes are placed upon.
      */
-    public MainPane() {
-        super(new BorderPane());
-        pane.setTop(new TopPane().getPane());
-        pane.setLeft(new SidePane().getPane());
+    public MainPane(final Callbacks callbacks) {
+        super(new BorderPane(), callbacks);
+        pane.setTop(new TopPane(callbacks).getPane());
+        pane.setLeft(new SidePane(callbacks).getPane());
         pane.setCenter(centerPane());
     }
     
@@ -36,7 +35,8 @@ public class MainPane extends GenericPane<BorderPane> {
         
         // stackPane.getStylesheets().add("style.css");
         //stackPane.getChildren().add(new ConferencePane(Conference.conferenceFromID(151)).getPane());
-        stackPane.getChildren().add(new HomePane().getPane());
+        stackPane.getChildren()
+                 .add(new HomePane().getPane());
         
         return stackPane;
     }
