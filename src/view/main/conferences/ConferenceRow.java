@@ -1,5 +1,5 @@
 
-package view.main;
+package view.main.conferences;
 
 import java.sql.Timestamp;
 

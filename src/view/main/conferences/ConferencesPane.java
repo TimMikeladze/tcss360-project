@@ -1,4 +1,4 @@
-package view.main;
+package view.main.conferences;
 
 import java.util.List;
 
@@ -11,36 +11,26 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import model.conferences.Conference;
 import model.conferences.ConferenceManager;
-import view.main.conferences.ConferenceRow;
 import view.util.GenericPane;
 
 /**
- * JavaFX pane responsible for displaying the users home interface.
+ * JavaFX pane responsible for displaying all conferences in the database.
  * 
  * @author Mohammad Juma
- * @version 11-11-2013
+ * @version 11-23-2013
  */
-public class HomePane extends GenericPane<GridPane> {
+public class ConferencesPane extends GenericPane<GridPane> {
     
     /**
      * The conference list TableView.
      */
-    private TableView<ConferenceRow> myConferencesTable;
-    
-    private TableView myPapersTable;
-    
-    private TableView myReviewsTable;
-    
-    private Button viewConferenceButton;
-    
-    private Button viewPaperButton;
-    
-    private Button viewReviewButton;
+    private TableView<ConferenceRow> table;
     
     /**
      * An observable list for the conferences TableView.
@@ -69,19 +59,23 @@ public class HomePane extends GenericPane<GridPane> {
     private List<Conference> conferences;
     
     /**
+     * After selecting a conference in the table this button will take you to that conferences page.
+     */
+    private Button viewConferenceButton;
+    
+    /**
+     * Allows a user to add a conference and become its program chair.
+     */
+    private Button addConferenceButton;
+    
+    /**
      * Constructs a new HomePane pane that extends GridPane and displays the
      * initial user interface the user is greeted with upon login in.
      */
-    public HomePane() {
+    public ConferencesPane() {
         super(new GridPane());
-        myConferencesTable = new TableView<ConferenceRow>();
+        table = new TableView<ConferenceRow>();
         data = FXCollections.observableArrayList();
-        
-        myPapersTable = new TableView();
-        myReviewsTable = new TableView();
-        viewConferenceButton = new Button("View Conference");
-        viewPaperButton = new Button("View Paper");
-        viewReviewButton = new Button("View Review");
         
         pane.setAlignment(Pos.TOP_LEFT);
         pane.setHgap(10);
@@ -97,23 +91,21 @@ public class HomePane extends GenericPane<GridPane> {
     private void create() {
         populateTable();
         
-        Text myConferencesText = new Text("My Conferences");
-        myConferencesText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-        pane.add(myConferencesText, 0, 0);
-        pane.add(myConferencesTable, 0, 1);
-        pane.add(viewConferenceButton, 0, 2);
+        Text titleText = new Text("Conferences");
+        titleText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         
-        Text myPapersText = new Text("My Papers");
-        myPapersText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-        pane.add(myPapersText, 0, 3);
-        pane.add(myPapersTable, 0, 4);
-        pane.add(viewPaperButton, 0, 5);
+        pane.add(titleText, 0, 0);
+        pane.add(table, 0, 1);
         
-        Text myReviewsText = new Text("My Reviews");
-        myReviewsText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-        pane.add(myReviewsText, 0, 6);
-        pane.add(myReviewsTable, 0, 7);
-        pane.add(viewReviewButton, 0, 8);
+        viewConferenceButton = new Button("View Conference");
+        
+        addConferenceButton = new Button("Add Conference");
+        
+        final HBox buttonHBox = new HBox(10);
+        buttonHBox.setAlignment(Pos.BOTTOM_LEFT);
+        buttonHBox.getChildren().add(viewConferenceButton);
+        buttonHBox.getChildren().add(addConferenceButton);
+        pane.add(buttonHBox, 0, 2);
     }
     
     /**
@@ -126,12 +118,12 @@ public class HomePane extends GenericPane<GridPane> {
             column = new TableColumn<ConferenceRow, String>(columnNames[i]);
             // column.setMinWidth(columnWidths[i]);
             column.prefWidthProperty()
-                    .bind(myConferencesTable.widthProperty().divide(100 / columnWidths[i]));
+                    .bind(table.widthProperty().divide(100 / columnWidths[i]));
             
             column.setCellValueFactory(new PropertyValueFactory<ConferenceRow, String>(
                     variableNames[i]));
             
-            myConferencesTable.getColumns().add(column);
+            table.getColumns().add(column);
         }
         
         conferences = ConferenceManager.getConferences();
@@ -140,6 +132,6 @@ public class HomePane extends GenericPane<GridPane> {
                     .getProgramChair().getFullName(), c.getAuthors(), c.getReviewers()));
         }
         
-        myConferencesTable.setItems(data);
+        table.setItems(data);
     }
 }
