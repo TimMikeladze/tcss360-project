@@ -1,6 +1,7 @@
 
 package tests;
 
+import model.conferences.Conference;
 import model.database.DatabaseException;
 
 //TODO delete class when project is finished
@@ -13,5 +14,6 @@ import model.database.DatabaseException;
 public class Tester {
     
     public static void main(final String[] args) throws DatabaseException, InterruptedException {
+        System.out.println(Conference.conferenceFromID(151));
     }
 }
