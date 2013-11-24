@@ -8,11 +8,11 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import view.login.LoginPane;
 import view.util.Callbacks;
+import view.util.CustomProgressIndicator;
 import view.util.GenericPane;
 import view.util.ProgressSpinnerCallbacks;
 import controller.user.LoggedUser;
@@ -28,16 +28,16 @@ public class TopPane extends GenericPane<StackPane> implements EventHandler<Acti
     private HBox rightBox;
     private Button logoutButton;
     private Label welcomeLabel;
-    private ProgressIndicator progressSpinner;
+    private CustomProgressIndicator progressSpinner;
     
     public TopPane(final Callbacks callbacks) {
         super(new StackPane(), callbacks);
         
-        pane.setPadding(new Insets(5, 5, 5, 5));
-        leftBox = new HBox(10);
-        rightBox = new HBox(10);
+        pane.setPadding(new Insets(15));
+        leftBox = new HBox(12);
+        rightBox = new HBox(12);
         
-        progressSpinner = new ProgressIndicator();
+        progressSpinner = new CustomProgressIndicator();
         progressSpinner.setVisible(false);
         
         create();

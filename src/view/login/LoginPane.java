@@ -1,13 +1,16 @@
 
 package view.login;
 
+import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -16,13 +19,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import model.database.DatabaseException;
 import model.login.Login;
 import model.users.User;
 import view.main.MainPane;
+import view.util.CustomProgressIndicator;
 import view.util.GenericPane;
-import view.util.ProgressService;
 import view.util.StatusText;
 import view.util.Validator;
 import controller.user.LoggedUser;
@@ -64,6 +66,11 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
      * Text for displaying sign in errors.
      */
     private StatusText signInText;
+    
+    /**
+     * Progress indicator to show during login process.
+     */
+    private CustomProgressIndicator progressIndicator;
     
     /**
      * Constructs a new LoginPane pane that extends GridPane and displays a prompt for the user
@@ -111,6 +118,25 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
         signInText = new StatusText();
         pane.add(signInText, 1, 6);
         
+        progressIndicator = new CustomProgressIndicator();
+        pane.add(progressIndicator, 1, 1);
+        
+    }
+    
+    /**
+     * Sets the progress indicator visible.
+     * 
+     * @param show the new progress indicator visible
+     */
+    private void setProgressIndicatorVisible(final boolean show) {
+        for (Node n : pane.getChildren()) {
+            if (n instanceof ProgressIndicator) {
+                n.setVisible(show);
+            }
+            else {
+                n.setVisible(!show);
+            }
+        }
     }
     
     /**
@@ -136,6 +162,9 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
         }
     }
     
+    /**
+     * Login.
+     */
     private void login() {
         String email = emailTextField.getText()
                                      .trim();
@@ -146,7 +175,7 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
             signInText.setErrorText("Not a valid email");
         }
         else {
-            new LoginService(callbacks.getPrimaryStage()).start();
+            new LoginService().start();
         }
     }
     
@@ -156,19 +185,14 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
      * @author Tim Mikeladze
      * @version 11-17-2013
      */
-    private class LoginService extends ProgressService {
+    private class LoginService extends Service<String> {
         
-        /**
-         * Sets the stage for the login service.
-         * 
-         * @param primaryStage
-         */
-        public LoginService(final Stage primaryStage) {
-            super(primaryStage);
-        }
+        private boolean success;
         
         /**
          * Starts a new task for logging in.
+         * 
+         * @return the task
          */
         @Override
         protected Task<String> createTask() {
@@ -184,7 +208,7 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
                                                                   .trim());
                         LoggedUser.getInstance()
                                   .setUser(user);
-                        setSuccess(true);
+                        success = true;
                     }
                     catch (DatabaseException e) {
                         signInText.setErrorText(e.getMessage());
@@ -194,15 +218,35 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
             };
         }
         
-        /**
-         * Called when a login is successful to transition the GUI.
-         */
+        @Override
+        protected void cancelled() {
+            setProgressIndicatorVisible(false);
+            super.cancelled();
+        }
+        
+        @Override
+        protected void executeTask(final Task<String> task) {
+            progressIndicator.progressProperty()
+                             .bind(task.progressProperty());
+            setProgressIndicatorVisible(true);
+            super.executeTask(task);
+        }
+        
+        @Override
+        protected void failed() {
+            setProgressIndicatorVisible(false);
+            super.failed();
+        }
+        
         @Override
         protected void succeeded() {
             super.succeeded();
-            if (getSuccess()) {
+            setProgressIndicatorVisible(false);
+            if (success) {
                 callbacks.changeScene(new MainPane(callbacks));
             }
+            
         }
+        
     }
 }

@@ -9,7 +9,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -45,7 +44,7 @@ public class ProgressDialog extends Stage {
     /**
      * The progress indicator.
      */
-    private ProgressIndicator indicator;
+    private CustomProgressIndicator indicator;
     
     /**
      * The status of the progress dialog.
@@ -69,7 +68,7 @@ public class ProgressDialog extends Stage {
         this.service = service;
         
         root = new BorderPane();
-        indicator = new ProgressIndicator();
+        indicator = new CustomProgressIndicator();
         scene = new Scene(root, width, height);
         
         initModality(Modality.WINDOW_MODAL);
@@ -100,25 +99,25 @@ public class ProgressDialog extends Stage {
      * Creates and shows the dialog
      */
     public void showDialog() {
-        indicator.progressProperty().bind(service.progressProperty());
-        service.stateProperty().addListener(new ChangeListener<State>() {
-            
-            @Override
-            public void changed(ObservableValue<? extends State> observable, State oldValue,
-                    State newValue) {
-                if (newValue == State.CANCELLED || newValue == State.FAILED
-                        || newValue == State.SUCCEEDED) {
-                    ProgressDialog.this.hide();
-                }
-            }
-        });
+        indicator.progressProperty()
+                 .bind(service.progressProperty());
+        service.stateProperty()
+               .addListener(new ChangeListener<State>() {
+                   
+                   @Override
+                   public void changed(final ObservableValue<? extends State> observable, final State oldValue, final State newValue) {
+                       if (newValue == State.CANCELLED || newValue == State.FAILED || newValue == State.SUCCEEDED) {
+                           ProgressDialog.this.hide();
+                       }
+                   }
+               });
         
         if (cancellable) {
             Button button = new Button("Cancel");
             button.setOnAction(new EventHandler<ActionEvent>() {
                 
                 @Override
-                public void handle(ActionEvent event) {
+                public void handle(final ActionEvent event) {
                     service.cancel();
                 }
             });
