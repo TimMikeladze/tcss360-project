@@ -3,20 +3,34 @@ package view.util;
 
 import javafx.scene.control.ProgressIndicator;
 
+/**
+ * A custom progress indicator used throughout the program.
+ */
 public class CustomProgressIndicator extends ProgressIndicator {
     
     private static final double SCALE = 1.25;
     
+    /**
+     * Instantiates a new custom progress indicator.
+     */
     public CustomProgressIndicator() {
         super();
         create();
     }
     
+    /**
+     * Instantiates a new custom progress indicator.
+     * 
+     * @param progress the progress
+     */
     public CustomProgressIndicator(final double progress) {
         super(progress);
         create();
     }
     
+    /**
+     * Sets the properties of the progress indicator
+     */
     private void create() {
         setVisible(false);
         setScaleX(getScaleX() * SCALE);

@@ -68,6 +68,9 @@ public class StatusText extends Text {
         setText(text);
     }
     
+    /**
+     * Clear the status text.
+     */
     public void clear() {
         setText("", true);
     }

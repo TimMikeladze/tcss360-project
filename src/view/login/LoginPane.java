@@ -165,7 +165,7 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
     }
     
     /**
-     * Login.
+     * Validates fields and logs in.
      */
     private void login() {
         String email = emailTextField.getText()

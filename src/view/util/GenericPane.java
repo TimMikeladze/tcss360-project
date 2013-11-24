@@ -16,6 +16,9 @@ public abstract class GenericPane<T extends Pane> {
      */
     protected Callbacks callbacks;
     
+    /**
+     * Progress spinner callbacks.
+     */
     protected ProgressSpinnerCallbacks progressSpinnerCallbacks;
     
     /**
@@ -51,6 +54,11 @@ public abstract class GenericPane<T extends Pane> {
         this.callbacks = callbacks;
     }
     
+    /**
+     * Add progress spinner callback.
+     * 
+     * @param progressSpinnerCallbacks
+     */
     public void addProgressSpinnerCallBacks(final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
         this.progressSpinnerCallbacks = progressSpinnerCallbacks;
     }

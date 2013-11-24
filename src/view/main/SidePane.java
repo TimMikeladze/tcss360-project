@@ -15,6 +15,11 @@ import view.util.GenericPane;
  */
 public class SidePane extends GenericPane<TilePane> {
     
+    /**
+     * Instantiates a new side pane.
+     * 
+     * @param callbacks the callbacks
+     */
     public SidePane(final Callbacks callbacks) {
         super(new TilePane(), callbacks);
         pane.setPadding(new Insets(5, 5, 5, 5));
@@ -22,6 +27,9 @@ public class SidePane extends GenericPane<TilePane> {
         create();
     }
     
+    /**
+     * Creates the side pane.
+     */
     private void create() {
         Button homeButton = new Button("Home");
         homeButton.setMaxWidth(Double.MAX_VALUE);

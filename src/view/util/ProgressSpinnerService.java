@@ -4,11 +4,19 @@ package view.util;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 
+/**
+ * The ProgressSpinnerService class, manages a service and a progress spinner.
+ */
 public abstract class ProgressSpinnerService extends Service<String> {
     
     protected ProgressSpinnerCallbacks progressSpinnerCallbacks;
     private boolean success;
     
+    /**
+     * Instantiates a new progress spinner service.
+     * 
+     * @param progressSpinnerCallbacks the progress spinner callbacks
+     */
     public ProgressSpinnerService(final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
         this.progressSpinnerCallbacks = progressSpinnerCallbacks;
     }
@@ -25,7 +33,9 @@ public abstract class ProgressSpinnerService extends Service<String> {
     }
     
     /**
-     * Creates the progres service task.
+     * Creates the progress service task.
+     * 
+     * @return the task
      */
     @Override
     protected abstract Task<String> createTask();

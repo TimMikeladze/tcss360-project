@@ -163,6 +163,11 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
         }
     }
     
+    /**
+     * Loads conferences
+     * 
+     * 
+     */
     private class LoadConferenceService extends ProgressSpinnerService {
         
         public LoadConferenceService(final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
@@ -170,7 +175,7 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
         }
         
         /**
-         * Starts a new task for logging in.
+         * Creates a new task for loading conferences
          */
         @Override
         protected Task<String> createTask() {
@@ -194,11 +199,13 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
         }
         
         /**
-         * Called when a login is successful to transition the GUI.
+         * Called when a conference loading is done to populate table
          */
         @Override
         protected void succeeded() {
-            populateTable();
+            if (getSuccess()) {
+                populateTable();
+            }
             super.succeeded();
         }
     }

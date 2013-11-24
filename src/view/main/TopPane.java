@@ -30,6 +30,11 @@ public class TopPane extends GenericPane<StackPane> implements EventHandler<Acti
     private Label welcomeLabel;
     private CustomProgressIndicator progressSpinner;
     
+    /**
+     * Instantiates a new top pane.
+     * 
+     * @param callbacks the callbacks
+     */
     public TopPane(final Callbacks callbacks) {
         super(new StackPane(), callbacks);
         
@@ -43,6 +48,9 @@ public class TopPane extends GenericPane<StackPane> implements EventHandler<Acti
         create();
     }
     
+    /**
+     * Creates the top pane.
+     */
     private void create() {
         leftBox.setAlignment(Pos.CENTER_LEFT);
         welcomeLabel = new Label("Welcome " + LoggedUser.getInstance()
