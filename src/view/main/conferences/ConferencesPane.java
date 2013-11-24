@@ -132,7 +132,7 @@ public class ConferencesPane extends GenericPane<GridPane> {
         
         conferences = ConferenceManager.getConferences();
         for (Conference c : conferences) {
-            data.add(new ConferenceRow(c.getName(), c.getLocation(), c.getDate(), c.getProgramChair(), c.getAuthors(), c.getReviewers()));
+            data.add(new ConferenceRow(c.getID(), c.getName(), c.getLocation(), c.getDate(), c.getProgramChair(), c.getAuthors(), c.getReviewers()));
         }
         
         table.setItems(data);

@@ -11,6 +11,7 @@ import java.sql.Timestamp;
  */
 public class ConferenceRow {
     
+    private int id;
     private String name;
     private String location;
     private Timestamp date;
@@ -18,15 +19,24 @@ public class ConferenceRow {
     private int authors = 0;
     private int reviewers = 0;
     
-    public ConferenceRow(String name, String location, Timestamp date, String programChair,
-            int authors, int reviewers) {
+    public ConferenceRow(final int id, final String name, final String location, final Timestamp date, final String programChair, final int authors,
+            final int reviewers) {
         super();
+        this.id = id;
         this.name = name;
         this.location = location;
         this.date = date;
         this.programChair = programChair;
         this.authors = authors;
         this.reviewers = reviewers;
+    }
+    
+    /**
+     * 
+     * @return the id
+     */
+    public int getID() {
+        return id;
     }
     
     /**

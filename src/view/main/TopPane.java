@@ -84,7 +84,6 @@ public class TopPane extends GenericPane<StackPane> implements EventHandler<Acti
     @Override
     public void start() {
         progressSpinner.setVisible(true);
-        System.out.println("started");
     }
     
     @Override

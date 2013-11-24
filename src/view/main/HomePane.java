@@ -6,12 +6,15 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -29,18 +32,18 @@ import view.util.ProgressSpinnerService;
  * @author Mohammad Juma
  * @version 11-11-2013
  */
-public class HomePane extends GenericPane<GridPane> {
+public class HomePane extends GenericPane<GridPane> implements EventHandler {
+    
+    private static final int DOUBLE_CLICK = 2;
     
     /**
      * The conference list TableView.
      */
     private TableView<ConferenceRow> myConferencesTable;
     
-    private TableView myPapersTable;
+    private TableView<?> myPapersTable;
     
-    private TableView myReviewsTable;
-    
-    private Button viewConferenceButton;
+    private TableView<?> myReviewsTable;
     
     private Button viewPaperButton;
     
@@ -80,11 +83,12 @@ public class HomePane extends GenericPane<GridPane> {
         addProgressSpinnerCallBacks(progressSpinnerCallbacks);
         
         myConferencesTable = new TableView<ConferenceRow>();
+        myConferencesTable.setOnMouseClicked(this);
+        
         data = FXCollections.observableArrayList();
         
         myPapersTable = new TableView();
         myReviewsTable = new TableView();
-        viewConferenceButton = new Button("View Conference");
         viewPaperButton = new Button("View Paper");
         viewReviewButton = new Button("View Review");
         
@@ -106,7 +110,6 @@ public class HomePane extends GenericPane<GridPane> {
         myConferencesText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         pane.add(myConferencesText, 0, 0);
         pane.add(myConferencesTable, 0, 1);
-        pane.add(viewConferenceButton, 0, 2);
         
         Text myPapersText = new Text("My Papers");
         myPapersText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
@@ -140,10 +143,24 @@ public class HomePane extends GenericPane<GridPane> {
         }
         
         for (Conference c : conferences) {
-            data.add(new ConferenceRow(c.getName(), c.getLocation(), c.getDate(), c.getProgramChair(), c.getAuthors(), c.getReviewers()));
+            data.add(new ConferenceRow(c.getID(), c.getName(), c.getLocation(), c.getDate(), c.getProgramChair(), c.getAuthors(), c.getReviewers()));
         }
         
         myConferencesTable.setItems(data);
+    }
+    
+    @Override
+    public void handle(final Event event) {
+        if (event.getSource() == myConferencesTable) {
+            MouseEvent mouseEvent = (MouseEvent) event;
+            if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
+                //TODO replace with entering conference
+                System.out.println(myConferencesTable.getSelectionModel()
+                                                     .getSelectedItem()
+                                                     .getID());
+            }
+            
+        }
     }
     
     private class LoadConferenceService extends ProgressSpinnerService {
@@ -181,8 +198,8 @@ public class HomePane extends GenericPane<GridPane> {
          */
         @Override
         protected void succeeded() {
-            super.succeeded();
             populateTable();
+            super.succeeded();
         }
     }
     
