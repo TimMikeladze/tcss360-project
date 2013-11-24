@@ -67,4 +67,8 @@ public class StatusText extends Text {
         }
         setText(text);
     }
+    
+    public void clear() {
+        setText("", true);
+    }
 }

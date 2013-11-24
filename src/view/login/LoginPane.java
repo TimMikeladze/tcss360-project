@@ -146,6 +146,8 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
      */
     @Override
     public void handle(final Event event) {
+        signInText.clear();
+        
         if (event.getSource() == emailTextField) {
             KeyEvent keyEvent = (KeyEvent) event;
             if (keyEvent.getCode() == KeyCode.ENTER) {
