@@ -1,7 +1,9 @@
 
 package tests;
 
-import model.conferences.Conference;
+import java.sql.Timestamp;
+
+import model.conferences.ConferenceManager;
 import model.database.DatabaseException;
 
 //TODO delete class when project is finished
@@ -14,6 +16,6 @@ import model.database.DatabaseException;
 public class Tester {
     
     public static void main(final String[] args) throws DatabaseException, InterruptedException {
-        System.out.println(Conference.conferenceFromID(151));
+        System.out.println(ConferenceManager.createConference("Another test", "Somewhere", new Timestamp(1231231), 125));
     }
 }

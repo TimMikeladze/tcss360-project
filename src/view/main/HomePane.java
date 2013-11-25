@@ -25,6 +25,7 @@ import view.main.conferences.ConferenceRow;
 import view.util.GenericPane;
 import view.util.ProgressSpinnerCallbacks;
 import view.util.ProgressSpinnerService;
+import controller.user.LoggedUser;
 
 /**
  * JavaFX pane responsible for displaying the users home interface.
@@ -187,7 +188,9 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
                 @Override
                 protected String call() {
                     try {
-                        conferences = ConferenceManager.getConferences();
+                        conferences = ConferenceManager.getConferencesForUser(LoggedUser.getInstance()
+                                                                                        .getUser()
+                                                                                        .getID());
                         setSuccess(true);
                     }
                     catch (Exception e) {

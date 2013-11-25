@@ -192,8 +192,25 @@ public class ConferenceManager {
                                        + "(SELECT COUNT(1) FROM conference_users AS cu WHERE cu.ConferenceID = c.ID AND cu.PermissionID = 100) AS Reviewers,"
                                        + "(SELECT COUNT(1) FROM conference_users AS cu WHERE cu.ConferenceID = c.ID AND cu.PermissionID = 200) AS Authors "
                                        + "FROM conferences AS c JOIN conference_users AS cu ON c.ID = cu.ConferenceID AND cu.PermissionID = 400 "
-                                       + "JOIN users AS u ON u.ID = cu.UserID " + "ORDER BY c.Date DESC")
+                                       + "JOIN users AS u ON u.ID = cu.UserID ORDER BY c.Date DESC")
                        .executeAndFetch(Conference.class);
     }
     
+    /**
+     * Get conferences in which a user is in.
+     * 
+     * @param userID the user id
+     * @return list of conferences
+     */
+    public static List<Conference> getConferencesForUser(final int userID) {
+        return Database.getInstance()
+                       .createQuery(
+                               "SELECT c.ID, c.Name, c.Location, c.Date, cu.UserID AS ProgramChairID, CONCAT(u.Firstname, ' ', u.Lastname) AS ProgramChair, "
+                                       + "(SELECT COUNT(1) FROM conference_users AS cu WHERE cu.ConferenceID = c.ID AND cu.PermissionID = 100) AS Reviewers,"
+                                       + "(SELECT COUNT(1) FROM conference_users AS cu WHERE cu.ConferenceID = c.ID AND cu.PermissionID = 200) AS Authors "
+                                       + "FROM conferences AS c JOIN conference_users AS cu ON c.ID = cu.ConferenceID AND cu.PermissionID = 400 "
+                                       + "JOIN users AS u ON u.ID = cu.UserID WHERE u.ID = :userID ORDER BY c.Date DESC")
+                       .addParameter("userID", userID)
+                       .executeAndFetch(Conference.class);
+    }
 }
