@@ -25,6 +25,11 @@ public abstract class GenericPane<T extends Pane> {
      * The pane.
      */
     protected T pane;
+
+    /**
+     * Main Pane callbacks.
+     */
+    protected MainPaneCallbacks mainPaneCallbacks;
     
     /**
      * Creates a new Generic Pane.
@@ -61,6 +66,15 @@ public abstract class GenericPane<T extends Pane> {
      */
     public void addProgressSpinnerCallBacks(final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
         this.progressSpinnerCallbacks = progressSpinnerCallbacks;
+    }
+    
+    /**
+     * Adds Main Pane callback.
+     * 
+     * @param progressSpinnerCallbacks
+     */
+    public void addMainPaneCallBacks(final MainPaneCallbacks mainPaneCallbacks) {
+        this.mainPaneCallbacks = mainPaneCallbacks;
     }
     
     /**

@@ -45,4 +45,15 @@ public enum PaperStatus {
     public int getStatus() {
         return paperStatus;
     }
+    
+    public String getStringValue() {
+        String value = "";
+        if (paperStatus == 2) {
+            value = "Accepted";
+        }
+        else if (paperStatus == 1) {
+            value = "Rejected";
+        }
+        return value;
+    }
 }

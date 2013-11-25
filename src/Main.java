@@ -6,9 +6,6 @@
  * November 11, 2013
  */
 
-import java.sql.Timestamp;
-
-import model.conferences.ConferenceManager;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
