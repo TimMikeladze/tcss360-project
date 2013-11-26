@@ -211,6 +211,16 @@ public class PaperManager {
                        .executeAndFetch(Paper.class);
     }
     
+    @Permission(level = 100)
+    public static List<Paper> getAuthorsSubmittedPapers(final int authorID) {
+        return Database.getInstance()
+                       .createQuery(
+                               "SELECT p.ConferenceID, p.ID AS PaperID, c.Name AS ConferenceName, p.Title, p.Description, p.AuthorID, p.SubmissionDate, p.Status, p.Revised, p.FileExtension, p.File, p.RevisionDate FROM papers AS p JOIN conferences AS c ON c.ID = p.ConferenceID WHERE p.AuthorID = :authorID")
+                       .addParameter("authorID", authorID)
+                       .executeAndFetch(Paper.class);
+        
+    }
+    
     /**
      * Gets the number of papers an author has submitted to a conference.
      * 

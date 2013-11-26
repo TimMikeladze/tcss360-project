@@ -1,5 +1,5 @@
 
-package view.main.conferences;
+package view.conferences;
 
 import java.util.List;
 

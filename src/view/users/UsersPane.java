@@ -1,4 +1,4 @@
-package view.main.users;
+package view.users;
 
 /**
  * JavaFX pane responsible for displaying the users registered in the database.

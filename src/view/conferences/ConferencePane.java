@@ -1,5 +1,5 @@
 
-package view.main.conferences;
+package view.conferences;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

@@ -1,4 +1,4 @@
-package view.main;
+package view.papers;
 
 /**
  * JavaFX pane responsible for displaying information about a selected paper.

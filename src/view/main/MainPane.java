@@ -2,7 +2,7 @@
 package view.main;
 
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
+import view.home.HomePane;
 import view.util.Callbacks;
 import view.util.GenericPane;
 import view.util.MainPaneCallbacks;
@@ -32,26 +32,26 @@ public class MainPane extends GenericPane<BorderPane> implements MainPaneCallbac
         homePane = new HomePane(this, topPane);
         pane.setCenter(homePane.getPane());
     }
-
+    
     @Override
-    public void changeCenterPane(GenericPane<?> pane) {
-        this.pane.setCenter(pane.getPane());        
+    public void changeCenterPane(final GenericPane<?> pane) {
+        this.pane.setCenter(pane.getPane());
     }
     
-//    /**
-//     * Creates a pane for displaying the main interface of the program.
-//     * 
-//     * @return stackPane The center pane of MainPane's BorderPane.
-//     */
-//    private StackPane centerPane() {
-//        final StackPane stackPane = new StackPane();
-//        
-//        // stackPane.getStylesheets().add("style.css");
-//        //stackPane.getChildren().add(new ConferencePane(Conference.conferenceFromID(151)).getPane());
-//        
-//        stackPane.getChildren()
-//                 .add(new HomePane(topPane).getPane());
-//        
-//        return stackPane;
-//    }
+    //    /**
+    //     * Creates a pane for displaying the main interface of the program.
+    //     * 
+    //     * @return stackPane The center pane of MainPane's BorderPane.
+    //     */
+    //    private StackPane centerPane() {
+    //        final StackPane stackPane = new StackPane();
+    //        
+    //        // stackPane.getStylesheets().add("style.css");
+    //        //stackPane.getChildren().add(new ConferencePane(Conference.conferenceFromID(151)).getPane());
+    //        
+    //        stackPane.getChildren()
+    //                 .add(new HomePane(topPane).getPane());
+    //        
+    //        return stackPane;
+    //    }
 }

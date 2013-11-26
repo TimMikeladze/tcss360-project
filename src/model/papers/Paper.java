@@ -71,7 +71,15 @@ public class Paper {
      */
     private Timestamp revisionDate;
     
+    /**
+     * The paper file
+     */
     private File paper;
+    
+    /**
+     * The conference name;
+     */
+    private String conferenceName;
     
     /**
      * Returns the papers id.
@@ -188,6 +196,15 @@ public class Paper {
     public File getPaper() throws IOException {
         return paper == null ? (paper = FileHandler.convertBytesToFile(file, fileExtension)) : paper;
         
+    }
+    
+    /**
+     * Gets the conference name
+     * 
+     * @return the conference name
+     */
+    public String getConferenceName() {
+        return conferenceName;
     }
     
 }

@@ -1,10 +1,11 @@
 
 package tests;
 
-import java.sql.Timestamp;
+import java.io.File;
+import java.io.IOException;
 
-import model.conferences.ConferenceManager;
 import model.database.DatabaseException;
+import model.papers.PaperManager;
 
 //TODO delete class when project is finished
 
@@ -15,7 +16,7 @@ import model.database.DatabaseException;
  */
 public class Tester {
     
-    public static void main(final String[] args) throws DatabaseException, InterruptedException {
-        System.out.println(ConferenceManager.createConference("Another test", "Somewhere", new Timestamp(1231231), 125));
+    public static void main(final String[] args) throws DatabaseException, InterruptedException, IOException {
+        PaperManager.submitPaper(153, 125, "Royal Findings", "A study into the Queen's jewels", new File("tests/paper.txt"));
     }
 }

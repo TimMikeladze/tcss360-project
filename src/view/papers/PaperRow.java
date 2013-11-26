@@ -11,15 +11,17 @@ import java.sql.Timestamp;
  */
 public class PaperRow {
     
-    private final int id;
+    private int id;
     
-    private final String paperName;
+    private String paperName;
     
-    private final String conferenceName;
+    private String conferenceName;
     
-    private final String reviewed;
+    private String reviewed;
     
-    private final Timestamp date;
+    private Timestamp date;
+    
+    private String revised;
     
     /**
      * @param id
@@ -29,12 +31,17 @@ public class PaperRow {
      * @param revised
      * @param date
      */
-    public PaperRow(final int id, final String paperName, final String conferenceName,
-            final String reviewed, final Timestamp date) {
+    public PaperRow(final int id, final String paperName, final String conferenceName, final String reviewed, final int revised, final Timestamp date) {
         this.id = id;
         this.paperName = paperName;
         this.conferenceName = conferenceName;
         this.reviewed = reviewed;
+        if (revised > 0) {
+            this.revised = "Yes";
+        }
+        else {
+            this.revised = "No";
+        }
         this.date = date;
     }
     
@@ -71,6 +78,10 @@ public class PaperRow {
      */
     public Timestamp getDate() {
         return date;
+    }
+    
+    public String getRevised() {
+        return revised;
     }
     
 }

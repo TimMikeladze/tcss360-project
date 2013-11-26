@@ -31,6 +31,7 @@ public enum PaperStatus {
     
     /**
      * Sets the papers status.
+     * 
      * @param paperStatus the papers status
      */
     private PaperStatus(final int paperStatus) {
@@ -47,7 +48,7 @@ public enum PaperStatus {
     }
     
     public String getStringValue() {
-        String value = "";
+        String value = "Pending";
         if (paperStatus == 2) {
             value = "Accepted";
         }
