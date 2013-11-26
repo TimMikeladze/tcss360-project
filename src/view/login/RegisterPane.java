@@ -39,6 +39,7 @@ public class RegisterPane extends GenericPane<GridPane> implements EventHandler<
     private Button registerButton;
     private Button returnButton;
     private StatusText registrationText;
+    private Label email;
     
     /**
      * Constructs a new RegisterPane pane that extends GridPane and allows a new user to
@@ -74,7 +75,7 @@ public class RegisterPane extends GenericPane<GridPane> implements EventHandler<
         lastNameTextField = new TextField();
         pane.add(lastNameTextField, 1, 2);
         
-        Label email = new Label("Email:");
+        email = new Label("Email:");
         pane.add(email, 0, 3);
         
         emailTextField = new TextField();
