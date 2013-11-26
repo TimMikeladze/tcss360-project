@@ -14,10 +14,10 @@ import view.util.MainPaneCallbacks;
  * @version 11-11-2013
  */
 public class MainPane extends GenericPane<BorderPane> implements MainPaneCallbacks {
-
+    
     private TopPane topPane;
     private HomePane homePane;
-
+    
     /**
      * Constructs a new MainPane pane that extends BorderPane and displays the main user
      * interface that all other panes are placed upon.
@@ -29,19 +29,22 @@ public class MainPane extends GenericPane<BorderPane> implements MainPaneCallbac
         homePane = new HomePane(this, topPane);
         pane.setCenter(homePane.getPane());
     }
-
+    
     @Override
     public void changeCenterPane(final GenericPane<?> pane) {
         this.pane.setCenter(pane.getPane());
     }
-
+    
     @Override
     public void setCreateConferenceButtonVisible(final boolean visible) {
         topPane.setCreateConferenceButtonVisible(visible);
     }
-
+    
+    /**
+     * TODO COMMENT THIS SHIT!
+     */
     @Override
     public void update() {
-        topPane.update();
+        //topPane.update();
     }
 }

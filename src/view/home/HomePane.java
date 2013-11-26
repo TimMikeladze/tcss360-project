@@ -36,159 +36,211 @@ import controller.user.LoggedUser;
  * @version 11-11-2013
  */
 public class HomePane extends GenericPane<GridPane> implements EventHandler {
-
+    
+    /**
+     * TODO COMMENT THIS
+     */
     private static final int DOUBLE_CLICK = 2;
-
+    
+    /**
+     * TODO COMMENT THIS
+     */
     private CustomTable<ConferenceRow> conferencesTable;
-
+    
+    /**
+     * TODO COMMENT THIS
+     */
     private CustomTable<PaperRow> papersTable;
-
+    
+    /**
+     * TODO COMMENT THIS
+     */
     private CustomTable<ReviewRow> reviewsTable;
-
+    
     /**
-     * Column names of conferences TableView.
+     * Column names of conferences in TableView.
      */
-    private String[] conferencesColumnNames = { "Conference Name", "Program Chair", "Authors", "Reviewers", "Date" };
-
+    private String[] conferencesColumnNames = { "Conference Name", "Program Chair", "Authors",
+            "Reviewers", "Date" };
+    
     /**
-     * The variable names used by Java FX's table classes
+     * The variable names for the conferences table used by Java FX's table classes
      */
-    private String[] conferencesVariableNames = { "name", "programChair", "authors", "reviewers", "date" };
-
-    private String[] papersColumnNames = { "Paper Name", "Conference Name", "Reviewed", "Revised", "Submission Date" };
-
-    private String[] papersVariableNames = { "paperName", "conferenceName", "reviewed", "revised", "date" };
-
-    private String[] reviewsColumnsNames = { "Paper Name", "Author", "Conference Name", "Reviewed", "Submission Date" };
-
-    private String[] reviewsVariableNames = { "paperName", "author", "conferenceName", "reviewed", "date" };
-
+    private String[] conferencesVariableNames = { "name", "programChair", "authors",
+            "reviewers", "date" };
+    
     /**
-     * The list of conferences.
+     * Column names of papers in TableView.
      */
-    private List<Conference> conferences;
-
+    private String[] papersColumnNames = { "Paper Name", "Conference Name", "Reviewed",
+            "Revised", "Submission Date" };
+    
     /**
-     * The list of papers.
+     * The variable names for the papers table used by Java FX's table classes
      */
-    private List<Paper> papers;
-
+    private String[] papersVariableNames = { "paperName", "conferenceName", "reviewed",
+            "revised", "date" };
+    
     /**
-     * The list of reviews.
+     * Column names of reviews in TableView.
      */
-    private List<Review> reviews;
-
+    private String[] reviewsColumnsNames = { "Paper Name", "Author", "Conference Name",
+            "Reviewed", "Submission Date" };
+    
+    /**
+     * The variable names for the reviews table used by Java FX's table classes
+     */
+    private String[] reviewsVariableNames = { "paperName", "author", "conferenceName",
+            "reviewed", "date" };
+    
+    /**
+     * The list of conferences for the table.
+     */
+    private List<Conference> listOfConferences;
+    
+    /**
+     * The list of papers for the table.
+     */
+    private List<Paper> listOfPapers;
+    
+    /**
+     * The list of reviews for the table.
+     */
+    private List<Review> listOfReviews;
+    
     /**
      * Constructs a new HomePane pane that extends GridPane and displays the initial user
      * interface the user is greeted with upon login in.
      */
-    public HomePane(final MainPaneCallbacks mainPaneCallbacks, final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
+    public HomePane(final MainPaneCallbacks mainPaneCallbacks,
+            final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
         super(new GridPane());
-        addMainPaneCallBacks(mainPaneCallbacks);
-        addProgressSpinnerCallBacks(progressSpinnerCallbacks);
-
-        mainPaneCallbacks.setCreateConferenceButtonVisible(true);
-
-        conferencesTable = new CustomTable<ConferenceRow>(conferencesColumnNames, conferencesVariableNames);
-        conferencesTable.setOnMouseClicked(this);
-
+        addMainPaneCallBacks(mainPaneCallbacks); // TODO HOW DOES THIS WORK?
+        addProgressSpinnerCallBacks(progressSpinnerCallbacks); // TODO THIS TOO!
+        
+        mainPaneCallbacks.setCreateConferenceButtonVisible(true); // TODO DONT NEED THIS
+        
+        conferencesTable = new CustomTable<ConferenceRow>(conferencesColumnNames,
+                conferencesVariableNames);
         papersTable = new CustomTable<PaperRow>(papersColumnNames, papersVariableNames);
         reviewsTable = new CustomTable<ReviewRow>(reviewsColumnsNames, reviewsVariableNames);
-
+        
         pane.setAlignment(Pos.TOP_LEFT);
         pane.setHgap(10);
         pane.setVgap(10);
         pane.setPadding(new Insets(0, 5, 5, 5));
-
+        
         create();
     }
-
+    
     /**
      * Creates the main components of the HomePane pane.
      */
     private void create() {
         new LoadDataService(progressSpinnerCallbacks).start();
-
+        
         Text myConferencesText = new Text("My Conferences");
         myConferencesText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+        conferencesTable.setOnMouseClicked(this);
         pane.add(myConferencesText, 0, 0);
         pane.add(conferencesTable, 0, 1);
-
+        
         Text myPapersText = new Text("My Papers");
         myPapersText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+        papersTable.setOnMouseClicked(this);
         pane.add(myPapersText, 0, 3);
         pane.add(papersTable, 0, 4);
-
+        
         Text myReviewsText = new Text("My Reviews");
         myReviewsText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+        papersTable.setOnMouseClicked(this);
         pane.add(myReviewsText, 0, 6);
         pane.add(reviewsTable, 0, 7);
     }
-
+    
     /**
-     * Populates the tables.
+     * Populates the tables from the database.
      */
-    private void populate() {
-        if (conferences != null) {
-            for (Conference c : conferences) {
-                conferencesTable.add(new ConferenceRow(c.getID(), c.getName(), c.getLocation(), c.getDate(), c.getProgramChair(), c.getAuthors(),
-                        c.getReviewers()));
+    private void populate() { // TODO WHY NULL?
+        if (listOfConferences != null) {
+            for (Conference c : listOfConferences) {
+                conferencesTable.add(new ConferenceRow(c.getID(), c.getName(), c.getLocation(),
+                        c.getDate(), c.getProgramChair(), c.getAuthors(), c.getReviewers()));
             }
         }
-        if (papers != null) {
-            for (Paper p : papers) {
-                papersTable.add(new PaperRow(p.getPaperID(), p.getTitle(), p.getConferenceName(), p.getStatus()
-                                                                                                   .getStringValue(), p.getRevised(),
-                        p.getSubmissionDate()));
+        if (listOfPapers != null) {
+            for (Paper p : listOfPapers) {
+                papersTable.add(new PaperRow(p.getPaperID(), p.getTitle(), p
+                        .getConferenceName(), p.getStatus().getStringValue(), p.getRevised(), p
+                        .getSubmissionDate()));
+            }
+        }
+        if (listOfReviews != null) {
+            for (Review r : listOfReviews) {
+                //reviewsTable.add(new ReviewRow());
             }
         }
     }
-
+    
+    /**
+     * TODO NEEDS COMMENTS
+     */
     @Override
     public void handle(final Event event) {
         if (event.getSource() == conferencesTable) {
             MouseEvent mouseEvent = (MouseEvent) event;
             if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
                 //TODO replace with entering conference
-                int conferenceID = conferencesTable.getSelectionModel()
-                                                   .getSelectedItem()
-                                                   .getID();
-                mainPaneCallbacks.changeCenterPane(new ConferencePane(Conference.conferenceFromID(conferenceID)));
+                int conferenceID = conferencesTable.getSelectionModel().getSelectedItem()
+                        .getID();
+                mainPaneCallbacks.changeCenterPane(new ConferencePane(Conference
+                        .conferenceFromID(conferenceID)));
                 mainPaneCallbacks.update();
             }
         }
+        if (event.getSource() == papersTable) {
+            MouseEvent mouseEvent = (MouseEvent) event;
+            if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
+                int paperID = papersTable.getSelectionModel().getSelectedItem().getId();
+                System.out.println(paperID);
+                //mainPaneCallbacks.changeCenterPane(new PapersPane(Paper.paperFromID(paperID)));
+                //mainPaneCallbacks.update();
+            }
+            if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
+                int reviewID = reviewsTable.getSelectionModel().getSelectedItem().getId();
+                System.out.println(reviewID);
+            }
+        }
     }
-
+    
     /**
      * Loads conferences
      *
-     *
+     *  TODO COMMENTS!!!!
      */
     private class LoadDataService extends ProgressSpinnerService {
-
+        
         public LoadDataService(final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
             super(progressSpinnerCallbacks);
         }
-
+        
         /**
          * Creates a new task for loading conferences
          */
         @Override
         protected Task<String> createTask() {
             return new Task<String>() {
-
+                
                 /**
                  * Calls the new task.
                  */
                 @Override
                 protected String call() {
                     try {
-                        int id = LoggedUser.getInstance()
-                                           .getUser()
-                                           .getID();
-                        conferences = ConferenceManager.getConferencesForUser(id);
-                        papers = PaperManager.getAuthorsSubmittedPapers(id);
-
+                        int id = LoggedUser.getInstance().getUser().getID();
+                        listOfConferences = ConferenceManager.getConferencesForUser(id);
+                        listOfPapers = PaperManager.getAuthorsSubmittedPapers(id);
+                        
                         //TODO implement reviews
                         //reviews = ReviewManager.getReviews(;
                         setSuccess(true);
@@ -200,7 +252,7 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
                 }
             };
         }
-
+        
         /**
          * Called when a conference loading is done to populate table
          */
@@ -212,5 +264,5 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
             super.succeeded();
         }
     }
-
+    
 }

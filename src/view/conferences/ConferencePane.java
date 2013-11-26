@@ -10,6 +10,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import model.conferences.Conference;
+import view.users.UserRow;
+import view.util.CustomTable;
 import view.util.GenericPane;
 
 /**
@@ -33,7 +35,7 @@ public class ConferencePane extends GenericPane<GridPane> {
     /**
      * Column names of conference users TableView.
      */
-    private final String[] conferenceUsersColumnolumnNames = { "First Name", "Last Name", "Role" };
+    private final String[] conferenceUsersColumnNames = { "First Name", "Last Name", "Role" };
     
     /**
      * The Database variables used to populate the conference users TableView.
@@ -103,11 +105,15 @@ public class ConferencePane extends GenericPane<GridPane> {
         
         conferenceNameText = new Text("Conference: " + conference.getName());
         conferenceLocationText = new Text("Location: " + conference.getLocation());
-        conferenceDateText = new Text("Date: " + conference.getDate()
-                                                           .toString());
+        conferenceDateText = new Text("Date: " + conference.getDate().toString());
         conferenceProgramChairText = new Text("Program Chair: " + conference.getProgramChair());
         authorsText = new Text("Authors: " + Integer.toString(conference.getAuthors()));
         reviewersText = new Text("Reviewers: " + Integer.toString(conference.getReviewers()));
+        
+        conferencePapersTable = new CustomTable<ConferenceRow>(
+                conferencePapersColumnolumnNames, conferencePapersVariableNames);
+        conferenceUsersTable = new CustomTable<UserRow>(conferenceUsersColumnNames,
+                conferenceUsersVariableNames);
         
         pane.setAlignment(Pos.TOP_LEFT);
         pane.setHgap(10);
