@@ -153,8 +153,8 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
                 int conferenceID = conferencesTable.getSelectionModel()
                                                    .getSelectedItem()
                                                    .getID();
-                System.out.println(conferenceID);
                 mainPaneCallbacks.changeCenterPane(new ConferencePane(Conference.conferenceFromID(conferenceID)));
+                mainPaneCallbacks.update();
             }
         }
     }
