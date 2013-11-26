@@ -1,5 +1,9 @@
 package model.conferences;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
+
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -17,7 +21,10 @@ import view.util.Callbacks;
 import view.util.GenericPane;
 import view.util.MainPaneCallbacks;
 import view.util.ProgressSpinnerCallbacks;
+import view.util.ProgressSpinnerService;
 import view.util.StatusText;
+import view.util.Validator;
+import controller.user.LoggedUser;
 
 
 public class CreateConferencePane extends GenericPane<GridPane> implements EventHandler<ActionEvent>{
@@ -61,6 +68,7 @@ public class CreateConferencePane extends GenericPane<GridPane> implements Event
         conferenceLocationLabel = new Label("Location:");
         pane.add(conferenceLocationLabel, 0, 2);
 
+
         conferenceLocationTextField = new TextField();
         pane.add(conferenceLocationTextField, 1, 2);
 
@@ -69,6 +77,9 @@ public class CreateConferencePane extends GenericPane<GridPane> implements Event
 
         confereceDateTextField = new TextField();
         pane.add(confereceDateTextField, 1, 3);
+
+        //TODO fix
+        confereceDateTextField.setText("Uses current date/time for now");
 
         createConferenceButton = new Button("Create");
         cancelButton = new Button("Go Back");
@@ -91,9 +102,78 @@ public class CreateConferencePane extends GenericPane<GridPane> implements Event
 
     @Override
     public void handle(final ActionEvent event) {
-        if(event.getSource() == cancelButton) {
+        if (event.getSource() == cancelButton) {
             mainPaneCallbacks.changeCenterPane(new HomePane(mainPaneCallbacks, progressSpinnerCallbacks));
+        }
+        if (event.getSource() == createConferenceButton) {
+            createConference();
         }
     }
 
+    private void createConference() {
+        String name = conferenceNameTextField.getText();
+        String location = conferenceLocationTextField.getText();
+        String date = confereceDateTextField.getText();
+
+        if (!Validator.isEmpty(name, location, date)) {
+            new CreateConferenceService(progressSpinnerCallbacks, name, location, date).start();
+        } else {
+            statusText.setErrorText("Missing field");
+        }
+    }
+
+    private class CreateConferenceService extends ProgressSpinnerService {
+
+        private String name;
+        private String location;
+        private String date;
+
+        public CreateConferenceService(final ProgressSpinnerCallbacks progressSpinnerCallbacks, final String name, final String location, final String date) {
+            super(progressSpinnerCallbacks);
+            this.name = name;
+            this.location = location;
+            this.date = date;
+        }
+
+        /**
+         * Creates a new task
+         */
+        @Override
+        protected Task<String> createTask() {
+            return new Task<String>() {
+
+                /**
+                 * Calls the new task.
+                 */
+                @Override
+                protected String call() {
+                    try {
+                        int id = LoggedUser.getInstance()
+                                           .getUser()
+                                           .getID();
+
+                        //TODO use date
+                        ConferenceManager.createConference(name, location, new Timestamp(Calendar.getInstance().getTime().getTime()), id);
+
+                        setSuccess(true);
+                    }
+                    catch (Exception e) {
+                        statusText.setSuccessText("Error creating conference");
+                    }
+                    return null;
+                }
+            };
+        }
+
+        /**
+         * Called when a conference loading is done to populate table
+         */
+        @Override
+        protected void succeeded() {
+            if (getSuccess()) {
+                statusText.setSuccessText("Conference created");
+            }
+            super.succeeded();
+        }
+    }
 }
