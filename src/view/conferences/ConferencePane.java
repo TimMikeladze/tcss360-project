@@ -143,11 +143,17 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
         
         conferenceID = conference.getID();
         conferenceNameText = new Text("Conference: " + conference.getName());
+        conferenceNameText.setId("conf-text");
         conferenceLocationText = new Text("Location: " + conference.getLocation());
+        conferenceLocationText.setId("conf-text");
         conferenceDateText = new Text("Date: " + conference.getDate().toString());
+        conferenceDateText.setId("conf-text");
         conferenceProgramChairText = new Text("Program Chair: " + conference.getProgramChair());
+        conferenceProgramChairText.setId("conf-text");
         authorsText = new Text("Authors: " + Integer.toString(conference.getAuthors()));
+        authorsText.setId("conf-text");
         reviewersText = new Text("Reviewers: " + Integer.toString(conference.getReviewers()));
+        reviewersText.setId("conf-text");
         
         conferencePapersTable = new CustomTable<PaperRow>(conferencePapersColumnolumnNames,
                 conferencePapersVariableNames);
@@ -176,12 +182,14 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
         pane.add(reviewersText, 1, 2);
         
         Text conferencePapersText = new Text("Conference Papers");
+        conferencePapersText.setId("conf-title");
      //   conferencePapersText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         pane.add(conferencePapersText, 0, 3);
         conferencePapersTable.setOnMouseClicked(this);
         pane.add(conferencePapersTable, 0, 4);
         
         Text conferenceUsersText = new Text("Conference Users");
+        conferenceUsersText.setId("conf-title");
       //  conferenceUsersText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         pane.add(conferenceUsersText, 0, 5);
         conferenceUsersTable.setOnMouseClicked(this);

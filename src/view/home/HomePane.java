@@ -138,18 +138,21 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
         new LoadDataService(progressSpinnerCallbacks).start();
         
         Text myConferencesText = new Text("My Conferences");
+        myConferencesText.setId("conf-header");
         myConferencesText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         conferencesTable.setOnMouseClicked(this);
         pane.add(myConferencesText, 0, 0);
         pane.add(conferencesTable, 0, 1);
         
         Text myPapersText = new Text("My Papers");
+        myPapersText.setId("paper-header");
         myPapersText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         papersTable.setOnMouseClicked(this);
         pane.add(myPapersText, 0, 3);
         pane.add(papersTable, 0, 4);
         
         Text myReviewsText = new Text("My Reviews");
+        myReviewsText.setId("rev-header");
         myReviewsText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         papersTable.setOnMouseClicked(this);
         pane.add(myReviewsText, 0, 6);

@@ -1,6 +1,10 @@
 .root {
-    -fx-background-image: url("background.jpg"); 
+    -fx-background-image: url("pink.jpg"); 
 	-fx-color: #f0f8ff;
+}
+
+#conf-text {
+	-fx-fill: #fffafa; 
 }
 
 .button {
@@ -10,13 +14,38 @@
 
 .button:hover {
     -fx-background-color: linear-gradient(#f0f8ff, #ffffff);
-	-fx-text-fill: #191970;
+	-fx-text-fill: #800000;
 }
 
+.label {
+	-fx-text-fill: #ffe4e1;
+	-fx-font-weight: bold;
+	-fx-font-size: 12px;
+}
+
+/* h1 */
 #login-title, #reg-title {
-	-fx-fill: #191970;
-	-fx-font-family: Courier New;
+	-fx-fill: #fffafa;
+	-fx-font-family: Tahoma;
 	-fx-font-size: 24px;
 	-fx-font-weight: bold;
-	-fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );  
+	-fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5), 0, 1.0, -0.75, 1.0);  
+}
+
+/* h2 */
+#conf-header, #paper-header, #rev-header, #conf-title {
+	-fx-fill: #fffafa;
+	-fx-font-size: 20px;
+	-fx-font-weight: bold;
+	-fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5), 0, 1.0, -0.75, 1.0);  
+}
+
+.table-view .column-header .label {
+	-fx-font-weight:normal;
+	-fx-text-fill: #800000;
+}
+
+.table-row-cell:empty .text {
+	-fx-font-weight:normal;
+	-fx-text-fill: #778899;
 }
