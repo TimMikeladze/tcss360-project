@@ -1,0 +1,22 @@
+.root {
+    -fx-background-image: url("background.jpg"); 
+	-fx-color: #f0f8ff;
+}
+
+.button {
+	-fx-text-fill: black;
+    -fx-background-color: linear-gradient(#ffffff, #f0f8ff);
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(#f0f8ff, #ffffff);
+	-fx-text-fill: #191970;
+}
+
+#login-title, #reg-title {
+	-fx-fill: #191970;
+	-fx-font-family: Courier New;
+	-fx-font-size: 24px;
+	-fx-font-weight: bold;
+	-fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );  
+}

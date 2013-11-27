@@ -91,7 +91,7 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
      */
     private void create() {
         welcomeText = new Text("Welcome");
-        welcomeText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+        welcomeText.setId("login-title");
         pane.add(welcomeText, 0, 0, 2, 1);
         
         emailLabel = new Label("Email:");

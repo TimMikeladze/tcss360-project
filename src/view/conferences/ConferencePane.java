@@ -23,6 +23,7 @@ import view.papers.PaperRow;
 import view.users.UserRow;
 import view.util.CustomTable;
 import view.util.GenericPane;
+import view.util.MainPaneCallbacks;
 import view.util.ProgressSpinnerCallbacks;
 import view.util.ProgressSpinnerService;
 import controller.user.LoggedUser;
@@ -48,7 +49,7 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
     /**
      * The Database variables used to populate the conference papers TableView.
      */
-    private final String[] conferencePapersVariableNames = { "title", "date" };
+    private final String[] conferencePapersVariableNames = { "paperName", "date" };
     
     /**
      * Column names of conference users TableView.
@@ -133,8 +134,12 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
      * Constructs a new Conference Pane that extends GridPane and displays the information about
      * the given conference.
      */
-    public ConferencePane(final Conference conference) {
+    public ConferencePane(final Conference conference,
+            final MainPaneCallbacks mainPaneCallbacks,
+            final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
         super(new GridPane());
+        addMainPaneCallBacks(mainPaneCallbacks);
+        addProgressSpinnerCallBacks(progressSpinnerCallbacks);
         
         conferenceID = conference.getID();
         conferenceNameText = new Text("Conference: " + conference.getName());
@@ -161,6 +166,8 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
      * Creates the main components of the ConferencePane pane.
      */
     private void create() {
+        new LoadDataService(progressSpinnerCallbacks).start();
+        
         pane.add(conferenceNameText, 0, 0);
         pane.add(conferenceLocationText, 1, 0);
         pane.add(conferenceDateText, 0, 1);
@@ -169,13 +176,13 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
         pane.add(reviewersText, 1, 2);
         
         Text conferencePapersText = new Text("Conference Papers");
-        conferencePapersText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+     //   conferencePapersText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         pane.add(conferencePapersText, 0, 3);
         conferencePapersTable.setOnMouseClicked(this);
         pane.add(conferencePapersTable, 0, 4);
         
         Text conferenceUsersText = new Text("Conference Users");
-        conferenceUsersText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+      //  conferenceUsersText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         pane.add(conferenceUsersText, 0, 5);
         conferenceUsersTable.setOnMouseClicked(this);
         pane.add(conferenceUsersTable, 0, 6);
