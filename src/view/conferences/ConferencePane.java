@@ -11,8 +11,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import model.conferences.Conference;
 import model.conferences.ConferenceManager;
@@ -130,6 +129,8 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
     
     private Button viewUserButton;
     
+    private Button assignPaperButton;
+    
     /**
      * Constructs a new Conference Pane that extends GridPane and displays the information about
      * the given conference.
@@ -176,16 +177,32 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
         pane.add(reviewersText, 1, 2);
         
         Text conferencePapersText = new Text("Conference Papers");
-     //   conferencePapersText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+        //   conferencePapersText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         pane.add(conferencePapersText, 0, 3);
         conferencePapersTable.setOnMouseClicked(this);
         pane.add(conferencePapersTable, 0, 4);
         
         Text conferenceUsersText = new Text("Conference Users");
-      //  conferenceUsersText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+        //  conferenceUsersText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         pane.add(conferenceUsersText, 0, 5);
         conferenceUsersTable.setOnMouseClicked(this);
         pane.add(conferenceUsersTable, 0, 6);
+        
+        removeConferenceButton = new Button("Remove Conference");
+        addSubprogramChairButton = new Button("Add Subprogram Chair");
+        addReviewerButton = new Button("Add Reviewer");
+        assignPaperButton = new Button("Assign Paper");
+        uploadPaperButton = new Button("Upload Paper");
+        uploadReviewButton = new Button("Upload Review");
+        
+        HBox bottomBox = new HBox(12);
+        bottomBox.getChildren().add(removeConferenceButton);
+        bottomBox.getChildren().add(addSubprogramChairButton);
+        bottomBox.getChildren().add(addReviewerButton);
+        bottomBox.getChildren().add(uploadPaperButton);
+        bottomBox.getChildren().add(uploadReviewButton);
+        
+        pane.add(bottomBox, 0, 7);
     }
     
     /**
