@@ -8,10 +8,10 @@ import javafx.scene.text.Text;
  * Custom Text element, used to display statuses.
  */
 public class StatusText extends Text {
-
-    private static final Color ERROR_COLOR = Color.FIREBRICK;
+    
+    private static final Color ERROR_COLOR = Color.WHITESMOKE;
     private static final Color SUCCESS_COLOR = Color.GREEN;
-
+    
     /**
      * Instantiates a new status text.
      */
@@ -19,7 +19,7 @@ public class StatusText extends Text {
         super();
         setFill(SUCCESS_COLOR);
     }
-
+    
     /**
      * Instantiates a new status text.
      *
@@ -31,7 +31,7 @@ public class StatusText extends Text {
         super(arg0, arg1, arg2);
         setFill(SUCCESS_COLOR);
     }
-
+    
     /**
      * Instantiates a new status text.
      *
@@ -41,7 +41,7 @@ public class StatusText extends Text {
         super(arg0);
         setFill(SUCCESS_COLOR);
     }
-
+    
     /**
      * Sets the error text.
      *
@@ -50,7 +50,7 @@ public class StatusText extends Text {
     public void setErrorText(final String text) {
         setText(text, false);
     }
-
+    
     /**
      * Sets the success text.
      *
@@ -59,7 +59,7 @@ public class StatusText extends Text {
     public void setSuccessText(final String text) {
         setText(text, true);
     }
-
+    
     /**
      * Sets the text.
      *
@@ -75,7 +75,7 @@ public class StatusText extends Text {
         }
         setText(text);
     }
-
+    
     /**
      * Clear the status text.
      */
