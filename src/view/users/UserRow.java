@@ -23,24 +23,13 @@ public class UserRow {
      * @param email
      * @param role
      */
-    public UserRow(final int userID, final String firstName, final String lastName,
-            final String fullName, final String email, final String role) {
+    public UserRow(final int userID, final String firstName, final String lastName, 
+            final String email, final String role) {
         this.userID = userID;
         this.firstName = firstName;
-        this.lastName = lastName;
-        this.fullName = fullName;
+        this.lastName = lastName;;
         this.email = email;
         this.role = role;
-    }
-    
-    public UserRow(final int userID, final String firstName, final String lastName,
-            final String fullName, final String email) {
-        super();
-        this.userID = userID;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.fullName = fullName;
-        this.email = email;
     }
     
     /**
