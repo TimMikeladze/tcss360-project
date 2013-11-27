@@ -12,7 +12,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import model.conferences.CreateConferencePane;
 import view.login.LoginPane;
 import view.util.Callbacks;
 import view.util.CustomProgressIndicator;
@@ -25,25 +24,58 @@ import controller.user.LoggedUser;
  * Creates a pane that runs horizontal along the windows north border and displays the users
  * name along with the logout button.
  *
+ * @author Mohammad Juma
+ * @author Tim Mikeladze
+ * @version 11-11-2013
  */
 public class TopPane extends GenericPane<StackPane> implements EventHandler<ActionEvent>,
         ProgressSpinnerCallbacks {
     
+    /**
+     * The left pane holding the welcome message and the users name.
+     */
     private HBox leftBox;
+    
+    /**
+     * The right box holding the static buttons for the application.
+     */
     private HBox rightBox;
+    
+    /**
+     * The logout button to logout of the application.
+     */
     private Button logoutButton;
+    
+    /**
+     * The welcome label showing the users name.
+     */
     private Label welcomeLabel;
+    
+    /**
+     * The progress indicator, displayed when the database is being queried.
+     */
     private CustomProgressIndicator progressSpinner;
-    private Button createConferenceButton;
+    
+    /**
+     * Home button for returning to the HomePane.
+     */
     private Button homeButton;
+    
+    /**
+     * Back button for returning to the previous screen.
+     */
     private Button backButton;
+    
+    /**
+     * View conferences button for viewing conferences.
+     */
     private Button viewConferencesButton;
     
-    /**.
-     * 
+    /**
      * Instantiates a new top pane.
      *
-     * @param callbacks the callbacks
+     * @param mainPaneCallbacks
+     * @param
      */
     public TopPane(final MainPaneCallbacks mainPaneCallbacks, final Callbacks callbacks) {
         super(new StackPane(), callbacks);
@@ -99,11 +131,6 @@ public class TopPane extends GenericPane<StackPane> implements EventHandler<Acti
     
     @Override
     public void handle(final ActionEvent event) {
-        if (event.getSource() == createConferenceButton) {
-            mainPaneCallbacks.changeCenterPane(new CreateConferencePane(callbacks,
-                    mainPaneCallbacks, this));
-            mainPaneCallbacks.update();
-        }
         if (event.getSource() == logoutButton) {
             LoggedUser.getInstance().logout();
             callbacks.changeScene(new LoginPane());
@@ -129,15 +156,6 @@ public class TopPane extends GenericPane<StackPane> implements EventHandler<Acti
     @Override
     public void bindTask(final Task<?> task) {
         progressSpinner.progressProperty().bind(task.progressProperty());
-    }
-    
-    /**
-     * @deprecated dont need this anymore
-     * @param visible
-     */
-    @Deprecated
-    public void setCreateConferenceButtonVisible(final boolean visible) {
-        createConferenceButton.setVisible(visible);
     }
     
     public void enableBackButton(final boolean enabled) {
