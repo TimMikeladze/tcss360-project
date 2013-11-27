@@ -115,8 +115,8 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
     public HomePane(final MainPaneCallbacks mainPaneCallbacks,
             final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
         super(new GridPane());
-        addMainPaneCallBacks(mainPaneCallbacks); // TODO HOW DOES THIS WORK?
-        addProgressSpinnerCallBacks(progressSpinnerCallbacks); // TODO THIS TOO!
+        addMainPaneCallBacks(mainPaneCallbacks);
+        addProgressSpinnerCallBacks(progressSpinnerCallbacks);
         
         conferencesTable = new CustomTable<ConferenceRow>(conferencesColumnNames,
                 conferencesVariableNames);
@@ -192,7 +192,8 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
                 int conferenceID = conferencesTable.getSelectionModel().getSelectedItem()
                         .getID();
                 mainPaneCallbacks.pushPane(new ConferencePane(Conference
-                        .conferenceFromID(conferenceID)));
+                        .conferenceFromID(conferenceID), mainPaneCallbacks,
+                        progressSpinnerCallbacks));
             }
         }
         if (event.getSource() == papersTable) {
