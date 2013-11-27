@@ -45,6 +45,9 @@ public class ConferenceManagerTest {
         
     }
     
+    /**
+     * Tests createConference method.
+     */
     @Test
     public void testCreateConference() {
         id = ConferenceManager.createConference(name, location, date, programChairID);
@@ -54,6 +57,9 @@ public class ConferenceManagerTest {
         assertTrue("Conference created", Database.hasResults(t));
     }
     
+    /**
+     * Tests addUserToConference method.
+     */
     @Test
     public void testAddUserToConference() {
         try {
@@ -71,6 +77,9 @@ public class ConferenceManagerTest {
         }
     }
     
+    /**
+     * Tests removeUserFromConference method.
+     */
     @Test
     public void testRemoveUserFromConference() {
         ConferenceManager.removeConference(id);

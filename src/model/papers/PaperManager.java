@@ -146,6 +146,13 @@ public class PaperManager {
         }
     }
     
+    /**
+     * Returns paper author ID.
+     * 
+     * @param paperID The paper's ID
+     * @return Given paper's author ID
+     * @throws DatabaseException
+     */
     public static int getPaperAuthorID(final int paperID) throws DatabaseException {
         Table t = Database.getInstance()
                           .createQuery("SELECT AuthorID FROM papers WHERE ID = :paperID")

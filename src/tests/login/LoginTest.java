@@ -17,6 +17,13 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+/**
+ * Tests the Login class.
+ * 
+ * @author Srdjan Stojcic	
+ * @version 11.23.13
+ */
+
 public class LoginTest {
     
     /**

@@ -23,7 +23,7 @@ import org.junit.Test;
  * Tests the PaperManager Class
  *
  * @author Jordan Matthews
- *
+ * @author Srdjan Stojcic
  */
 public class PaperManagerTest {
 
@@ -85,7 +85,7 @@ public class PaperManagerTest {
                           .addParameter("email", email)
                           .executeUpdate()
                           .getKey(Integer.class);
-        // Add the user 'Jon Snow' to the database
+        // Add the user 'Daenerys Targaryen' to the database
         firstName = "Daenerys";
         lastName = "Targaryen";
         email = "ilikedragons@gmail.com";
@@ -207,6 +207,19 @@ public class PaperManagerTest {
             e.printStackTrace();
         }
 
+    }
+    
+    /**
+     * Tests the getPaperAuthorID method.
+     */
+    @Test
+    public void testGetPaperAuthorID() {
+    	try {
+			assertEquals("The paper's author ID test.", 2, PaperManager.getPaperAuthorID(paperID));
+		} catch (DatabaseException e) {
+			System.out.println("Error: Unable to get paper author ID.");
+			e.printStackTrace();
+		}
     }
 
     /**

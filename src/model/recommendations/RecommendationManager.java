@@ -46,7 +46,7 @@ public class RecommendationManager {
      * @throws DatabaseException the database exception
      */
     @Permission(level = 300)
-    public Recommendation getRecommendation(final int paperID) throws DatabaseException {
+    public static Recommendation getRecommendation(final int paperID) throws DatabaseException {
         List<Recommendation> list = Database.getInstance()
                                             .createQuery(
                                                     "SELECT ID, PaperID, ReviewerID, File, FileExtension FROM paper_recommendations WHERE PaperID = :paperID")
@@ -68,7 +68,7 @@ public class RecommendationManager {
      * @return the recommendations
      */
     @Permission(level = 400)
-    public List<Recommendation> getRecommendations(final int conferenceID) {
+    public static List<Recommendation> getRecommendations(final int conferenceID) {
         return Database.getInstance()
                        .createQuery(
                                "SELECT r.ID, r.PaperID, r.ReviewerID, r.File, r.FileExtension FROM paper_recommendations AS r JOIN papers AS p ON p.ID = r.PaperID WHERE p.ConferenceID = :conferenceID")
