@@ -21,12 +21,12 @@ import org.junit.Test;
 
 /**
  * Tests the PaperManager Class
- * 
+ *
  * @author Jordan Matthews
- * 
+ *
  */
 public class PaperManagerTest {
-    
+
     /**
      * User's first name for testing.
      */
@@ -67,7 +67,7 @@ public class PaperManagerTest {
      * The paper ID
      */
     private int paperID;
-    
+
     /**
      * Initializes the Author for the tests.
      */
@@ -76,7 +76,7 @@ public class PaperManagerTest {
         firstName = "Jon";
         lastName = "Snow";
         email = "youknownothingjonsnow@gmail.com";
-        
+
         // Add the user 'Jon Snow' to the database
         userID1 = Database.getInstance()
                           .createQuery("INSERT INTO users (Firstname, Lastname, Email) VALUES (:firstName, :lastName, :email)")
@@ -97,7 +97,7 @@ public class PaperManagerTest {
                           .executeUpdate()
                           .getKey(Integer.class);
     }
-    
+
     /**
      * Initializes a conference for testing.
      */
@@ -112,7 +112,7 @@ public class PaperManagerTest {
                                .addParameter("date", new Date())
                                .executeUpdate()
                                .getKey(Integer.class);
-        
+
         Database.getInstance()
                 .createQuery("INSERT INTO conference_users (ConferenceID, UserID, PermissionID) VALUES (:id, :userID, :permissionID)")
                 .addParameter("id", conferenceID)
@@ -126,7 +126,7 @@ public class PaperManagerTest {
                 .addParameter("permissionID", PermissionLevel.PROGRAM_CHAIR.getPermission())
                 .executeUpdate();
     }
-    
+
     /**
      * Initializes a paper
      */
@@ -144,7 +144,7 @@ public class PaperManagerTest {
                           .executeUpdate()
                           .getKey(Integer.class);
     }
-    
+
     /**
      * Testing the submission of 3 papers
      */
@@ -166,10 +166,10 @@ public class PaperManagerTest {
                                                                               .getDescription()
                                                                               .toString());
     }
-    
+
     /**
      * Tests the submission if the author has submitted too many papers
-     * 
+     *
      */
     @Test
     public void shouldThrowDatabaseExceptionWhenSubmitPapersReachesMax() {
@@ -189,7 +189,7 @@ public class PaperManagerTest {
             e.printStackTrace();
         }
     }
-    
+
     /**
      * Test the method assignPaperToSubprogramChair() & getAssignedPapersForSubprogramChair()
      * from PaperManager
@@ -204,12 +204,11 @@ public class PaperManagerTest {
                                 .getPaperID());
         }
         catch (DatabaseException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
+
     }
-    
+
     /**
      * Remove all of the entries to the database that were used for testing
      */

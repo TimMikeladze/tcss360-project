@@ -4,25 +4,25 @@ package view.papers;
 import java.sql.Timestamp;
 
 /**
- * TODO
- * 
+ * Wrapper class around paper data in a conference
+ *
  * @author Tim Mikeladze
  * @version 11-25-2013
  */
 public class PaperRow {
-    
+
     private int id;
-    
+
     private String paperName;
-    
+
     private String conferenceName;
-    
+
     private String reviewed;
-    
+
     private Timestamp date;
-    
+
     private String revised;
-    
+
     /**
      * @param id
      * @param paperName
@@ -44,44 +44,44 @@ public class PaperRow {
         }
         this.date = date;
     }
-    
+
     /**
      * @return the id
      */
     public int getId() {
         return id;
     }
-    
+
     /**
      * @return the paperName
      */
     public String getPaperName() {
         return paperName;
     }
-    
+
     /**
      * @return the conferenceName
      */
     public String getConferenceName() {
         return conferenceName;
     }
-    
+
     /**
      * @return the reviewed
      */
     public String isReviewed() {
         return reviewed;
     }
-    
+
     /**
      * @return the date
      */
     public Timestamp getDate() {
         return date;
     }
-    
+
     public String getRevised() {
         return revised;
     }
-    
+
 }

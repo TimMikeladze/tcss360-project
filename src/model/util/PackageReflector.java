@@ -10,36 +10,36 @@ import java.util.Enumeration;
 import java.util.List;
 
 /**
- * Package Reflector does TODO
- * 
+ * Gets all classes in a package using reflection
+ *
  * @author Tim Mikeladze
  * @version 11-17-2013
  */
 public class PackageReflector {
-    
+
     /**
-     * TODO 
-     * 
-     * @param packageName TODO
-     * @return TODO
+     * Gets all classes in a package
+     *
+     * @param packageName package name
+     * @return List of classes
      * @throws ClassNotFoundException
      * @throws IOException
      */
-    public static List<Class<?>> getClasses(String packageName) throws ClassNotFoundException,
+    public static List<Class<?>> getClasses(final String packageName) throws ClassNotFoundException,
             IOException {
         return getClasses(packageName, new String[] {});
     }
-    
+
     /**
-     * TODO
-     * 
-     * @param packageName TODO
-     * @param ignore TODO
-     * @return TODO
+     * Get classes in a package
+     *
+     * @param packageName the package name
+     * @param ignore classes to ignore
+     * @return list of classes
      * @throws ClassNotFoundException
      * @throws IOException
      */
-    public static List<Class<?>> getClasses(String packageName, String[] ignore)
+    public static List<Class<?>> getClasses(final String packageName, final String[] ignore)
             throws ClassNotFoundException, IOException {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         assert classLoader != null;
@@ -56,18 +56,18 @@ public class PackageReflector {
         }
         return classes;
     }
-    
+
     /**
-     * TODO
-     * 
-     * @param directory TODO
-     * @param packageName TODO
-     * @param ignore TODO
-     * @return TODO
+     * Find classes in a package
+     *
+     * @param directory the file directory
+     * @param packageName package name
+     * @param ignore classes to ignore
+     * @return list of found classes
      * @throws ClassNotFoundException
      */
-    private static List<Class<?>> findClasses(File directory, String packageName,
-            String[] ignore) throws ClassNotFoundException {
+    private static List<Class<?>> findClasses(final File directory, final String packageName,
+            final String[] ignore) throws ClassNotFoundException {
         List<Class<?>> classes = new ArrayList<Class<?>>();
         if (!directory.exists()) {
             return classes;
