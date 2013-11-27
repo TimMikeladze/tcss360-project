@@ -211,9 +211,7 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
     }
     
     /**
-     * Loads conferences
-     *
-     *  TODO COMMENTS!!!!
+     * Loads conference, paper, and review data from database.
      */
     private class LoadDataService extends ProgressSpinnerService {
         
