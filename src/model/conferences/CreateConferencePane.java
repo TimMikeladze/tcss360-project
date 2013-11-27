@@ -103,7 +103,7 @@ public class CreateConferencePane extends GenericPane<GridPane> implements Event
     @Override
     public void handle(final ActionEvent event) {
         if (event.getSource() == cancelButton) {
-            mainPaneCallbacks.changeCenterPane(new HomePane(mainPaneCallbacks, progressSpinnerCallbacks));
+            mainPaneCallbacks.pushPane(new HomePane(mainPaneCallbacks, progressSpinnerCallbacks));
         }
         if (event.getSource() == createConferenceButton) {
             createConference();

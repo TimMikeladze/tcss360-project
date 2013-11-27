@@ -191,7 +191,7 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
                 //TODO replace with entering conference
                 int conferenceID = conferencesTable.getSelectionModel().getSelectedItem()
                         .getID();
-                mainPaneCallbacks.changeCenterPane(new ConferencePane(Conference
+                mainPaneCallbacks.pushPane(new ConferencePane(Conference
                         .conferenceFromID(conferenceID)));
             }
         }
