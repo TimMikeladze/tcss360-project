@@ -13,6 +13,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import view.login.LoginPane;
+import view.users.UserSelect;
+import view.users.UsersPane;
 import view.util.Callbacks;
 import view.util.CustomProgressIndicator;
 import view.util.GenericPane;
@@ -111,7 +113,7 @@ public class TopPane extends GenericPane<StackPane> implements EventHandler<Acti
         
         backButton = new Button("Back");
         backButton.setVisible(true);
-        backButton.setDisable(true);
+        backButton.setDisable(false);
         backButton.setOnAction(this);
         rightBox.getChildren().add(backButton);
         
@@ -140,6 +142,7 @@ public class TopPane extends GenericPane<StackPane> implements EventHandler<Acti
         }
         if (event.getSource() == backButton) {
             //callbacks.changeScene(sceneStack.pop());
+            new UsersPane(callbacks.getPrimaryStage()).showDialog();
         }
     }
     
