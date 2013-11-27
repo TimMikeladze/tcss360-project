@@ -176,13 +176,13 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
         pane.add(reviewersText, 1, 2);
         
         Text conferencePapersText = new Text("Conference Papers");
-        conferencePapersText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+     //   conferencePapersText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         pane.add(conferencePapersText, 0, 3);
         conferencePapersTable.setOnMouseClicked(this);
         pane.add(conferencePapersTable, 0, 4);
         
         Text conferenceUsersText = new Text("Conference Users");
-        conferenceUsersText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+      //  conferenceUsersText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         pane.add(conferenceUsersText, 0, 5);
         conferenceUsersTable.setOnMouseClicked(this);
         pane.add(conferenceUsersTable, 0, 6);
