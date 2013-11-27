@@ -11,7 +11,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
  * This is a generic table.
  * 
  * @author Tim Mikeladze
- *
+ * 
  * @param <T>
  */
 public class CustomTable<T> extends TableView<T> {
@@ -23,12 +23,12 @@ public class CustomTable<T> extends TableView<T> {
     
     /**
      * Creates a generic table
+     * 
      * @param columnNames the column names
      * @param variableNames the variable names
      * @param columnWidths the column widths
      */
-    public CustomTable(final String[] columnNames, final String[] variableNames,
-            final int[] columnWidths) {
+    public CustomTable(final String[] columnNames, final String[] variableNames, final int[] columnWidths) {
         this.columnNames = columnNames;
         this.variableNames = variableNames;
         CustomTable.columnWidths = columnWidths;
@@ -48,7 +48,8 @@ public class CustomTable<T> extends TableView<T> {
         for (int i = 0; i < columnNames.length; i++) {
             column = new TableColumn<T, String>(columnNames[i]);
             // column.setMinWidth(columnWidths[i]);
-            column.prefWidthProperty().bind(widthProperty().divide(100 / columnWidths[i]));
+            column.prefWidthProperty()
+                  .bind(widthProperty().divide(100 / columnWidths[i]));
             
             column.setCellValueFactory(new PropertyValueFactory<T, String>(variableNames[i]));
             
@@ -63,6 +64,12 @@ public class CustomTable<T> extends TableView<T> {
      */
     public void add(final T t) {
         data.add(t);
+    }
+    
+    /**
+     * Updates table's data
+     */
+    public void updateItems() {
         setItems(data);
     }
 }

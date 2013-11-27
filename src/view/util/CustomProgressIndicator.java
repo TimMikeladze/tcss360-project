@@ -8,7 +8,7 @@ import javafx.scene.control.ProgressIndicator;
  */
 public class CustomProgressIndicator extends ProgressIndicator {
     
-    private static final double SCALE = 1.25;
+    private static final double SCALE = 1.00;
     
     /**
      * Instantiates a new custom progress indicator.

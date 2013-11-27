@@ -12,7 +12,7 @@ import model.database.Database;
  * @author Tim Mikeladze
  * @version 11-16-2013
  */
-public class Conference {
+public class Conference implements Comparable<Conference> {
     
     /**
      * The id of the conference.
@@ -149,4 +149,34 @@ public class Conference {
         return reviewers;
     }
     
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + id;
+        return result;
+    }
+    
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Conference other = (Conference) obj;
+        if (id != other.id) {
+            return false;
+        }
+        return true;
+    }
+    
+    @Override
+    public int compareTo(final Conference c) {
+        return id - c.id;
+    }
 }
