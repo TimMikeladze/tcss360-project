@@ -3,24 +3,26 @@
 	-fx-color: #f0f8ff;
 }
 
-#conf-text {
-	-fx-fill: #fffafa; 
-}
-
 .button {
 	-fx-text-fill: black;
-    -fx-background-color: linear-gradient(#ffffff, #f0f8ff);
+    -fx-background-color: linear-gradient(#ffffff, #d3d3d3);
 }
 
 .button:hover {
-    -fx-background-color: linear-gradient(#f0f8ff, #ffffff);
+    -fx-background-color: linear-gradient(#d3d3d3, #ffffff);
 	-fx-text-fill: #800000;
 }
 
+/* regular text */
 .label {
 	-fx-text-fill: #ffe4e1;
 	-fx-font-weight: bold;
 	-fx-font-size: 12px;
+}
+
+/* conference pane regular text */
+#conf-text {
+    -fx-fill: #fffafa; 
 }
 
 /* h1 */
@@ -29,7 +31,7 @@
 	-fx-font-family: Tahoma;
 	-fx-font-size: 24px;
 	-fx-font-weight: bold;
-	-fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5), 0, 1.0, -0.75, 1.0);  
+	-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.6), 0, 1.0, -1.0, 1.0);  
 }
 
 /* h2 */
@@ -37,15 +39,29 @@
 	-fx-fill: #fffafa;
 	-fx-font-size: 20px;
 	-fx-font-weight: bold;
-	-fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5), 0, 1.0, -0.75, 1.0);  
+	-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.6), 0, 1.0, -1.0, 1.0);  
 }
 
+.table-view, .table_view:empty { 
+    -fx-color: darkred;
+    -fx-selection-bar: silver;
+    -fx-selection-bar-text: black;
+    -fx-cell-hover-color: gainsboro;
+}
+.table-view .column-header {
+    -fx-border-color: darkred; 
+}
+
+/* attribute names in table view */
 .table-view .column-header .label {
 	-fx-font-weight:normal;
-	-fx-text-fill: #800000;
+	-fx-text-fill: white;
 }
 
-.table-row-cell:empty .text {
+/* text that appears behind */
+.table_view:empty {
 	-fx-font-weight:normal;
 	-fx-text-fill: #778899;
+    -fx-fill: #778899;
 }
+

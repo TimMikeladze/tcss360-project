@@ -230,6 +230,7 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
         protected void executeTask(final Task<String> task) {
             progressIndicator.progressProperty()
                              .bind(task.progressProperty());
+            progressIndicator.setStyle(" -fx-progress-color: gold;");
             setProgressIndicatorVisible(true);
             super.executeTask(task);
         }

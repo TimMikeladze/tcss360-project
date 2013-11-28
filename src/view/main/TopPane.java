@@ -88,7 +88,9 @@ public class TopPane extends GenericPane<StackPane> implements EventHandler<Acti
         rightBox = new HBox(12);
 
         progressSpinner = new CustomProgressIndicator();
+        progressSpinner.setStyle(" -fx-progress-color: gold;");
         progressSpinner.setVisible(false);
+        
 
         create();
     }
