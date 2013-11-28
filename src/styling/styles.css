@@ -1,3 +1,4 @@
+/* main class */
 .root {
     -fx-background-image: url("pink.jpg"); 
 	-fx-color: #f0f8ff;
@@ -10,24 +11,24 @@
 
 .button:hover {
     -fx-background-color: linear-gradient(#d3d3d3, #ffffff);
-	-fx-text-fill: #800000;
+	-fx-text-fill: darkred;
 }
 
 /* regular text */
 .label {
-	-fx-text-fill: #ffe4e1;
+	-fx-text-fill: bisque;
 	-fx-font-weight: bold;
 	-fx-font-size: 12px;
 }
 
 /* conference pane regular text */
 #conf-text {
-    -fx-fill: #fffafa; 
+    -fx-fill: bisque; 
 }
 
 /* h1 */
 #login-title, #reg-title {
-	-fx-fill: #fffafa;
+	-fx-fill: snow;
 	-fx-font-family: Tahoma;
 	-fx-font-size: 24px;
 	-fx-font-weight: bold;
@@ -36,29 +37,30 @@
 
 /* h2 */
 #conf-header, #paper-header, #rev-header, #conf-title {
-	-fx-fill: #fffafa;
+	-fx-fill: snow;
 	-fx-font-size: 20px;
 	-fx-font-weight: bold;
 	-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.6), 0, 1.0, -1.0, 1.0);  
 }
 
-.table-view, .table_view:empty { 
+.table-view, .table-view:empty { 
     -fx-color: darkred;
     -fx-selection-bar: silver;
     -fx-selection-bar-text: black;
     -fx-cell-hover-color: gainsboro;
 }
+
+/* attribute headers in table view */
 .table-view .column-header {
     -fx-border-color: darkred; 
 }
 
 /* attribute names in table view */
 .table-view .column-header .label {
-	-fx-font-weight:normal;
+	-fx-font-weight: normal;
 	-fx-text-fill: white;
 }
 
-/* text that appears behind */
 .table_view:empty {
 	-fx-font-weight:normal;
 	-fx-text-fill: #778899;
