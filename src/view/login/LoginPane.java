@@ -16,8 +16,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import model.database.DatabaseException;
 import model.login.Login;
@@ -120,6 +118,10 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
         
         progressIndicator = new CustomProgressIndicator();
         pane.add(progressIndicator, 1, 1);
+        
+        //TODO remove this when done
+        emailTextField.setText("bobama@email.us");
+        login();
         
     }
     

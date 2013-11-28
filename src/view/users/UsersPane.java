@@ -16,6 +16,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.users.User;
 import model.users.UserManager;
+import view.conferences.AddUserCallback;
 import view.util.CustomTable;
 import view.util.ProgressSpinnerCallbacks;
 import view.util.ProgressSpinnerService;
@@ -68,8 +69,12 @@ public class UsersPane extends Stage implements EventHandler {
     
     private ProgressSpinnerCallbacks progressSpinnerCallbacks;
     
-    public UsersPane(final Stage owner, final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
+    private AddUserCallback addUserCallback;
+    
+    public UsersPane(final Stage owner, final ProgressSpinnerCallbacks progressSpinnerCallbacks, final AddUserCallback addUserCallback) {
         this.progressSpinnerCallbacks = progressSpinnerCallbacks;
+        this.addUserCallback = addUserCallback;
+        
         root = new BorderPane();
         scene = new Scene(root, DEFAULT_WIDTH, DEFAULT_HEIGHT);
         
@@ -113,6 +118,9 @@ public class UsersPane extends Stage implements EventHandler {
             MouseEvent mouseEvent = (MouseEvent) event;
             if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
                 close();
+                addUserCallback.addReviewer(usersTable.getSelectionModel()
+                                                      .getSelectedItem()
+                                                      .getID());
             }
         }
     }
