@@ -1,5 +1,5 @@
 /*
- * Mohammad Juma, Tim Mikeladze, Srdjan Stojic, Cathryn Castillo, Jordan Matthews
+ * Mohammad Juma, Tim Mikeladze, Srdjan Stojcic, Cathryn Castillo, Jordan Matthews
  * 
  * TCSS 360 - Winter 2013
  * TCSS 360 Project

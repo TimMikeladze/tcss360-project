@@ -87,7 +87,7 @@ public class PaperManager {
      * @param userID he user id of the Subprogram Chair
      * @return list of papers
      */
-    @Permission(level = 400)
+    @Permission(level = 300)
     public static List<Paper> getAssignedPapersForSubprogramChair(final int conferenceID, final int userID) {
         return getAssignedPapers(conferenceID, userID, PermissionLevel.SUBPROGRAM_CHAIR);
     }
@@ -194,6 +194,7 @@ public class PaperManager {
      * @param paperID the papers id
      * @param status the status of the paper
      */
+    @Permission(level = 400)
     private static void setPaperStatus(final int paperID, final boolean status) {
         int paperStatus = status ? 2 : 1;
         Database.getInstance()
