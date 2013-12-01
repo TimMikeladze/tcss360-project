@@ -59,9 +59,7 @@ public class MainPane extends GenericPane<BorderPane> implements MainPaneCallbac
             pane = stack.pop();
         }
         else {
-            stack.pop();
-            pane = new HomePane(callbacks, this, topPane);
-            stack.push(pane);
+            pane = stack.peek();
         }
         updateBackButton();
         this.pane.setCenter(stack.peek()
@@ -71,10 +69,12 @@ public class MainPane extends GenericPane<BorderPane> implements MainPaneCallbac
     
     @Override
     public GenericPane<?> clearPanes() {
-        stack.clear();
-        GenericPane<?> pane = new HomePane(callbacks, this, topPane);;
-        stack.push(pane);
-        
+        GenericPane<?> pane = stack.peek();
+        while (stack.size() > 1) {
+            pane = popPane();
+        }
+        updateBackButton();
+        this.pane.setCenter(pane.getPane());
         return pane;
     }
     
