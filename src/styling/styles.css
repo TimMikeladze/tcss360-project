@@ -45,13 +45,13 @@
 
 .table-view, .table-view:empty { 
     -fx-color: darkred;
-    -fx-selection-bar: silver;
-    -fx-selection-bar-text: black;
     -fx-cell-hover-color: gainsboro;
+    -fx-selection-bar-text: black;
 }
 
 /* attribute headers in table view */
-.table-view .column-header {
+.table-view .column-header, .table-view:empty {
+	-fx-border-width: 0;
     -fx-border-color: darkred; 
 }
 
@@ -61,9 +61,16 @@
 	-fx-text-fill: white;
 }
 
-.table_view:empty {
-	-fx-font-weight:normal;
-	-fx-text-fill: #778899;
-    -fx-fill: #778899;
+
+.table-view {
+ 	-fx-base: darkred;
+ 	-fx-control-inner-background: white;
+ 	-fx-background-color: darkred;
+ 	-fx-focus-color: gold;
 }
 
+.table-view:focused .table-row-cell:filled:focused:selected {
+	-fx-background-color: khaki;
+	-fx-border-width: 2;
+    -fx-border-color: goldenrod; 
+}
