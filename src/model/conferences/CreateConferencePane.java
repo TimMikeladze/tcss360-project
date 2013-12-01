@@ -17,6 +17,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import view.conferences.ConferencePane;
 import view.util.Callbacks;
 import view.util.GenericPane;
 import view.util.MainPaneCallbacks;
@@ -36,7 +37,6 @@ public class CreateConferencePane extends GenericPane<GridPane> implements Event
     private Label conferenceDateLabel;
     private TextField confereceDateTextField;
     private Button createConferenceButton;
-    private Button cancelButton;
     private StatusText statusText;
     
     public CreateConferencePane(final Callbacks callbacks, final MainPaneCallbacks mainPaneCallbacks,
@@ -81,13 +81,9 @@ public class CreateConferencePane extends GenericPane<GridPane> implements Event
         confereceDateTextField.setText("Uses current date/time for now");
         
         createConferenceButton = new Button("Create");
-        cancelButton = new Button("Go Back");
         
         HBox buttonHBox = new HBox(10);
         buttonHBox.setAlignment(Pos.BOTTOM_RIGHT);
-        
-        buttonHBox.getChildren()
-                  .add(cancelButton);
         
         buttonHBox.getChildren()
                   .add(createConferenceButton);
@@ -98,14 +94,10 @@ public class CreateConferencePane extends GenericPane<GridPane> implements Event
         pane.add(statusText, 1, 6);
         
         createConferenceButton.setOnAction(this);
-        cancelButton.setOnAction(this);
     }
     
     @Override
     public void handle(final ActionEvent event) {
-        if (event.getSource() == cancelButton) {
-            mainPaneCallbacks.clearPanes();
-        }
         if (event.getSource() == createConferenceButton) {
             createConference();
         }
@@ -129,6 +121,7 @@ public class CreateConferencePane extends GenericPane<GridPane> implements Event
         private String name;
         private String location;
         private String date;
+        private Conference conference;
         
         public CreateConferenceService(final ProgressSpinnerCallbacks progressSpinnerCallbacks, final String name, final String location,
                 final String date) {
@@ -151,15 +144,15 @@ public class CreateConferencePane extends GenericPane<GridPane> implements Event
                 @Override
                 protected String call() {
                     try {
-                        int id = LoggedUser.getInstance()
-                                           .getUser()
-                                           .getID();
+                        int userID = LoggedUser.getInstance()
+                                               .getUser()
+                                               .getID();
                         
                         //TODO use date
-                        ConferenceManager.createConference(name, location, new Timestamp(Calendar.getInstance()
-                                                                                                 .getTime()
-                                                                                                 .getTime()), id);
-                        
+                        int conferenceID = ConferenceManager.createConference(name, location, new Timestamp(Calendar.getInstance()
+                                                                                                                    .getTime()
+                                                                                                                    .getTime()), userID);
+                        conference = Conference.conferenceFromID(conferenceID);
                         setSuccess(true);
                     }
                     catch (Exception e) {
@@ -176,7 +169,7 @@ public class CreateConferencePane extends GenericPane<GridPane> implements Event
         @Override
         protected void succeeded() {
             if (getSuccess()) {
-                statusText.setSuccessText("Conference created");
+                mainPaneCallbacks.pushPane(new ConferencePane(conference, callbacks, mainPaneCallbacks, progressSpinnerCallbacks));
             }
             super.succeeded();
         }

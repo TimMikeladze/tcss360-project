@@ -8,13 +8,16 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import model.conferences.Conference;
 import model.conferences.ConferenceManager;
+import model.conferences.CreateConferencePane;
 import view.util.Callbacks;
 import view.util.CustomTable;
 import view.util.GenericPane;
@@ -55,6 +58,8 @@ public class ConferencesPane extends GenericPane<GridPane> implements EventHandl
      */
     private List<Conference> listOfConferences;
     
+    private Button addConferenceButton;
+    
     public ConferencesPane(final Callbacks callbacks, final MainPaneCallbacks mainPaneCallbacks,
             final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
         super(new GridPane(), callbacks);
@@ -81,6 +86,16 @@ public class ConferencesPane extends GenericPane<GridPane> implements EventHandl
         conferencesTable.setOnMouseClicked(this);
         pane.add(myConferencesText, 0, 0);
         pane.add(conferencesTable, 0, 1);
+        
+        HBox bottomBox = new HBox(12);
+        
+        addConferenceButton = new Button("Add Conference");
+        addConferenceButton.setOnAction(this);
+        
+        bottomBox.getChildren()
+                 .add(addConferenceButton);
+        
+        pane.add(bottomBox, 0, 7);
         
         new LoadDataService(progressSpinnerCallbacks).start();
         
@@ -114,6 +129,9 @@ public class ConferencesPane extends GenericPane<GridPane> implements EventHandl
                 mainPaneCallbacks.pushPane(new ConferencePane(Conference.conferenceFromID(conferenceID), callbacks, mainPaneCallbacks,
                         progressSpinnerCallbacks));
             }
+        }
+        if (event.getSource() == addConferenceButton) {
+            mainPaneCallbacks.pushPane(new CreateConferencePane(callbacks, mainPaneCallbacks, progressSpinnerCallbacks));
         }
     }
     
