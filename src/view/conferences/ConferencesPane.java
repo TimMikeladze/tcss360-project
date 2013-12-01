@@ -3,22 +3,24 @@ package view.conferences;
 
 import java.util.List;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import model.conferences.Conference;
 import model.conferences.ConferenceManager;
+import view.util.Callbacks;
+import view.util.CustomTable;
 import view.util.GenericPane;
+import view.util.MainPaneCallbacks;
+import view.util.ProgressSpinnerCallbacks;
+import view.util.ProgressSpinnerService;
 
 /**
  * JavaFX pane responsible for displaying all conferences in the database.
@@ -26,57 +28,40 @@ import view.util.GenericPane;
  * @author Mohammad Juma
  * @version 11-23-2013
  */
-public class ConferencesPane extends GenericPane<GridPane> {
+public class ConferencesPane extends GenericPane<GridPane> implements EventHandler {
     
     /**
-     * The conference list TableView.
+     * TODO COMMENT THIS
      */
-    private TableView<ConferenceRow> table;
+    private static final int DOUBLE_CLICK = 2;
     
     /**
-     * An observable list for the conferences TableView.
+     * TODO COMMENT THIS
      */
-    private ObservableList<ConferenceRow> data;
+    private CustomTable<ConferenceRow> conferencesTable;
     
     /**
-     * Column names of conferences TableView.
+     * Column names of conferences in TableView.
      */
-    private String[] columnNames = { "Conference Name", "Program Chair", "Authors", "Reviewers", "Date" };
+    private String[] conferencesColumnNames = { "Conference Name", "Program Chair", "Authors", "Reviewers", "Date" };
     
     /**
-     * The Database variables used to populate the conferences TableView.
+     * The variable names for the conferences table used by Java FX's table classes
      */
-    private String[] variableNames = { "name", "programChair", "authors", "reviwers", "date" };
+    private String[] conferencesVariableNames = { "name", "programChair", "authors", "reviewers", "date" };
     
     /**
-     * The widths of the conferences TableView.
+     * The list of conferences for the table.
      */
-    private Integer[] columnWidths = { 30, 25, 10, 10, 25 };
+    private List<Conference> listOfConferences;
     
-    /**
-     * The list of conferences.
-     */
-    private List<Conference> conferences;
-    
-    /**
-     * After selecting a conference in the table this button will take you to that conferences
-     * page.
-     */
-    private Button viewConferenceButton;
-    
-    /**
-     * Allows a user to add a conference and become its program chair.
-     */
-    private Button addConferenceButton;
-    
-    /**
-     * Constructs a new HomePane pane that extends GridPane and displays the initial user
-     * interface the user is greeted with upon login in.
-     */
-    public ConferencesPane() {
-        super(new GridPane());
-        table = new TableView<ConferenceRow>();
-        data = FXCollections.observableArrayList();
+    public ConferencesPane(final Callbacks callbacks, final MainPaneCallbacks mainPaneCallbacks,
+            final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
+        super(new GridPane(), callbacks);
+        addMainPaneCallBacks(mainPaneCallbacks);
+        addProgressSpinnerCallBacks(progressSpinnerCallbacks);
+        
+        conferencesTable = new CustomTable<ConferenceRow>(conferencesColumnNames, conferencesVariableNames);
         
         pane.setAlignment(Pos.TOP_LEFT);
         pane.setHgap(10);
@@ -90,51 +75,90 @@ public class ConferencesPane extends GenericPane<GridPane> {
      * Creates the main components of the HomePane pane.
      */
     private void create() {
-        populateTable();
+        Text myConferencesText = new Text("My Conferences");
+        myConferencesText.setId("conf-header");
+        myConferencesText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+        conferencesTable.setOnMouseClicked(this);
+        pane.add(myConferencesText, 0, 0);
+        pane.add(conferencesTable, 0, 1);
         
-        Text titleText = new Text("Conferences");
-        titleText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+        new LoadDataService(progressSpinnerCallbacks).start();
         
-        pane.add(titleText, 0, 0);
-        pane.add(table, 0, 1);
-        
-        viewConferenceButton = new Button("View Conference");
-        
-        addConferenceButton = new Button("Add Conference");
-        
-        final HBox buttonHBox = new HBox(10);
-        buttonHBox.setAlignment(Pos.BOTTOM_LEFT);
-        buttonHBox.getChildren()
-                  .add(viewConferenceButton);
-        buttonHBox.getChildren()
-                  .add(addConferenceButton);
-        pane.add(buttonHBox, 0, 2);
     }
     
     /**
-     * Populates the conference table.
+     * Populates the tables from the database.
      */
-    private void populateTable() {
+    private void populate() {
+        if (listOfConferences != null) {
+            for (Conference c : listOfConferences) {
+                conferencesTable.add(new ConferenceRow(c.getID(), c.getName(), c.getLocation(), c.getDate(), c.getProgramChair(), c.getAuthors(),
+                        c.getReviewers()));
+            }
+            conferencesTable.updateItems();
+        }
+    }
+    
+    /**
+     * Handles user input
+     */
+    @Override
+    public void handle(final Event event) {
+        if (event.getSource() == conferencesTable) {
+            MouseEvent mouseEvent = (MouseEvent) event;
+            if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
+                int conferenceID = conferencesTable.getSelectionModel()
+                                                   .getSelectedItem()
+                                                   .getID();
+                //TODO binary search
+                mainPaneCallbacks.pushPane(new ConferencePane(Conference.conferenceFromID(conferenceID), callbacks, mainPaneCallbacks,
+                        progressSpinnerCallbacks));
+            }
+        }
+    }
+    
+    /**
+     * Loads conference
+     */
+    private class LoadDataService extends ProgressSpinnerService {
         
-        TableColumn<ConferenceRow, String> column;
-        for (int i = 0; i < columnNames.length; i++) {
-            column = new TableColumn<ConferenceRow, String>(columnNames[i]);
-            // column.setMinWidth(columnWidths[i]);
-            column.prefWidthProperty()
-                  .bind(table.widthProperty()
-                             .divide(100 / columnWidths[i]));
-            
-            column.setCellValueFactory(new PropertyValueFactory<ConferenceRow, String>(variableNames[i]));
-            
-            table.getColumns()
-                 .add(column);
+        public LoadDataService(final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
+            super(progressSpinnerCallbacks);
         }
         
-        conferences = ConferenceManager.getConferences();
-        for (Conference c : conferences) {
-            data.add(new ConferenceRow(c.getID(), c.getName(), c.getLocation(), c.getDate(), c.getProgramChair(), c.getAuthors(), c.getReviewers()));
+        /**
+         * Creates a new task for loading conferences
+         */
+        @Override
+        protected Task<String> createTask() {
+            return new Task<String>() {
+                
+                /**
+                 * Calls the new task.
+                 */
+                @Override
+                protected String call() {
+                    try {
+                        listOfConferences = ConferenceManager.getConferences();
+                        setSuccess(true);
+                    }
+                    catch (Exception e) {
+                        //TODO show error
+                    }
+                    return null;
+                }
+            };
         }
         
-        table.setItems(data);
+        /**
+         * Called when a conference loading is done to populate table
+         */
+        @Override
+        protected void succeeded() {
+            if (getSuccess()) {
+                populate();
+            }
+            super.succeeded();
+        }
     }
 }
