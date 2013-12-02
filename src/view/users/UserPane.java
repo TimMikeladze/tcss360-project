@@ -1,21 +1,15 @@
 
 package view.users;
 
-import java.util.List;
-
 import javafx.concurrent.Task;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
-import model.conferences.Conference;
 import model.users.User;
-import view.conferences.ConferenceRow;
 import view.util.Callbacks;
-import view.util.CustomTable;
 import view.util.GenericPane;
 import view.util.MainPaneCallbacks;
 import view.util.ProgressSpinnerCallbacks;
@@ -28,16 +22,6 @@ import view.util.ProgressSpinnerService;
  * @version 11-23-2013
  */
 public class UserPane extends GenericPane<GridPane> implements EventHandler {
-    
-    /**
-     * A table of the conferences a user is in.
-     */
-    private CustomTable<ConferenceRow> usersConferencesTable;
-    
-    /**
-     * The conferences a user is in.
-     */
-    private List<Conference> listOfConferences;
     
     private int userID;
     
@@ -85,29 +69,10 @@ public class UserPane extends GenericPane<GridPane> implements EventHandler {
     }
     
     /**
-     * Populates the tables from the database.
-     */
-    private void populate() {
-        if (listOfConferences != null) {
-            for (Conference conference : listOfConferences) {
-                usersConferencesTable.add(new ConferenceRow(conference.getID(), conference.getName(), conference.getDate(),
-                        conference.getProgramChair()));
-            }
-            usersConferencesTable.updateItems();
-        }
-    }
-    
-    /**
      * Handles user input
      */
     @Override
     public void handle(final Event event) {
-        if (event.getSource() == usersConferencesTable) {
-            MouseEvent mouseEvent = (MouseEvent) event;
-            if (mouseEvent.getClickCount() == 2) { // TODO change 2 to DOUBLE_CLICK
-                // TODO Do something
-            }
-        }
     }
     
     private class LoadDataService extends ProgressSpinnerService {
