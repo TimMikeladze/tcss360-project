@@ -13,12 +13,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.FileChooser;
 import model.papers.PaperManager;
 import view.util.Callbacks;
+import view.util.CustomFileChooser;
 import view.util.GenericPane;
 import view.util.MainPaneCallbacks;
 import view.util.ProgressSpinnerCallbacks;
@@ -36,7 +34,7 @@ public class UploadPaperPane extends GenericPane<GridPane> implements EventHandl
     private TextField paperDescriptionTextField;
     private Button uploadPaperButton;
     private StatusText statusText;
-    private FileChooser fileChooser;
+    private CustomFileChooser fileChooser;
     private int conferenceID;
     
     public UploadPaperPane(final int conferenceID, final Callbacks callbacks, final MainPaneCallbacks mainPaneCallbacks,
@@ -47,13 +45,7 @@ public class UploadPaperPane extends GenericPane<GridPane> implements EventHandl
         addMainPaneCallBacks(mainPaneCallbacks);
         addProgressSpinnerCallBacks(progressSpinnerCallbacks);
         
-        fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters()
-                   .add(new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt"));
-        fileChooser.getExtensionFilters()
-                   .add(new FileChooser.ExtensionFilter("DOC files (*.doc)", "*.doc"));
-        fileChooser.getExtensionFilters()
-                   .add(new FileChooser.ExtensionFilter("DOCX files (*.docx)", "*.docx"));
+        fileChooser = new CustomFileChooser();
         
         pane.setAlignment(Pos.CENTER);
         pane.setHgap(10);

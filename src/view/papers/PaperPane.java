@@ -1,6 +1,7 @@
 
 package view.papers;
 
+import java.io.File;
 import java.util.List;
 
 import javafx.concurrent.Task;
@@ -21,12 +22,14 @@ import model.reviews.ReviewManager;
 import view.conferences.ConferenceUserRow;
 import view.reviews.ReviewRow;
 import view.util.Callbacks;
+import view.util.CustomFileChooser;
 import view.util.CustomTable;
 import view.util.GenericPane;
 import view.util.MainPaneCallbacks;
 import view.util.MessageDialog;
 import view.util.ProgressSpinnerCallbacks;
 import view.util.ProgressSpinnerService;
+import controller.user.LoggedUser;
 
 /**
  * JavaFX pane responsible for displaying information about a selected paper.
@@ -44,6 +47,7 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler {
     private Button recommendPaperButton;
     private Button reuploadPaperButton;
     private Button removePaperButton;
+    private Button downloadPaperButton;
     
     private CustomTable<ReviewRow> paperReviewsTable;
     private CustomTable<ConferenceUserRow> reviewersTable;
@@ -58,6 +62,8 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler {
     private List<Review> listOfReviews;
     private List<ConferenceUser> listOfReviewers;
     private int paperID;
+    private boolean isReviewed;
+    private CustomFileChooser fileChooser;
     
     public PaperPane(final int paperID, final Callbacks callbacks, final MainPaneCallbacks mainPaneCallbacks,
             final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
@@ -65,6 +71,8 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler {
         this.paperID = paperID;
         addMainPaneCallBacks(mainPaneCallbacks);
         addProgressSpinnerCallBacks(progressSpinnerCallbacks);
+        
+        fileChooser = new CustomFileChooser();
         
         paperReviewsTable = new CustomTable<ReviewRow>(paperTableColumnNames, paperTableVariableNames);
         reviewersTable = new CustomTable<ConferenceUserRow>(reviewersTableColumnNames, reviewersTableVariableNames);
@@ -115,11 +123,14 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler {
         reuploadPaperButton = new Button("Reupload Paper");
         reuploadPaperButton.setOnAction(this);
         
-        submitReviewButton = new Button("Assign Paper");
+        submitReviewButton = new Button("Submit Review");
         submitReviewButton.setOnAction(this);
         
         addReviewerButton = new Button("Add Reviewer");
         addReviewerButton.setOnAction(this);
+        
+        downloadPaperButton = new Button("Download Paper");
+        downloadPaperButton.setOnAction(this);
         
         HBox bottomBox = new HBox(12);
         bottomBox.getChildren()
@@ -128,8 +139,10 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler {
                  .add(recommendPaperButton);
         bottomBox.getChildren()
                  .add(reuploadPaperButton);
-        bottomBox.getChildren()
-                 .add(submitReviewButton);
+        if (!isReviewed) {
+            bottomBox.getChildren()
+                     .add(submitReviewButton);
+        }
         bottomBox.getChildren()
                  .add(addReviewerButton);
         
@@ -183,7 +196,10 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler {
         }
         
         if (source == submitReviewButton) {
-            
+            File file = fileChooser.showOpenDialog(callbacks.getPrimaryStage());
+            if (file != null) {
+                new SubmitReviewService(progressSpinnerCallbacks, file).start();
+            }
         }
         if (source == recommendPaperButton) {
             
@@ -192,6 +208,9 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler {
             
         }
         if (source == removePaperButton) {
+            
+        }
+        if (source == downloadPaperButton) {
             
         }
     }
@@ -213,6 +232,9 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler {
                 protected String call() {
                     try {
                         paper = Paper.paperFromID(paperID);
+                        isReviewed = ReviewManager.isReviewed(paperID, LoggedUser.getInstance()
+                                                                                 .getUser()
+                                                                                 .getID());
                         setSuccess(true);
                     }
                     catch (Exception e) {
@@ -272,7 +294,52 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler {
         @Override
         protected void succeeded() {
             if (getSuccess()) {
-                create();
+                //create();
+            }
+            super.succeeded();
+        }
+    }
+    
+    private class SubmitReviewService extends ProgressSpinnerService {
+        
+        private File file;
+        
+        public SubmitReviewService(final ProgressSpinnerCallbacks progressSpinnerCallbacks, final File file) {
+            super(progressSpinnerCallbacks);
+            this.file = file;
+        }
+        
+        @Override
+        protected Task<String> createTask() {
+            return new Task<String>() {
+                
+                /**
+                 * Calls the new task.
+                 */
+                @Override
+                protected String call() {
+                    try {
+                        ReviewManager.submitReview(paperID, LoggedUser.getInstance()
+                                                                      .getUser()
+                                                                      .getID(), file);
+                        
+                        setSuccess(true);
+                    }
+                    catch (Exception e) {
+                        // TODO show error
+                    }
+                    return null;
+                }
+            };
+        }
+        
+        /**
+         * Called when data loading is done to populate tables
+         */
+        @Override
+        protected void succeeded() {
+            if (getSuccess()) {
+                //TODO refresh
             }
             super.succeeded();
         }

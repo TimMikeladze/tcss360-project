@@ -79,7 +79,7 @@ public class ConferencesPane extends GenericPane<GridPane> implements EventHandl
      * Creates the main components of the HomePane pane.
      */
     private void create() {
-        Text myConferencesText = new Text("My Conferences");
+        Text myConferencesText = new Text("All Conferences");
         myConferencesText.setId("conf-header");
         myConferencesText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         conferencesTable.setOnMouseClicked(this);

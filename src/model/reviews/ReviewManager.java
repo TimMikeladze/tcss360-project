@@ -37,7 +37,7 @@ public class ReviewManager {
         if (PaperManager.getPaperAuthorID(paperID) != reviewerID) {
             return Database.getInstance()
                            .createQuery(
-                                   "INSERT INTO reviews (PaperID, ReviewerID, SubmissionDate, File, FileExtension) VALUES (:paperID, :reviewerID, NOW(), :file, :fileExtension)")
+                                   "INSERT INTO reviews (PaperID, ReviewerID, File, FileExtension) VALUES (:paperID, :reviewerID, :file, :fileExtension)")
                            .addParameter("paperID", paperID)
                            .addParameter("reviewerID", reviewerID)
                            .addParameter("file", FileHandler.convertFileToBytes(file))
@@ -79,5 +79,13 @@ public class ReviewManager {
                        .addParameter("paperID", paperID)
                        .addParameter("userID", userID)
                        .executeAndFetchFirst(Review.class);
+    }
+    
+    public static boolean isReviewed(final int paperID, final int userID) {
+        return Database.hasResults(Database.getInstance()
+                                           .createQuery("SELECT 1 FROM reviews WHERE PaperID = :paperID AND reviewerID = :userID")
+                                           .addParameter("paperID", paperID)
+                                           .addParameter("userID", userID)
+                                           .executeAndFetchTable());
     }
 }
