@@ -225,4 +225,12 @@ public class Paper {
         return recommended == 1;
     }
     
+    public String isRecommendedString() {
+    	if (recommended == 1) {
+    		return "Yes";
+    	} else {
+    		return "No";
+    	}
+    }
+    
 }

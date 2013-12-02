@@ -23,6 +23,8 @@ public class PaperRow {
     
     private String revised;
     
+    private String isRecommended;
+    
     /**
      * @param id
      * @param paperName
@@ -55,6 +57,19 @@ public class PaperRow {
         this.id = id;
         this.paperName = paperName;
         this.date = date;
+    }
+    
+    /**
+     * @param id
+     * @param paperName
+     * @param date
+     * @param isRecommended 
+     */
+    public PaperRow(final int id, final String paperName, final Timestamp date, String isRecommendedString) {
+        this.id = id;
+        this.paperName = paperName;
+        this.date = date;
+        this.isRecommended = isRecommendedString;
     }
     
     /**
