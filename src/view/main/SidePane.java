@@ -27,6 +27,10 @@ public class SidePane extends GenericPane<TilePane> {
         create();
     }
     
+	public GenericPane<TilePane> refresh() {
+		return new SidePane(callbacks);
+	}
+    
     /**
      * Creates the side pane.
      */

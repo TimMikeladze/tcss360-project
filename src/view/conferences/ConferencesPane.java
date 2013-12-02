@@ -79,6 +79,10 @@ public class ConferencesPane extends GenericPane<GridPane> implements EventHandl
         create();
     }
     
+	public GenericPane<GridPane> refresh() {
+		return new ConferencesPane(callbacks, mainPaneCallbacks, progressSpinnerCallbacks);
+	}
+    
     /**
      * Creates the main components of the HomePane pane.
      */
@@ -181,4 +185,6 @@ public class ConferencesPane extends GenericPane<GridPane> implements EventHandl
             super.succeeded();
         }
     }
+
+	
 }

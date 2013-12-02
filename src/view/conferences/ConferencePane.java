@@ -136,6 +136,8 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
     
     private Button assignPaperButton;
     
+    private Conference conference;
+    
     /**
      * Constructs a new Conference Pane that extends GridPane and displays the information about
      * the given conference.
@@ -147,6 +149,7 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
         addMainPaneCallBacks(mainPaneCallbacks);
         addProgressSpinnerCallBacks(progressSpinnerCallbacks);
         
+        this.conference = conference;
         conferenceID = conference.getID();
         conferenceNameText = new Text("Conference: " + conference.getName());
         conferenceNameText.setId("conf-text");
@@ -174,7 +177,12 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
         create();
     }
     
-    //TODO need to add permission checks for buttons
+	public GenericPane<GridPane> refresh() {
+		return new ConferencePane(conference, callbacks, mainPaneCallbacks, progressSpinnerCallbacks);
+	}
+
+
+	//TODO need to add permission checks for buttons
     /**
      * Creates the main components of the ConferencePane pane.
      */

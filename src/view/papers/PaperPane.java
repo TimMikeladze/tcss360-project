@@ -84,6 +84,10 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler {
         loadPaper();
     }
     
+	public GenericPane<GridPane> refresh() {
+		return new PaperPane(paperID, callbacks, mainPaneCallbacks, progressSpinnerCallbacks);
+	}
+    
     private void loadPaper() {
         new LoadPaperService(progressSpinnerCallbacks).start();
         new LoadDataService(progressSpinnerCallbacks).start();

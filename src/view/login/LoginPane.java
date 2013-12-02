@@ -84,6 +84,10 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
         create();
     }
     
+	public GenericPane<GridPane> refresh() {
+		return new LoginPane();
+	}
+    
     /**
      * Creates the main components of the LoginPane pane.
      */
@@ -254,4 +258,6 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
         }
         
     }
+
+
 }
