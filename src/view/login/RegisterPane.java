@@ -121,7 +121,7 @@ public class RegisterPane extends GenericPane<GridPane> implements EventHandler<
                 new RegistrationService(callbacks.getPrimaryStage(), firstName, lastName, email)
                         .start();
             }
-        }
+        } 
         else if (event.getSource() == returnButton) {
             callbacks.changeScene(new LoginPane());
         }

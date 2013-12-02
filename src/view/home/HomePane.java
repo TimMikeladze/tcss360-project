@@ -20,6 +20,7 @@ import model.papers.PaperManager;
 import model.reviews.Review;
 import view.conferences.ConferencePane;
 import view.conferences.ConferenceRow;
+import view.papers.PaperPane;
 import view.papers.PaperRow;
 import view.reviews.ReviewRow;
 import view.util.Callbacks;
@@ -199,20 +200,23 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
                 mainPaneCallbacks.pushPane(new ConferencePane(Conference.conferenceFromID(conferenceID), callbacks, mainPaneCallbacks,
                         progressSpinnerCallbacks));
             }
-        }
-        if (event.getSource() == papersTable) {
+        } else if (event.getSource() == papersTable) {
             MouseEvent mouseEvent = (MouseEvent) event;
             if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
                 int paperID = papersTable.getSelectionModel()
                                          .getSelectedItem()
                                          .getId();
+                mainPaneCallbacks.pushPane(new PaperPane(paperID, callbacks, mainPaneCallbacks, progressSpinnerCallbacks));
             }
-            if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
+        } else if (event.getSource() == reviewsTable) {
+        	MouseEvent mouseEvent = (MouseEvent) event;
+        	if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
                 int reviewID = reviewsTable.getSelectionModel()
                                            .getSelectedItem()
                                            .getId();
             }
         }
+        
     }
     
     /**

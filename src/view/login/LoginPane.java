@@ -159,13 +159,11 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
             if (keyEvent.getCode() == KeyCode.ENTER) {
                 login();
             }
-        }
-        
-        if (event.getSource() == signInButton) {
+        } 
+        else if (event.getSource() == signInButton) {
             login();
-        }
-        
-        if (event.getSource() == registerButton) {
+        } 
+        else if (event.getSource() == registerButton) {
             callbacks.changeScene(new RegisterPane());
         }
     }

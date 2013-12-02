@@ -186,39 +186,37 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
                                                .getSelectedItem()
                                                .getId();
             }
-        }
-        if (source == reviewersTable) {
+        } 
+        else if (source == reviewersTable) {
             MouseEvent mouseEvent = (MouseEvent) event;
             if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
                 int userID = reviewersTable.getSelectionModel()
                                            .getSelectedItem()
                                            .getID();
             }
-        }
-        
-        if (source == assignReviewer) {
+        } 
+        else if (source == assignReviewer) {
             
-        }
-        
-        if (source == submitReviewButton) {
+        } 
+        else if (source == submitReviewButton) {
             File file = fileChooser.showOpenDialog(callbacks.getPrimaryStage());
             if (file != null) {
                 new SubmitReviewService(progressSpinnerCallbacks, file).start();
             }
-        }
-        if (source == recommendPaperButton) {
+        } 
+        else if (source == recommendPaperButton) {
             new RecommendPaperService(progressSpinnerCallbacks).start();
-        }
-        if (source == reuploadPaperButton) {
+        } 
+        else if (source == reuploadPaperButton) {
             File file = fileChooser.showOpenDialog(callbacks.getPrimaryStage());
             if (file != null) {
                 new ReUploadPaperService(progressSpinnerCallbacks, file).start();
             }
         }
-        if (source == removePaperButton) {
+        else if (source == removePaperButton) {
             new RemovePaperService(progressSpinnerCallbacks).start();
         }
-        if (source == downloadPaperButton) {
+        else if (source == downloadPaperButton) {
             fileChooser.showSaveDialog(callbacks.getPrimaryStage());
         }
     }
