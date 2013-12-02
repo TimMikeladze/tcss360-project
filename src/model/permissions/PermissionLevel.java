@@ -56,4 +56,29 @@ public enum PermissionLevel {
     public int getPermission() {
         return permission;
     }
+    
+    public static String getRole(final PermissionLevel permission) {
+        String role = "";
+        switch (permission) {
+            case AUTHOR:
+                role = "Author";
+                break;
+            case REVIEWER:
+                role = "Reviewer";
+                break;
+            case SUBPROGRAM_CHAIR:
+                role = "Subprogram Chair";
+                break;
+            case PROGRAM_CHAIR:
+                role = "Program Chair";
+                break;
+            case ADMIN:
+                role = "Admin";
+                break;
+            default:
+                break;
+        }
+        return role;
+        
+    }
 }

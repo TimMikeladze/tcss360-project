@@ -20,15 +20,15 @@ import model.papers.Paper;
 import model.papers.PaperManager;
 import model.permissions.PermissionLevel;
 import view.papers.PaperRow;
-import view.users.UserRow;
+import view.papers.UploadPaperPane;
 import view.users.UsersPane;
 import view.util.Callbacks;
 import view.util.CustomTable;
 import view.util.GenericPane;
 import view.util.MainPaneCallbacks;
+import view.util.MessageDialog;
 import view.util.ProgressSpinnerCallbacks;
 import view.util.ProgressSpinnerService;
-import controller.user.LoggedUser;
 
 /**
  * JavaFX pane responsible for displaying information about a selected conference.
@@ -56,12 +56,12 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
     /**
      * Column names of conference users TableView.
      */
-    private final String[] conferenceUsersColumnNames = { "First Name", "Last Name", "Role" };
+    private final String[] conferenceUsersColumnNames = { "Name", "Role" };
     
     /**
      * The Database variables used to populate the conference users TableView.
      */
-    private final String[] conferenceUsersVariableNames = { "firstName", "lastName", "role" };
+    private final String[] conferenceUsersVariableNames = { "name", "role" };
     
     /**
      * The name of the conference.
@@ -106,7 +106,7 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
     /**
      * List of users in the conference.
      */
-    private CustomTable<UserRow> conferenceUsersTable;
+    private CustomTable<ConferenceUserRow> conferenceUsersTable;
     
     /**
      * The list of papers in the conference.
@@ -161,7 +161,7 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
         
         conferencePapersTable = new CustomTable<PaperRow>(conferencePapersColumnolumnNames, conferencePapersVariableNames);
         
-        conferenceUsersTable = new CustomTable<UserRow>(conferenceUsersColumnNames, conferenceUsersVariableNames);
+        conferenceUsersTable = new CustomTable<ConferenceUserRow>(conferenceUsersColumnNames, conferenceUsersVariableNames);
         
         pane.setAlignment(Pos.TOP_LEFT);
         pane.setHgap(10);
@@ -246,9 +246,9 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
         }
         if (listOfUsers != null) {
             for (ConferenceUser u : listOfUsers) {
-                //conferenceUsersTable.add(new UserRow(u.getUserID(), u.getUser().getFirstName(),
-                //      u.getUser().getLastName(), u.get));
+                conferenceUsersTable.add(new ConferenceUserRow(u.getUserID(), u.getUsername(), u.getRole()));
             }
+            conferenceUsersTable.updateItems();
         }
     }
     
@@ -280,7 +280,10 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
         }
         
         if (source == addSubprogramChairButton) {
-            
+            //TODO finish
+        }
+        if (source == uploadPaperButton) {
+            mainPaneCallbacks.pushPane(new UploadPaperPane(conferenceID, callbacks, mainPaneCallbacks, progressSpinnerCallbacks));
         }
     }
     
@@ -324,7 +327,9 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
                         System.out.println("adding " + userID);
                     }
                     catch (Exception e) {
-                        //TODO show error
+                        //TODO make sure message dialog works
+                        new MessageDialog(callbacks.getPrimaryStage()).showDialog(e.getMessage(), false);
+                        
                     }
                     return null;
                 }
@@ -367,14 +372,9 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
                 @Override
                 protected String call() {
                     try {
-                        int id = LoggedUser.getInstance()
-                                           .getUser()
-                                           .getID();
                         listOfPapers = PaperManager.getPapers(conferenceID);
                         listOfUsers = ConferenceManager.getUsersInConference(conferenceID);
                         
-                        //TODO implement reviews
-                        //reviews = ReviewManager.getReviews(;
                         setSuccess(true);
                     }
                     catch (Exception e) {
