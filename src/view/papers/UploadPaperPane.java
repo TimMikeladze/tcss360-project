@@ -65,7 +65,7 @@ public class UploadPaperPane extends GenericPane<GridPane> implements EventHandl
     
     private void create() {
         scenetitle = new Text("Upload paper");
-        scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+        scenetitle.setId("header1");
         pane.add(scenetitle, 0, 0);
         
         paperNameLabel = new Label("Title:");

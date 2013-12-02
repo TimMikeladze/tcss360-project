@@ -78,6 +78,7 @@ public class UsersPane extends Stage implements EventHandler {
         root = new BorderPane();
         scene = new Scene(root, DEFAULT_WIDTH, DEFAULT_HEIGHT);
         
+        usersTable.setStyle("-fx-color: darkred; -fx-border-width: 1; -fx-border-color: aqua;");
         usersTable = new CustomTable<UserRow>(usersColumnNames, usersVariableNames);
         initModality(Modality.WINDOW_MODAL);
         initOwner(owner);
