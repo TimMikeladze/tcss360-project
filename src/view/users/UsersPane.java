@@ -18,7 +18,6 @@ import model.conferences.ConferenceManager;
 import model.permissions.PermissionLevel;
 import model.users.User;
 import model.users.UserManager;
-import view.conferences.AddUserCallback;
 import view.util.CustomTable;
 import view.util.ProgressSpinnerCallbacks;
 import view.util.ProgressSpinnerService;
@@ -71,30 +70,9 @@ public class UsersPane extends Stage implements EventHandler {
     
     private ProgressSpinnerCallbacks progressSpinnerCallbacks;
     
-    private AddUserCallback addUserCallback;
-    
     private int conferenceId;
     
-    private PermissionLevel permission;
-    
-    public UsersPane(final Stage owner,
-            final ProgressSpinnerCallbacks progressSpinnerCallbacks,
-            final AddUserCallback addUserCallback) {
-        this.progressSpinnerCallbacks = progressSpinnerCallbacks;
-        this.addUserCallback = addUserCallback;
-        
-        root = new BorderPane();
-        scene = new Scene(root, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-        
-        usersTable = new CustomTable<UserRow>(usersColumnNames, usersVariableNames);
-        usersTable
-                .setStyle("-fx-selection-bar: khaki; -fx-selection-bar-border: goldenrod; -fx-cell-focus-inner-border: goldenrod;"
-                        + "-fx-selection-bar-text: black; -fx-base: indianred; -fx-cell-hover-color: lightgrey;");
-        
-        initModality(Modality.WINDOW_MODAL);
-        initOwner(owner);
-        
-    }
+    private PermissionLevel permissionLevel;
     
     public UsersPane(final Stage owner,
             final ProgressSpinnerCallbacks progressSpinnerCallbacks, final int conferenceId,
@@ -112,7 +90,7 @@ public class UsersPane extends Stage implements EventHandler {
         initOwner(owner);
         
         this.conferenceId = conferenceId;
-        this.permission = permission;
+        this.permissionLevel = permission;
     }
     
     public void showDialog() {
@@ -156,7 +134,8 @@ public class UsersPane extends Stage implements EventHandler {
             if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
                 close();
                 new AddUserService(progressSpinnerCallbacks, conferenceId, usersTable
-                        .getSelectionModel().getSelectedItem().getID(), permission).start();
+                        .getSelectionModel().getSelectedItem().getID(), permissionLevel)
+                        .start();
             }
         }
     }

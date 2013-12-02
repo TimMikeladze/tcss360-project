@@ -28,7 +28,6 @@ import view.util.Callbacks;
 import view.util.CustomTable;
 import view.util.GenericPane;
 import view.util.MainPaneCallbacks;
-import view.util.MessageDialog;
 import view.util.ProgressSpinnerCallbacks;
 import view.util.ProgressSpinnerService;
 
@@ -38,8 +37,7 @@ import view.util.ProgressSpinnerService;
  * @author Mohammad Juma
  * @version 11-23-2013
  */
-public class ConferencePane extends GenericPane<GridPane> implements EventHandler,
-        AddUserCallback {
+public class ConferencePane extends GenericPane<GridPane> implements EventHandler {
     
     /**
      * Number of clicks for a double click.
@@ -279,71 +277,12 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
         }
         
         if (source == addSubprogramChairButton) {
-            new UsersPane(callbacks.getPrimaryStage(), progressSpinnerCallbacks, this)
-                    .showDialog();
+            new UsersPane(callbacks.getPrimaryStage(), progressSpinnerCallbacks, conferenceID,
+                    PermissionLevel.SUBPROGRAM_CHAIR).showDialog();
         }
         if (source == uploadPaperButton) {
             mainPaneCallbacks.pushPane(new UploadPaperPane(conferenceID, callbacks,
                     mainPaneCallbacks, progressSpinnerCallbacks));
-        }
-    }
-    
-    @Override
-    public void addReviewer(final int userID) {
-        new AddUserService(progressSpinnerCallbacks, conferenceID, userID,
-                PermissionLevel.REVIEWER).start();
-    }
-    
-    /**
-     * Adds a user to the conference
-     * 
-     * 
-     */
-    private class AddUserService extends ProgressSpinnerService {
-        
-        private int conferenceID;
-        private int userID;
-        private PermissionLevel permission;
-        
-        public AddUserService(final ProgressSpinnerCallbacks progressSpinnerCallbacks,
-                final int ConferenceID, final int UserID, final PermissionLevel permission) {
-            super(progressSpinnerCallbacks);
-            
-            this.conferenceID = ConferenceID;
-            this.userID = UserID;
-            this.permission = permission;
-        }
-        
-        @Override
-        protected Task<String> createTask() {
-            return new Task<String>() {
-                
-                /**
-                 * Calls the new task.
-                 */
-                @Override
-                protected String call() {
-                    try {
-                        ConferenceManager.addUserToConference(conferenceID, userID, permission);
-                        setSuccess(true);
-                        System.out.println("adding " + userID);
-                    }
-                    catch (Exception e) {
-                        //TODO make sure message dialog works
-                        new MessageDialog(callbacks.getPrimaryStage()).showDialog(
-                                e.getMessage(), false);
-                        
-                    }
-                    return null;
-                }
-            };
-        }
-        
-        @Override
-        protected void succeeded() {
-            if (getSuccess()) {
-            }
-            super.succeeded();
         }
     }
     
