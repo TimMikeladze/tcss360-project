@@ -60,7 +60,7 @@ public class RegisterPane extends GenericPane<GridPane> implements EventHandler<
      */
     private void create() {
         scenetitle = new Text("Registration");
-        scenetitle.setId("reg-title");
+        scenetitle.setId("header1");
         pane.add(scenetitle, 0, 0);
         
         firstName = new Label("First Name:");

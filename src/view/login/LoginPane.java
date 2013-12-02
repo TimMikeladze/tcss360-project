@@ -89,7 +89,7 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
      */
     private void create() {
         welcomeText = new Text("Welcome");
-        welcomeText.setId("login-title");
+        welcomeText.setId("header1");
         pane.add(welcomeText, 0, 0, 2, 1);
         
         emailLabel = new Label("Email:");

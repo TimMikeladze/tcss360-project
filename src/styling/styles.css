@@ -27,7 +27,7 @@
 }
 
 /* h1 */
-#login-title, #reg-title {
+#login-title, #reg-title, #header1 {
 	-fx-fill: snow;
 	-fx-font-family: Tahoma;
 	-fx-font-size: 24px;

@@ -56,6 +56,7 @@ public class CreateConferencePane extends GenericPane<GridPane> implements Event
     
     private void create() {
         scenetitle = new Text("Create Conference");
+        scenetitle.setId("header1");
         scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         pane.add(scenetitle, 0, 0);
         
