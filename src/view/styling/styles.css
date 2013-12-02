@@ -31,7 +31,7 @@
 }
 
 /* h1 */
-#login-title, #reg-title, #header1 {
+#header1 {
 	-fx-fill: snow;
 	-fx-font-family: Tahoma;
 	-fx-font-size: 24px;
@@ -40,7 +40,7 @@
 }
 
 /* h2 */
-#conf-header, #paper-header, #rev-header, #conf-title {
+#header2 {
 	-fx-fill: snow;
 	-fx-font-size: 20px;
 	-fx-font-weight: bold;
@@ -96,6 +96,7 @@
 
 /* Will style text uncovered by this code */
 .calendar .label {
+	-fx-fill: black;
 	-fx-text-fill: black;
 }
 
@@ -111,7 +112,8 @@
     -fx-padding: 0.2em;
 }
 
-/* main content area of month/year/decades. changed when you click top-center button of calendar */
+/* main content area of month/year/decades. 
+	changed when you click top-center button of calendar */
 .calendar-month-view, .calendar-year-view, .calendar-decades-view {
     -fx-background-color: white;
     -fx-padding: 0;
@@ -133,6 +135,7 @@
 .calendar-cell-current-month:hover, .calendar-year-button:hover, .calendar-month-button:hover {
     -fx-background-color: gainsboro;
     -fx-text-fill: black;
+    -fx-display: none;
 }
 
 /* day buttons for the previous and next month */
@@ -193,7 +196,6 @@
 /* below the header, contains the weekday column names */
 .calendar-weekdays {
     -fx-background-color: indianred;
-    -fx-text-fill: white;
     -fx-padding: 3px;
 }
 
