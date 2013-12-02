@@ -84,9 +84,10 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
         create();
     }
     
-	public GenericPane<GridPane> refresh() {
-		return new LoginPane();
-	}
+    @Override
+    public GenericPane<GridPane> refresh() {
+        return new LoginPane();
+    }
     
     /**
      * Creates the main components of the LoginPane pane.
@@ -111,10 +112,8 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
         
         final HBox buttonHBox = new HBox(10);
         buttonHBox.setAlignment(Pos.BOTTOM_RIGHT);
-        buttonHBox.getChildren()
-                  .add(signInButton);
-        buttonHBox.getChildren()
-                  .add(registerButton);
+        buttonHBox.getChildren().add(signInButton);
+        buttonHBox.getChildren().add(registerButton);
         pane.add(buttonHBox, 1, 4);
         
         signInText = new StatusText();
@@ -124,8 +123,8 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
         pane.add(progressIndicator, 1, 1);
         
         //TODO remove this when done
-        emailTextField.setText("bobama@email.us");
-        login();
+        // emailTextField.setText("bobama@email.us");
+        //login();
         
     }
     
@@ -159,10 +158,10 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
             if (keyEvent.getCode() == KeyCode.ENTER) {
                 login();
             }
-        } 
+        }
         else if (event.getSource() == signInButton) {
             login();
-        } 
+        }
         else if (event.getSource() == registerButton) {
             callbacks.changeScene(new RegisterPane());
         }
@@ -172,8 +171,7 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
      * Validates fields and logs in.
      */
     private void login() {
-        String email = emailTextField.getText()
-                                     .trim();
+        String email = emailTextField.getText().trim();
         if (email.isEmpty()) {
             signInText.setErrorText("Forgot to enter an email");
         }
@@ -210,10 +208,8 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
                 @Override
                 protected String call() {
                     try {
-                        User user = Login.loginUser(emailTextField.getText()
-                                                                  .trim());
-                        LoggedUser.getInstance()
-                                  .setUser(user);
+                        User user = Login.loginUser(emailTextField.getText().trim());
+                        LoggedUser.getInstance().setUser(user);
                         success = true;
                     }
                     catch (DatabaseException e) {
@@ -232,8 +228,7 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
         
         @Override
         protected void executeTask(final Task<String> task) {
-            progressIndicator.progressProperty()
-                             .bind(task.progressProperty());
+            progressIndicator.progressProperty().bind(task.progressProperty());
             progressIndicator.setStyle(" -fx-progress-color: gold;");
             setProgressIndicatorVisible(true);
             super.executeTask(task);
@@ -256,6 +251,5 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
         }
         
     }
-
-
+    
 }

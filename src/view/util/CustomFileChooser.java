@@ -17,12 +17,14 @@ public class CustomFileChooser {
     
     public CustomFileChooser() {
         fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters()
-                   .add(new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt"));
-        fileChooser.getExtensionFilters()
-                   .add(new FileChooser.ExtensionFilter("DOC files (*.doc)", "*.doc"));
-        fileChooser.getExtensionFilters()
-                   .add(new FileChooser.ExtensionFilter("DOCX files (*.docx)", "*.docx"));
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt"));
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("DOC files (*.doc)", "*.doc"));
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("DOCX files (*.docx)", "*.docx"));
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Rich files (*.rtf)", "*.rtf"));
     }
     
     @Override

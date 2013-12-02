@@ -154,6 +154,7 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
         bottomBox.getChildren().add(removePaperButton);
         bottomBox.getChildren().add(recommendPaperButton);
         bottomBox.getChildren().add(reuploadPaperButton);
+        bottomBox.getChildren().add(downloadPaperButton);
         bottomBox.getChildren().add(acceptRejectPaperButton);
         if (!isReviewed) {
             bottomBox.getChildren().add(submitReviewButton);
@@ -227,7 +228,7 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
             new RemovePaperService(progressSpinnerCallbacks).start();
         }
         else if (source == downloadPaperButton) {
-            fileChooser.showSaveDialog(callbacks.getPrimaryStage());
+            File saveLocation = fileChooser.showSaveDialog(callbacks.getPrimaryStage());
         }
         else if (source == acceptRejectPaperButton) {
             new PaperStatePane(callbacks.getPrimaryStage(), progressSpinnerCallbacks, paperID)
