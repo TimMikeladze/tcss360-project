@@ -38,8 +38,7 @@ public class UserPane extends GenericPane<GridPane> implements EventHandler, Add
     /**
      * The conference tables column names.
      */
-    private static final String[] conferenceColumnNames = { "Conference Name", "Program Chair",
-            "Date" };
+    private static final String[] conferenceColumnNames = { "Conference Name", "Program Chair", "Date" };
     
     /**
      * The conference tables variable names.
@@ -113,13 +112,13 @@ public class UserPane extends GenericPane<GridPane> implements EventHandler, Add
     
     /**
      * TODO
+     * 
      * @param user
      * @param callbacks
      * @param mainPaneCallbacks
      * @param progressSpinnerCallbacks
      */
-    public UserPane(final User user, final Callbacks callbacks,
-            final MainPaneCallbacks mainPaneCallbacks,
+    public UserPane(final User user, final Callbacks callbacks, final MainPaneCallbacks mainPaneCallbacks,
             final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
         super(new GridPane(), callbacks);
         addMainPaneCallBacks(mainPaneCallbacks);
@@ -160,8 +159,8 @@ public class UserPane extends GenericPane<GridPane> implements EventHandler, Add
     private void populate() {
         if (listOfConferences != null) {
             for (Conference conference : listOfConferences) {
-                usersConferencesTable.add(new ConferenceRow(conference.getID(), conference
-                        .getName(), conference.getDate(), conference.getProgramChair()));
+                usersConferencesTable.add(new ConferenceRow(conference.getID(), conference.getName(), conference.getDate(),
+                        conference.getProgramChair()));
             }
             usersConferencesTable.updateItems();
         }
@@ -231,19 +230,3 @@ public class UserPane extends GenericPane<GridPane> implements EventHandler, Add
         
     }
 }
-/*
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-*/

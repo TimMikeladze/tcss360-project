@@ -19,6 +19,7 @@ import model.papers.Paper;
 import model.papers.PaperManager;
 import model.reviews.Review;
 import model.reviews.ReviewManager;
+import view.conferences.AddUserCallback;
 import view.conferences.ConferenceUserRow;
 import view.reviews.ReviewRow;
 import view.util.Callbacks;
@@ -37,12 +38,12 @@ import controller.user.LoggedUser;
  * @author Mohammad Juma
  * @version 11-23-2013
  */
-public class PaperPane extends GenericPane<GridPane> implements EventHandler {
+public class PaperPane extends GenericPane<GridPane> implements EventHandler, AddUserCallback {
     
     private static final int DOUBLE_CLICK = 2;
     private Text paperNameText;
     private Text paperDescriptionText;
-    private Button addReviewerButton;
+    private Button assignReviewer;
     private Button submitReviewButton;
     private Button recommendPaperButton;
     private Button reuploadPaperButton;
@@ -126,8 +127,8 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler {
         submitReviewButton = new Button("Submit Review");
         submitReviewButton.setOnAction(this);
         
-        addReviewerButton = new Button("Add Reviewer");
-        addReviewerButton.setOnAction(this);
+        assignReviewer = new Button("Add Reviewer");
+        assignReviewer.setOnAction(this);
         
         downloadPaperButton = new Button("Download Paper");
         downloadPaperButton.setOnAction(this);
@@ -144,7 +145,7 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler {
                      .add(submitReviewButton);
         }
         bottomBox.getChildren()
-                 .add(addReviewerButton);
+                 .add(assignReviewer);
         
         pane.add(bottomBox, 0, 7);
     }
@@ -155,16 +156,15 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler {
     private void populate() {
         if (listOfReviews != null) {
             for (Review r : listOfReviews) {
-                ///conferencePapersTable.add(new PaperRow(p.getPaperID(), p.getTitle(), p.getSubmissionDate()));
             }
             paperReviewsTable.updateItems();
         }
         
-        if (listOfReviews != null) {
+        if (listOfReviewers != null) {
             for (ConferenceUser u : listOfReviewers) {
-                ///conferencePapersTable.add(new PaperRow(p.getPaperID(), p.getTitle(), p.getSubmissionDate()));
+                reviewersTable.add(new ConferenceUserRow(u.getUserID(), u.getUsername(), u.getRole()));
             }
-            paperReviewsTable.updateItems();
+            reviewersTable.updateItems();
         }
     }
     
@@ -191,7 +191,7 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler {
             }
         }
         
-        if (source == addReviewerButton) {
+        if (source == assignReviewer) {
             
         }
         
@@ -213,6 +213,12 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler {
         if (source == downloadPaperButton) {
             
         }
+    }
+    
+    @Override
+    public void addReviewer(final int userID) {
+        // TODO Auto-generated method stub
+        
     }
     
     private class LoadPaperService extends ProgressSpinnerService {
@@ -294,7 +300,7 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler {
         @Override
         protected void succeeded() {
             if (getSuccess()) {
-                //create();
+                populate();
             }
             super.succeeded();
         }
@@ -344,4 +350,5 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler {
             super.succeeded();
         }
     }
+    
 }

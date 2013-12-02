@@ -25,7 +25,7 @@ public abstract class GenericPane<T extends Pane> {
      * The pane.
      */
     protected T pane;
-
+    
     /**
      * Main Pane callbacks.
      */
@@ -85,4 +85,5 @@ public abstract class GenericPane<T extends Pane> {
     public T getPane() {
         return pane;
     }
+    
 }
