@@ -44,6 +44,7 @@ public class CustomTable<T> extends TableView<T> {
      * Creates the table given the columns and widths.
      */
     private void create() {
+        setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         TableColumn<T, String> column;
         for (int i = 0; i < columnNames.length; i++) {
             column = new TableColumn<T, String>(columnNames[i]);
