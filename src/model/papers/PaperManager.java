@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import model.conferences.ConferenceManager;
 import model.database.Database;
 import model.database.DatabaseException;
 import model.database.Errors;
@@ -60,7 +59,14 @@ public class PaperManager {
                     .addParameter("fileExtension", FileHandler.getFileExtension(file))
                     .executeUpdate()
                     .getKey(Integer.class);
-            ConferenceManager.addUserToConference(conferenceID, authorID, PermissionLevel.AUTHOR);
+            //    ConferenceManager.addUserToConference(conferenceID, authorID, PermissionLevel.AUTHOR);
+            Database.getInstance()
+                    .createQuery(
+                            "INSERT IGNORE INTO conference_users (ConferenceID, UserID, PermissionID) VALUES (:conferenceID, :userID, :permissionID)")
+                    .addParameter("conferenceID", conferenceID)
+                    .addParameter("userID", authorID)
+                    .addParameter("permissionID", PermissionLevel.AUTHOR)
+                    .executeUpdate();
         }
         else {
             throw new DatabaseException(Errors.MAX_PAPER_SUBMISSIONS_EXCEEDED);

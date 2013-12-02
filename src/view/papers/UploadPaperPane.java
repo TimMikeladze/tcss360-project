@@ -129,6 +129,9 @@ public class UploadPaperPane extends GenericPane<GridPane> implements EventHandl
         public CreatepaperService(final ProgressSpinnerCallbacks progressSpinnerCallbacks, final String name, final String description,
                 final File file) {
             super(progressSpinnerCallbacks);
+            this.name = name;
+            this.description = description;
+            this.file = file;
         }
         
         /**
