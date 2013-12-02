@@ -85,9 +85,10 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
         loadPaper();
     }
     
-	public GenericPane<GridPane> refresh() {
-		return new PaperPane(paperID, callbacks, mainPaneCallbacks, progressSpinnerCallbacks);
-	}
+    @Override
+    public GenericPane<GridPane> refresh() {
+        return new PaperPane(paperID, callbacks, mainPaneCallbacks, progressSpinnerCallbacks);
+    }
     
     private void loadPaper() {
         new LoadPaperService(progressSpinnerCallbacks).start();
@@ -212,7 +213,7 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
             
         }
         if (source == removePaperButton) {
-            
+            new RemovePaperService(progressSpinnerCallbacks).start();
         }
         if (source == downloadPaperButton) {
             
@@ -223,6 +224,46 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
     public void addReviewer(final int userID) {
         // TODO Auto-generated method stub
         
+    }
+    
+    private class RemovePaperService extends ProgressSpinnerService {
+        
+        public RemovePaperService(final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
+            super(progressSpinnerCallbacks);
+        }
+        
+        @Override
+        protected Task<String> createTask() {
+            return new Task<String>() {
+                
+                /**
+                 * Calls the new task.
+                 */
+                @Override
+                protected String call() {
+                    try {
+                        PaperManager.removePaper(paperID, LoggedUser.getInstance()
+                                                                    .getUser()
+                                                                    .getID());
+                        setSuccess(true);
+                    }
+                    catch (Exception e) {
+                        //TODO make sure message dialog works
+                        new MessageDialog(callbacks.getPrimaryStage()).showDialog(e.getMessage(), false);
+                        
+                    }
+                    return null;
+                }
+            };
+        }
+        
+        @Override
+        protected void succeeded() {
+            if (getSuccess()) {
+                mainPaneCallbacks.popPane();
+            }
+            super.succeeded();
+        }
     }
     
     private class LoadPaperService extends ProgressSpinnerService {
