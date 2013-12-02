@@ -39,7 +39,8 @@ import controller.user.LoggedUser;
  * @author Mohammad Juma
  * @version 11-23-2013
  */
-public class CreateConferencePane extends GenericPane<GridPane> implements EventHandler<ActionEvent> {
+public class CreateConferencePane extends GenericPane<GridPane> implements
+        EventHandler<ActionEvent> {
     
     /**
      * Create Conference Text.
@@ -98,7 +99,8 @@ public class CreateConferencePane extends GenericPane<GridPane> implements Event
      * @param mainPaneCallbacks Callback for the center pane of the main pane.
      * @param progressSpinnerCallbacks Callback for the progress spinner.
      */
-    public CreateConferencePane(final Callbacks callbacks, final MainPaneCallbacks mainPaneCallbacks,
+    public CreateConferencePane(final Callbacks callbacks,
+            final MainPaneCallbacks mainPaneCallbacks,
             final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
         super(new GridPane());
         addCallbacks(callbacks);
@@ -145,28 +147,20 @@ public class CreateConferencePane extends GenericPane<GridPane> implements Event
         pane.add(conferenceDateLabel, 0, 3);
         
         datePicker = new DatePicker();
-        datePicker.localeProperty()
-                  .set(Locale.US);
-        datePicker.getCalendarView()
-                  .todayButtonTextProperty()
-                  .set("Today");
-        datePicker.getCalendarView()
-                  .setShowWeeks(false);
-        callbacks.getScene()
-                 .getStylesheets()
-                 .add("view/styling/calendarstyle.css");
-        datePicker.selectedDateProperty()
-                  .addListener(new InvalidationListener() {
-                      
-                      @Override
-                      public void invalidated(final Observable observable) {
-                          Date selected = datePicker.selectedDateProperty()
-                                                    .get();
-                          System.out.println(selected);
-                          conferenceDate = new Timestamp(selected.getTime());
-                          System.out.println(conferenceDate);
-                      }
-                  });
+        datePicker.localeProperty().set(Locale.US);
+        datePicker.getCalendarView().todayButtonTextProperty().set("Today");
+        datePicker.getCalendarView().setShowWeeks(false);
+        callbacks.getScene().getStylesheets().add("view/styling/calendarstyle.css");
+        datePicker.selectedDateProperty().addListener(new InvalidationListener() {
+            
+            @Override
+            public void invalidated(final Observable observable) {
+                Date selected = datePicker.selectedDateProperty().get();
+                System.out.println(selected);
+                conferenceDate = new Timestamp(selected.getTime());
+                System.out.println(conferenceDate.toString().split("\\s+")[0].toString());
+            }
+        });
         pane.add(datePicker, 1, 3);
         
         createConferenceButton = new Button("Create");
@@ -174,8 +168,7 @@ public class CreateConferencePane extends GenericPane<GridPane> implements Event
         HBox buttonHBox = new HBox(10);
         buttonHBox.setAlignment(Pos.BOTTOM_RIGHT);
         
-        buttonHBox.getChildren()
-                  .add(createConferenceButton);
+        buttonHBox.getChildren().add(createConferenceButton);
         
         pane.add(buttonHBox, 1, 5);
         
@@ -203,7 +196,8 @@ public class CreateConferencePane extends GenericPane<GridPane> implements Event
         String location = conferenceLocationTextField.getText();
         
         if (!Validator.isEmpty(name, location, conferenceDate.toString())) {
-            new CreateConferenceService(progressSpinnerCallbacks, name, location, conferenceDate).start();
+            new CreateConferenceService(progressSpinnerCallbacks, name, location,
+                    conferenceDate).start();
         }
         else {
             statusText.setErrorText("Missing field");
@@ -244,8 +238,9 @@ public class CreateConferencePane extends GenericPane<GridPane> implements Event
          * @param conferenceLocation The conference location
          * @param conferenceDate The conference date
          */
-        public CreateConferenceService(final ProgressSpinnerCallbacks progressSpinnerCallbacks, final String conferenceName,
-                final String conferenceLocation, final Timestamp conferenceDate) {
+        public CreateConferenceService(final ProgressSpinnerCallbacks progressSpinnerCallbacks,
+                final String conferenceName, final String conferenceLocation,
+                final Timestamp conferenceDate) {
             super(progressSpinnerCallbacks);
             this.conferenceName = conferenceName;
             this.conferenceLocation = conferenceLocation;
@@ -265,11 +260,10 @@ public class CreateConferencePane extends GenericPane<GridPane> implements Event
                 @Override
                 protected String call() {
                     try {
-                        int userID = LoggedUser.getInstance()
-                                               .getUser()
-                                               .getID();
+                        int userID = LoggedUser.getInstance().getUser().getID();
                         
-                        conferenceID = ConferenceManager.createConference(conferenceName, conferenceLocation, conferenceDate, userID);
+                        conferenceID = ConferenceManager.createConference(conferenceName,
+                                conferenceLocation, conferenceDate, userID);
                         setSuccess(true);
                     }
                     catch (Exception e) {
@@ -286,7 +280,8 @@ public class CreateConferencePane extends GenericPane<GridPane> implements Event
         @Override
         protected void succeeded() {
             if (getSuccess()) {
-                mainPaneCallbacks.pushPane(new ConferencePane(conferenceID, callbacks, mainPaneCallbacks, progressSpinnerCallbacks));
+                mainPaneCallbacks.pushPane(new ConferencePane(conferenceID, callbacks,
+                        mainPaneCallbacks, progressSpinnerCallbacks));
             }
             super.succeeded();
         }

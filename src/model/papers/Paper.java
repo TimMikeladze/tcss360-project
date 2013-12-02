@@ -3,7 +3,6 @@ package model.papers;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.List;
 
 import model.database.Database;
@@ -41,7 +40,7 @@ public class Paper {
     /**
      * The papers submission date.
      */
-    private Timestamp submissionDate;
+    private String submissionDate;
     
     /**
      * The authors id.
@@ -71,7 +70,9 @@ public class Paper {
     /**
      * The revision date.
      */
-    private Timestamp revisionDate;
+    private String revisionDate;
+    
+    private String subprogramChair;
     
     /**
      * The paper file
@@ -86,11 +87,11 @@ public class Paper {
     private int recommended;
     
     public static Paper paperFromID(final int paperID) {
-        List<Paper> results = Database.getInstance()
-                                      .createQuery(
-                                              "SELECT ConferenceID, ID AS PaperID, Title, Description, AuthorID, SubmissionDate, Status, Revised, FileExtension, File, RevisionDate, Recommended FROM papers WHERE ID = :paperID")
-                                      .addParameter("paperID", paperID)
-                                      .executeAndFetch(Paper.class);
+        List<Paper> results = Database
+                .getInstance()
+                .createQuery(
+                        "SELECT ConferenceID, ID AS PaperID, Title, Description, AuthorID, SubmissionDate, Status, Revised, FileExtension, File, RevisionDate, Recommended FROM papers WHERE ID = :paperID")
+                .addParameter("paperID", paperID).executeAndFetch(Paper.class);
         return Database.hasResults(results) ? results.get(0) : null;
         
     }
@@ -136,8 +137,8 @@ public class Paper {
      * 
      * @return the papers submission date
      */
-    public Timestamp getSubmissionDate() {
-        return submissionDate;
+    public String getSubmissionDate() {
+        return submissionDate.toString().split("\\s+")[0].toString();
     }
     
     /**
@@ -147,6 +148,10 @@ public class Paper {
      */
     public int getAuthorID() {
         return authorID;
+    }
+    
+    public String getSubprogramChair() {
+        return subprogramChair;
     }
     
     /**
@@ -197,8 +202,8 @@ public class Paper {
      * 
      * @return the papers revision date
      */
-    public Timestamp getRevisionDate() {
-        return revisionDate;
+    public String getRevisionDate() {
+        return revisionDate.toString().split("\\s+")[0].toString();
     }
     
     /**
@@ -208,7 +213,8 @@ public class Paper {
      * @throws IOException Signals that an I/O exception has occurred.
      */
     public File getPaper() throws IOException {
-        return paper == null ? (paper = FileHandler.convertBytesToFile(file, fileExtension)) : paper;
+        return paper == null ? (paper = FileHandler.convertBytesToFile(file, fileExtension))
+                : paper;
         
     }
     
@@ -226,11 +232,22 @@ public class Paper {
     }
     
     public String isRecommendedString() {
-    	if (recommended == 1) {
-    		return "Yes";
-    	} else {
-    		return "No";
-    	}
+        String isRecommended = "No";
+        if (recommended == 1) {
+            isRecommended = "Yes";
+        }
+        return isRecommended;
+    }
+    
+    public String isAccepted() {
+        String isAccepted = "Undecided";
+        if (status == 2) {
+            isAccepted = "Yes";
+        }
+        else if (status == 1) {
+            isAccepted = "No";
+        }
+        return isAccepted;
     }
     
 }

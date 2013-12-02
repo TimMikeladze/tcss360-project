@@ -62,15 +62,15 @@ public class Conference implements Comparable<Conference> {
      */
     public static Conference conferenceFromID(final int id) {
         Conference conference = null;
-        List<Conference> results = Database.getInstance()
-                                           .createQuery(
-                                                   "SELECT c.ID, c.Name, c.Location, c.Date, cu.UserID AS ProgramChairID, CONCAT(u.Firstname, ' ', u.Lastname) AS ProgramChair, "
-                                                           + "(SELECT COUNT(1) FROM conference_users AS cu WHERE cu.ConferenceID = c.ID AND cu.PermissionID = 100) AS Reviewers,"
-                                                           + "(SELECT COUNT(1) FROM conference_users AS cu WHERE cu.ConferenceID = c.ID AND cu.PermissionID = 200) AS Authors "
-                                                           + "FROM conferences AS c JOIN conference_users AS cu ON c.ID = cu.ConferenceID AND cu.PermissionID = 400 "
-                                                           + "JOIN users AS u ON u.ID = cu.UserID WHERE c.ID = :id ORDER BY c.Date DESC")
-                                           .addParameter("id", id)
-                                           .executeAndFetch(Conference.class);
+        List<Conference> results = Database
+                .getInstance()
+                .createQuery(
+                        "SELECT c.ID, c.Name, c.Location, c.Date, cu.UserID AS ProgramChairID, CONCAT(u.Firstname, ' ', u.Lastname) AS ProgramChair, "
+                                + "(SELECT COUNT(1) FROM conference_users AS cu WHERE cu.ConferenceID = c.ID AND cu.PermissionID = 100) AS Reviewers,"
+                                + "(SELECT COUNT(1) FROM conference_users AS cu WHERE cu.ConferenceID = c.ID AND cu.PermissionID = 200) AS Authors "
+                                + "FROM conferences AS c JOIN conference_users AS cu ON c.ID = cu.ConferenceID AND cu.PermissionID = 400 "
+                                + "JOIN users AS u ON u.ID = cu.UserID WHERE c.ID = :id ORDER BY c.Date DESC")
+                .addParameter("id", id).executeAndFetch(Conference.class);
         if (Database.hasResults(results)) {
             conference = results.get(0);
         }
@@ -118,8 +118,8 @@ public class Conference implements Comparable<Conference> {
      * 
      * @return the date
      */
-    public Timestamp getDate() {
-        return date;
+    public String getDate() {
+        return date.toString().split("\\s+")[0].toString();
     }
     
     /**

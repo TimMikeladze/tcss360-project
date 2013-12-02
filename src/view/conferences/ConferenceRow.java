@@ -1,7 +1,6 @@
 
 package view.conferences;
 
-import java.sql.Timestamp;
 
 /**
  * Wrapper for confenece row data in the table
@@ -14,14 +13,13 @@ public class ConferenceRow {
     private int id;
     private String name;
     private String location;
-    private Timestamp date;
+    private String date;
     private String programChair;
     private int authors = 0;
     private int reviewers = 0;
     
     public ConferenceRow(final int id, final String name, final String location,
-            final Timestamp date, final String programChair, final int authors,
-            final int reviewers) {
+            final String date, final String programChair, final int authors, final int reviewers) {
         super();
         this.id = id;
         this.name = name;
@@ -32,7 +30,7 @@ public class ConferenceRow {
         this.reviewers = reviewers;
     }
     
-    public ConferenceRow(final int id, final String name, final Timestamp date,
+    public ConferenceRow(final int id, final String name, final String date,
             final String programChair) {
         super();
         this.id = id;
@@ -66,7 +64,7 @@ public class ConferenceRow {
     /**
      * @return the date
      */
-    public Timestamp getDate() {
+    public String getDate() {
         return date;
     }
     

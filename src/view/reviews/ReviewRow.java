@@ -1,7 +1,6 @@
 
 package view.reviews;
 
-import java.sql.Timestamp;
 
 /**
  * Wrapper class around review row data in the the table
@@ -21,7 +20,7 @@ public class ReviewRow {
     
     private String author;
     
-    private Timestamp date;
+    private String date;
     
     private String reviewName;
     
@@ -33,8 +32,8 @@ public class ReviewRow {
      * @param author
      * @param date
      */
-    public ReviewRow(final int id, final String paperName, final String conferenceName, final boolean reviewed, final String author,
-            final Timestamp date) {
+    public ReviewRow(final int id, final String paperName, final String conferenceName,
+            final boolean reviewed, final String author, final String date) {
         this.id = id;
         this.paperName = paperName;
         this.conferenceName = conferenceName;
@@ -86,7 +85,7 @@ public class ReviewRow {
     /**
      * @return the date
      */
-    public Timestamp getDate() {
+    public String getDate() {
         return date;
     }
     

@@ -1,7 +1,6 @@
 
 package view.papers;
 
-import java.sql.Timestamp;
 
 /**
  * Wrapper class around paper data in a conference
@@ -19,11 +18,15 @@ public class PaperRow {
     
     private String reviewed;
     
-    private Timestamp date;
+    private String date;
     
     private String revised;
     
     private String isRecommended;
+    
+    private String isAccepted;
+    
+    private String subprogramChair;
     
     /**
      * @param id
@@ -33,7 +36,8 @@ public class PaperRow {
      * @param revised
      * @param date
      */
-    public PaperRow(final int id, final String paperName, final String conferenceName, final String reviewed, final int revised, final Timestamp date) {
+    public PaperRow(final int id, final String paperName, final String conferenceName,
+            final String reviewed, final int revised, final String date) {
         this.id = id;
         this.paperName = paperName;
         this.conferenceName = conferenceName;
@@ -52,7 +56,7 @@ public class PaperRow {
      * @param paperName
      * @param date
      */
-    public PaperRow(final int id, final String paperName, final Timestamp date) {
+    public PaperRow(final int id, final String paperName, final String date) {
         this.id = id;
         this.paperName = paperName;
         this.date = date;
@@ -64,11 +68,22 @@ public class PaperRow {
      * @param date
      * @param isRecommended
      */
-    public PaperRow(final int id, final String paperName, final Timestamp date, final String isRecommendedString) {
+    public PaperRow(final int id, final String paperName, final String date,
+            final String isRecommendedString) {
         this.id = id;
         this.paperName = paperName;
         this.date = date;
         this.isRecommended = isRecommendedString;
+    }
+    
+    public PaperRow(final int id, final String paperName, final String subprogramChair,
+            final String date, final String isRecommendedString, final String isAccepted) {
+        this.id = id;
+        this.paperName = paperName;
+        this.subprogramChair = subprogramChair;
+        this.date = date;
+        this.isRecommended = isRecommendedString;
+        this.isAccepted = isAccepted;
     }
     
     /**
@@ -83,6 +98,10 @@ public class PaperRow {
      */
     public String getPaperName() {
         return paperName;
+    }
+    
+    public String getSubprogramChair() {
+        return subprogramChair;
     }
     
     /**
@@ -102,7 +121,7 @@ public class PaperRow {
     /**
      * @return the date
      */
-    public Timestamp getDate() {
+    public String getDate() {
         return date;
     }
     
@@ -112,6 +131,10 @@ public class PaperRow {
     
     public String isRecommended() {
         return isRecommended;
+    }
+    
+    public String isAccepted() {
+        return isAccepted;
     }
     
 }
