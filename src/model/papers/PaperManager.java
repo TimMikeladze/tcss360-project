@@ -79,10 +79,11 @@ public class PaperManager {
      * @param paperID the paper's id
      */
     @Permission(level = 100, strict = true)
-    public static void removePaper(final int paperID) {
+    public static void removePaper(final int paperID, final int authorID) {
         Database.getInstance()
-                .createQuery("DELETE FROM papers WHERE ID = :paperID")
+                .createQuery("DELETE FROM papers WHERE ID = :paperID AND AuthorID = :authorID")
                 .addParameter("paperID", paperID)
+                .addParameter("authorID", authorID)
                 .executeUpdate();
     }
     

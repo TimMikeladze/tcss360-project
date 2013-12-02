@@ -32,7 +32,7 @@ public class ReviewManager {
      * @throws DatabaseException the database exception
      * @throws IOException Signals that an I/O exception has occurred.
      */
-    @Permission(level = 100)
+    @Permission(level = 200)
     public static int submitReview(final int paperID, final int reviewerID, final File file) throws DatabaseException, IOException {
         if (PaperManager.getPaperAuthorID(paperID) != reviewerID) {
             return Database.getInstance()
