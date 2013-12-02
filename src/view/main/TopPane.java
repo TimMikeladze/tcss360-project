@@ -153,14 +153,14 @@ public class TopPane extends GenericPane<StackPane> implements EventHandler<Acti
                       .logout();
             mainPaneCallbacks.clearPanes();
             callbacks.changeScene(new LoginPane());
-        }
-        if (source == homeButton) {
+        } 
+        else if (source == homeButton) {
             mainPaneCallbacks.clearPanes();
-        }
-        if (source == viewConferencesButton) {
+        } 
+        else if (source == viewConferencesButton) {
             mainPaneCallbacks.pushPane(new ConferencesPane(callbacks, mainPaneCallbacks, this));
-        }
-        if (source == backButton) {
+        } 
+        else if (source == backButton) {
             mainPaneCallbacks.popPane();
         }
         

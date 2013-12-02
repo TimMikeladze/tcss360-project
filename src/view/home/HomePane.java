@@ -199,22 +199,23 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
                                                    .getID();
                 mainPaneCallbacks.pushPane(new ConferencePane(conferenceID, callbacks, mainPaneCallbacks, progressSpinnerCallbacks));
             }
-        }
-        if (event.getSource() == papersTable) {
+        } else if (event.getSource() == papersTable) {
             MouseEvent mouseEvent = (MouseEvent) event;
             if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
                 int paperID = papersTable.getSelectionModel()
                                          .getSelectedItem()
                                          .getId();
                 mainPaneCallbacks.pushPane(new PaperPane(paperID, callbacks, mainPaneCallbacks, progressSpinnerCallbacks));
-                
             }
-            if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
+        } else if (event.getSource() == reviewsTable) {
+        	MouseEvent mouseEvent = (MouseEvent) event;
+        	if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
                 int reviewID = reviewsTable.getSelectionModel()
                                            .getSelectedItem()
                                            .getId();
             }
         }
+        
     }
     
     /**
