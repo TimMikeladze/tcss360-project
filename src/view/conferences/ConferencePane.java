@@ -128,14 +128,6 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
     
     private Button uploadPaperButton;
     
-    private Button uploadReviewButton;
-    
-    private Button viewPaperButton;
-    
-    private Button viewUserButton;
-    
-    private Button assignPaperButton;
-    
     private Conference conference;
     
     /**
@@ -204,7 +196,7 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
         
         pane.add(conferenceUsersText, 0, 5);
         conferenceUsersTable.setOnMouseClicked(this);
-        pane.add(conferenceUsersTable, 0, 6); 
+        pane.add(conferenceUsersTable, 0, 6);
         
         removeConferenceButton = new Button("Remove Conference");
         removeConferenceButton.setOnAction(this);
@@ -215,14 +207,8 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
         addReviewerButton = new Button("Add Reviewer");
         addReviewerButton.setOnAction(this);
         
-        assignPaperButton = new Button("Assign Paper");
-        assignPaperButton.setOnAction(this);
-        
         uploadPaperButton = new Button("Upload Paper");
         uploadPaperButton.setOnAction(this);
-        
-        uploadReviewButton = new Button("Upload Review");
-        uploadReviewButton.setOnAction(this);
         
         HBox bottomBox = new HBox(12);
         /*
@@ -235,8 +221,6 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
                  .add(addReviewerButton);
         bottomBox.getChildren()
                  .add(uploadPaperButton);
-        bottomBox.getChildren()
-                 .add(uploadReviewButton);
         
         pane.add(bottomBox, 0, 7);
     }
@@ -349,7 +333,6 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
         @Override
         protected void succeeded() {
             if (getSuccess()) {
-                //  populate();
             }
             super.succeeded();
         }

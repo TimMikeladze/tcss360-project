@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 
 /**
  * Wrapper class around paper data in a conference
- *
+ * 
  * @author Tim Mikeladze
  * @version 11-25-2013
  */
@@ -33,8 +33,7 @@ public class PaperRow {
      * @param revised
      * @param date
      */
-    public PaperRow(final int id, final String paperName, final String conferenceName,
-            final String reviewed, final int revised, final Timestamp date) {
+    public PaperRow(final int id, final String paperName, final String conferenceName, final String reviewed, final int revised, final Timestamp date) {
         this.id = id;
         this.paperName = paperName;
         this.conferenceName = conferenceName;
@@ -63,9 +62,9 @@ public class PaperRow {
      * @param id
      * @param paperName
      * @param date
-     * @param isRecommended 
+     * @param isRecommended
      */
-    public PaperRow(final int id, final String paperName, final Timestamp date, String isRecommendedString) {
+    public PaperRow(final int id, final String paperName, final Timestamp date, final String isRecommendedString) {
         this.id = id;
         this.paperName = paperName;
         this.date = date;
@@ -109,6 +108,10 @@ public class PaperRow {
     
     public String getRevised() {
         return revised;
+    }
+    
+    public String isRecommended() {
+        return isRecommended;
     }
     
 }
