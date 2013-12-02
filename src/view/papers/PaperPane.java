@@ -22,6 +22,7 @@ import model.reviews.ReviewManager;
 import view.conferences.AddUserCallback;
 import view.conferences.ConferenceUserRow;
 import view.reviews.ReviewRow;
+import view.users.UserPane;
 import view.util.Callbacks;
 import view.util.CustomFileChooser;
 import view.util.CustomTable;
@@ -117,8 +118,11 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
         paperReviewsTable.setOnMouseClicked(this);
         pane.add(paperReviewsTable, 0, 4);
         
+        Text reviewersTablesText = new Text("Reviewers");
+        reviewersTablesText.setId("header2");
+        pane.add(reviewersTablesText, 0, 5);
         reviewersTable.setOnMouseClicked(this);
-        pane.add(reviewersTable, 0, 5);
+        pane.add(reviewersTable, 0, 6);
         
         removePaperButton = new Button("Remove Paper");
         removePaperButton.setOnAction(this);
@@ -193,6 +197,8 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
                 int userID = reviewersTable.getSelectionModel()
                                            .getSelectedItem()
                                            .getID();
+                mainPaneCallbacks.pushPane(new UserPane(userID, callbacks, mainPaneCallbacks, 
+                		progressSpinnerCallbacks));
             }
         } 
         else if (source == assignReviewer) {
