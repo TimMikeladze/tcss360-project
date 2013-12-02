@@ -41,7 +41,7 @@ public class MainPane extends GenericPane<BorderPane> implements MainPaneCallbac
         pane.setTop(topPane.getPane());
         homePane = new HomePane(callbacks, this, topPane);
         pushPane(homePane);
-        pane.setCenter(homePane.getPane());
+        //pane.setCenter(homePane.getPane());
     }
     
     @Override
@@ -69,14 +69,12 @@ public class MainPane extends GenericPane<BorderPane> implements MainPaneCallbac
     
     @Override
     public GenericPane<?> clearPanes() {
-        GenericPane<?> pane;
-        while (stack.size() > 1) {
-            pane = popPane();
-        }
-        pane = stack.peek();
-        updateBackButton();
-        this.pane.setCenter(pane.getPane());
-        return pane;
+        stack.clear();
+        
+        homePane = new HomePane(callbacks, this, topPane);
+        pushPane(homePane);
+        
+        return homePane;
     }
     
     public void updateBackButton() {
