@@ -204,7 +204,7 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
         
         pane.add(conferenceUsersText, 0, 5);
         conferenceUsersTable.setOnMouseClicked(this);
-        pane.add(conferenceUsersTable, 0, 6);
+        pane.add(conferenceUsersTable, 0, 6); 
         
         removeConferenceButton = new Button("Remove Conference");
         removeConferenceButton.setOnAction(this);
@@ -225,8 +225,10 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
         uploadReviewButton.setOnAction(this);
         
         HBox bottomBox = new HBox(12);
+        /*
         bottomBox.getChildren()
                  .add(removeConferenceButton);
+                 */
         bottomBox.getChildren()
                  .add(addSubprogramChairButton);
         bottomBox.getChildren()
