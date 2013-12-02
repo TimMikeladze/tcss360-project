@@ -14,6 +14,8 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import model.conferences.ConferenceManager;
+import model.permissions.PermissionLevel;
 import model.users.User;
 import model.users.UserManager;
 import view.conferences.AddUserCallback;
@@ -71,7 +73,13 @@ public class UsersPane extends Stage implements EventHandler {
     
     private AddUserCallback addUserCallback;
     
-    public UsersPane(final Stage owner, final ProgressSpinnerCallbacks progressSpinnerCallbacks, final AddUserCallback addUserCallback) {
+    private int conferenceId;
+    
+    private PermissionLevel permission;
+    
+    public UsersPane(final Stage owner,
+            final ProgressSpinnerCallbacks progressSpinnerCallbacks,
+            final AddUserCallback addUserCallback) {
         this.progressSpinnerCallbacks = progressSpinnerCallbacks;
         this.addUserCallback = addUserCallback;
         
@@ -79,14 +87,32 @@ public class UsersPane extends Stage implements EventHandler {
         scene = new Scene(root, DEFAULT_WIDTH, DEFAULT_HEIGHT);
         
         usersTable = new CustomTable<UserRow>(usersColumnNames, usersVariableNames);
-        usersTable.setStyle(
-        		"-fx-selection-bar: khaki; -fx-selection-bar-border: goldenrod; -fx-cell-focus-inner-border: goldenrod;" 
-        		+ "-fx-selection-bar-text: black; -fx-base: indianred; -fx-cell-hover-color: lightgrey;");
-        
+        usersTable
+                .setStyle("-fx-selection-bar: khaki; -fx-selection-bar-border: goldenrod; -fx-cell-focus-inner-border: goldenrod;"
+                        + "-fx-selection-bar-text: black; -fx-base: indianred; -fx-cell-hover-color: lightgrey;");
         
         initModality(Modality.WINDOW_MODAL);
         initOwner(owner);
         
+    }
+    
+    public UsersPane(final Stage owner,
+            final ProgressSpinnerCallbacks progressSpinnerCallbacks, final int conferenceId,
+            final PermissionLevel permission) {
+        this.progressSpinnerCallbacks = progressSpinnerCallbacks;
+        root = new BorderPane();
+        scene = new Scene(root, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        
+        usersTable = new CustomTable<UserRow>(usersColumnNames, usersVariableNames);
+        usersTable
+                .setStyle("-fx-selection-bar: khaki; -fx-selection-bar-border: goldenrod; -fx-cell-focus-inner-border: goldenrod;"
+                        + "-fx-selection-bar-text: black; -fx-base: indianred; -fx-cell-hover-color: lightgrey;");
+        
+        initModality(Modality.WINDOW_MODAL);
+        initOwner(owner);
+        
+        this.conferenceId = conferenceId;
+        this.permission = permission;
     }
     
     public void showDialog() {
@@ -121,12 +147,70 @@ public class UsersPane extends Stage implements EventHandler {
         Object source = event.getSource();
         if (source == usersTable) {
             MouseEvent mouseEvent = (MouseEvent) event;
+            /* OLD WAY
             if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
                 close();
-                addUserCallback.addReviewer(usersTable.getSelectionModel()
-                                                      .getSelectedItem()
-                                                      .getID());
+                addUserCallback.addReviewer(usersTable.getSelectionModel().getSelectedItem()
+                        .getID());
+            }*/
+            if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
+                close();
+                new AddUserService(progressSpinnerCallbacks, conferenceId, usersTable
+                        .getSelectionModel().getSelectedItem().getID(), permission).start();
             }
+        }
+    }
+    
+    /**
+     * Adds a user to the conference
+     * 
+     * 
+     */
+    private class AddUserService extends ProgressSpinnerService {
+        
+        private int conferenceID;
+        private int userID;
+        private PermissionLevel permission;
+        
+        public AddUserService(final ProgressSpinnerCallbacks progressSpinnerCallbacks,
+                final int ConferenceID, final int UserID, final PermissionLevel permission) {
+            super(progressSpinnerCallbacks);
+            
+            this.conferenceID = ConferenceID;
+            this.userID = UserID;
+            this.permission = permission;
+        }
+        
+        @Override
+        protected Task<String> createTask() {
+            return new Task<String>() {
+                
+                /**
+                 * Calls the new task.
+                 */
+                @Override
+                protected String call() {
+                    try {
+                        ConferenceManager.addUserToConference(conferenceID, userID, permission);
+                        setSuccess(true);
+                        System.out.println("adding " + userID);
+                    }
+                    catch (Exception e) {
+                        //TODO make sure message dialog works
+                        //new MessageDialog(callbacks.getPrimaryStage()).showDialog(
+                        //        e.getMessage(), false);
+                        
+                    }
+                    return null;
+                }
+            };
+        }
+        
+        @Override
+        protected void succeeded() {
+            if (getSuccess()) {
+            }
+            super.succeeded();
         }
     }
     

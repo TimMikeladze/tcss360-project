@@ -29,7 +29,8 @@ import controller.user.LoggedUser;
  * @author Tim Mikeladze
  * @version 11-11-2013
  */
-public class TopPane extends GenericPane<StackPane> implements EventHandler<ActionEvent>, ProgressSpinnerCallbacks {
+public class TopPane extends GenericPane<StackPane> implements EventHandler<ActionEvent>,
+        ProgressSpinnerCallbacks {
     
     /**
      * The left pane holding the welcome message and the users name.
@@ -92,74 +93,63 @@ public class TopPane extends GenericPane<StackPane> implements EventHandler<Acti
         create();
     }
     
-	public GenericPane<StackPane> refresh() {
-		return new TopPane(mainPaneCallbacks, callbacks);
-	}
+    @Override
+    public GenericPane<StackPane> refresh() {
+        return new TopPane(mainPaneCallbacks, callbacks);
+    }
     
     /**
      * Creates the top pane.
      */
     private void create() {
         leftBox.setAlignment(Pos.CENTER_LEFT);
-        welcomeLabel = new Label(LoggedUser.getInstance()
-                                           .getUser()
-                                           .getFullName());
-        welcomeLabel.setFont(Font.font(welcomeLabel.getFont()
-                                                   .getName(), FontWeight.BOLD, 12));
-        leftBox.getChildren()
-               .add(welcomeLabel);
+        welcomeLabel = new Label("Welcome: " + LoggedUser.getInstance().getUser().getFullName());
+        welcomeLabel.setFont(Font.font(welcomeLabel.getFont().getName(), FontWeight.BOLD, 12));
+        leftBox.getChildren().add(welcomeLabel);
         
         rightBox.setAlignment(Pos.CENTER_RIGHT);
         
-        rightBox.getChildren()
-                .add(progressSpinner);
+        rightBox.getChildren().add(progressSpinner);
         
         homeButton = new Button("Home");
         homeButton.setVisible(true);
         homeButton.setOnAction(this);
-        rightBox.getChildren()
-                .add(homeButton);
+        rightBox.getChildren().add(homeButton);
         
         backButton = new Button("Back");
         backButton.setVisible(true);
         backButton.setDisable(false);
         backButton.setOnAction(this);
-        rightBox.getChildren()
-                .add(backButton);
+        rightBox.getChildren().add(backButton);
         
         viewConferencesButton = new Button("View Conferences");
         viewConferencesButton.setVisible(true);
         viewConferencesButton.setDisable(false);
         viewConferencesButton.setOnAction(this);
-        rightBox.getChildren()
-                .add(viewConferencesButton);
+        rightBox.getChildren().add(viewConferencesButton);
         
         logoutButton = new Button("Logout");
         logoutButton.setOnAction(this);
-        rightBox.getChildren()
-                .add(logoutButton);
+        rightBox.getChildren().add(logoutButton);
         
-        pane.getChildren()
-            .add(leftBox);
-        pane.getChildren()
-            .add(rightBox);
+        pane.getChildren().add(leftBox);
+        pane.getChildren().add(rightBox);
     }
     
     @Override
     public void handle(final ActionEvent event) {
         Object source = event.getSource();
         if (source == logoutButton) {
-            LoggedUser.getInstance()
-                      .logout();
+            LoggedUser.getInstance().logout();
             mainPaneCallbacks.clearPanes();
             callbacks.changeScene(new LoginPane());
-        } 
+        }
         else if (source == homeButton) {
             mainPaneCallbacks.clearPanes();
-        } 
+        }
         else if (source == viewConferencesButton) {
             mainPaneCallbacks.pushPane(new ConferencesPane(callbacks, mainPaneCallbacks, this));
-        } 
+        }
         else if (source == backButton) {
             mainPaneCallbacks.popPane();
         }
@@ -178,11 +168,10 @@ public class TopPane extends GenericPane<StackPane> implements EventHandler<Acti
     
     @Override
     public void bindTask(final Task<?> task) {
-        progressSpinner.progressProperty()
-                       .bind(task.progressProperty());
+        progressSpinner.progressProperty().bind(task.progressProperty());
     }
     
     public void enableBackButton(final boolean enabled) {
         backButton.setDisable(!enabled);
-    }    
+    }
 }
