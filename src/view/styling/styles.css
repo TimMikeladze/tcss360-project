@@ -13,6 +13,7 @@
     -fx-background-color: linear-gradient(#ffffff, #d3d3d3);
 }
 
+/* hover state of buttons */
 .button:hover {
     -fx-background-color: linear-gradient(#d3d3d3, #ffffff);
 	-fx-text-fill: darkred;
@@ -30,21 +31,22 @@
     -fx-fill: bisque; 
 }
 
-/* h1 */
-#header1 {
+/* header text */
+#header1, #header2 {
 	-fx-fill: snow;
 	-fx-font-family: Tahoma;
-	-fx-font-size: 24px;
 	-fx-font-weight: bold;
 	-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.6), 0, 1.0, -1.0, 1.0);  
 }
 
-/* h2 */
+/* h1 - bigger, should only be one in a pane */
+#header1 {
+	-fx-font-size: 24px;
+}
+
+/* h2 - second biggest, may be multiple in a pane */
 #header2 {
-	-fx-fill: snow;
 	-fx-font-size: 20px;
-	-fx-font-weight: bold;
-	-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.6), 0, 1.0, -1.0, 1.0);  
 }
 
 

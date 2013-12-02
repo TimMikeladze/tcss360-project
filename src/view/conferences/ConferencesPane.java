@@ -84,8 +84,7 @@ public class ConferencesPane extends GenericPane<GridPane> implements EventHandl
      */
     private void create() {
         Text myConferencesText = new Text("All Conferences");
-        myConferencesText.setId("conf-header");
-        myConferencesText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+        myConferencesText.setId("header2");
         conferencesTable.setOnMouseClicked(this);
         pane.add(myConferencesText, 0, 0);
         pane.add(conferencesTable, 0, 1);
