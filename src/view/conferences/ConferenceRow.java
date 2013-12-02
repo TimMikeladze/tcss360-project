@@ -10,7 +10,7 @@ import java.sql.Timestamp;
  * @version 11-16-2013
  */
 public class ConferenceRow {
-
+    
     private int id;
     private String name;
     private String location;
@@ -18,8 +18,9 @@ public class ConferenceRow {
     private String programChair;
     private int authors = 0;
     private int reviewers = 0;
-
-    public ConferenceRow(final int id, final String name, final String location, final Timestamp date, final String programChair, final int authors,
+    
+    public ConferenceRow(final int id, final String name, final String location,
+            final Timestamp date, final String programChair, final int authors,
             final int reviewers) {
         super();
         this.id = id;
@@ -30,7 +31,16 @@ public class ConferenceRow {
         this.authors = authors;
         this.reviewers = reviewers;
     }
-
+    
+    public ConferenceRow(final int id, final String name, final Timestamp date,
+            final String programChair) {
+        super();
+        this.id = id;
+        this.name = name;
+        this.date = date;
+        this.programChair = programChair;
+    }
+    
     /**
      *
      * @return the id
@@ -38,42 +48,42 @@ public class ConferenceRow {
     public int getID() {
         return id;
     }
-
+    
     /**
      * @return the name
      */
     public String getName() {
         return name;
     }
-
+    
     /**
      * @return the location
      */
     public String getLocation() {
         return location;
     }
-
+    
     /**
      * @return the date
      */
     public Timestamp getDate() {
         return date;
     }
-
+    
     /**
      * @return the programChair
      */
     public String getProgramChair() {
         return programChair;
     }
-
+    
     /**
      * @return the authors
      */
     public int getAuthors() {
         return authors;
     }
-
+    
     /**
      * @return the reviewers
      */
