@@ -60,11 +60,15 @@ public class UserPane extends GenericPane<GridPane> implements EventHandler {
      * TODO
      */
     private void create() {
-        
+        Text headerText = new Text("User Info");
+        headerText.setId("header1");
+        pane.add(headerText, 0, 0);
         Text userNameText = new Text("Name: " + user.getFullName());
-        pane.add(userNameText, 0, 0);
+        userNameText.setId("conf-text");
+        pane.add(userNameText, 0, 1);
         Text userEmailText = new Text("Email: " + user.getEmail());
-        pane.add(userEmailText, 0, 1);
+        userEmailText.setId("conf-text");
+        pane.add(userEmailText, 0, 2);
         
     }
     
