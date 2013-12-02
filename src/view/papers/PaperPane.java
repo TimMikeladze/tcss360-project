@@ -210,7 +210,10 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
             new RecommendPaperService(progressSpinnerCallbacks).start();
         }
         if (source == reuploadPaperButton) {
-            
+            File file = fileChooser.showOpenDialog(callbacks.getPrimaryStage());
+            if (file != null) {
+                new ReUploadPaperService(progressSpinnerCallbacks, file).start();
+            }
         }
         if (source == removePaperButton) {
             new RemovePaperService(progressSpinnerCallbacks).start();
@@ -224,6 +227,39 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
     public void addReviewer(final int userID) {
         // TODO Auto-generated method stub
         
+    }
+    
+    private class ReUploadPaperService extends ProgressSpinnerService {
+        
+        private File file;
+        
+        public ReUploadPaperService(final ProgressSpinnerCallbacks progressSpinnerCallbacks, final File file) {
+            super(progressSpinnerCallbacks);
+            this.file = file;
+        }
+        
+        @Override
+        protected Task<String> createTask() {
+            return new Task<String>() {
+                
+                @Override
+                protected String call() {
+                    try {
+                        PaperManager.reuploadPaper(paperID, file);
+                        setSuccess(true);
+                    }
+                    catch (Exception e) {
+                        
+                    }
+                    return null;
+                }
+            };
+        }
+        
+        @Override
+        protected void succeeded() {
+            super.succeeded();
+        }
     }
     
     private class RecommendPaperService extends ProgressSpinnerService {
