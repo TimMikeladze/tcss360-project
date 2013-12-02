@@ -111,7 +111,7 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
         pane.add(paperDescriptionText, 0, 1);
         
         Text reviewTablesText = new Text("Reviews");
-        reviewTablesText.setId("conf-title");
+        reviewTablesText.setId("header2");
         pane.add(reviewTablesText, 0, 3);
         
         paperReviewsTable.setOnMouseClicked(this);

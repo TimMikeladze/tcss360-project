@@ -94,23 +94,24 @@
 .calendar {
 	-fx-base: white;
 	-fx-accent: gold;
+	-fx-text-fill: black;
+	-fx-tooltip-visible: false;
 }
 
 /* Will style text uncovered by this code */
 .calendar .label {
-	-fx-fill: black;
-	-fx-text-fill: black;
+	-fx-text-fill: white;
 }
 
 .calendar-header {
     -fx-background-color: darkred;
-    -fx-text-fill: bisque;
+    -fx-text-fill: black;
     -fx-padding: 0.5em;
 }
 
 .calendar-footer {
     -fx-background-color: darkred;
-    -fx-text-fill: bisque;
+    -fx-text-fill: black;
     -fx-padding: 0.2em;
 }
 
@@ -137,7 +138,7 @@
 .calendar-cell-current-month:hover, .calendar-year-button:hover, .calendar-month-button:hover {
     -fx-background-color: gainsboro;
     -fx-text-fill: black;
-    -fx-display: none;
+    -fx-fill: black;
 }
 
 /* day buttons for the previous and next month */
@@ -166,6 +167,7 @@
 .calendar-navigation-button, .calendar-navigation-title, .calendar-today-button {
     -fx-background-color: darkred;
     -fx-cursor: hand;
+    -fx-font-weight: bold;
     -fx-text-fill: bisque;
 }
 
@@ -173,6 +175,7 @@
 .calendar-navigation-button:hover, .calendar-navigation-title:hover, .calendar-today-button:hover {
     -fx-background-color: darkred;
     -fx-cursor: hand;
+    -fx-font-weight: bold;
     -fx-text-fill: -fx-accent;
 }
  		
@@ -201,9 +204,8 @@
     -fx-padding: 3px;
 }
 
-/* week numbers */
-.calendar-week-number {
-    -fx-font-size: 0.8em;
-    -fx-padding: 4px;
+/* post-it displaying string date, appears when hovering on days */
+.tooltip .label {
+	-fx-text-fill: black;
+	-fx-fill: black;
 }
-
