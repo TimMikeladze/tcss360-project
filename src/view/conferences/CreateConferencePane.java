@@ -50,7 +50,7 @@ public class CreateConferencePane extends GenericPane<GridPane> implements
     /**
      * Conference Name Label.
      */
-    private Label confereceNameLabel;
+    private Label conferenceNameLabel;
     
     /**
      * Conference Name TextField.
@@ -125,8 +125,8 @@ public class CreateConferencePane extends GenericPane<GridPane> implements
         createConferenceText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         pane.add(createConferenceText, 0, 0);
         
-        confereceNameLabel = new Label("Name:");
-        pane.add(confereceNameLabel, 0, 1);
+        conferenceNameLabel = new Label("Name:");
+        pane.add(conferenceNameLabel, 0, 1);
         
         conferenceNameTextField = new TextField();
         pane.add(conferenceNameTextField, 1, 1);
