@@ -41,7 +41,6 @@ public class MainPane extends GenericPane<BorderPane> implements MainPaneCallbac
         pane.setTop(topPane.getPane());
         homePane = new HomePane(callbacks, this, topPane);
         pushPane(homePane);
-        //pane.setCenter(homePane.getPane());
     }
     
     @Override
