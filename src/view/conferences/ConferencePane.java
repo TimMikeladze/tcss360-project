@@ -19,9 +19,11 @@ import model.conferences.ConferenceUser;
 import model.papers.Paper;
 import model.papers.PaperManager;
 import model.permissions.PermissionLevel;
+import model.users.User;
 import view.papers.PaperPane;
 import view.papers.PaperRow;
 import view.papers.UploadPaperPane;
+import view.users.UserPane;
 import view.users.UsersPane;
 import view.util.Callbacks;
 import view.util.CustomTable;
@@ -277,6 +279,8 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
             MouseEvent mouseEvent = (MouseEvent) event;
             if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
                 int userID = conferenceUsersTable.getSelectionModel().getSelectedItem().getID();
+                mainPaneCallbacks.pushPane(new UserPane(userID, callbacks, 
+                		mainPaneCallbacks, progressSpinnerCallbacks));
             }
         }
         

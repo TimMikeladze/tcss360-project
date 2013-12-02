@@ -110,7 +110,7 @@ public class UserPane extends GenericPane<GridPane> implements EventHandler, Add
      */
     private List<Review> listOfReviews;
     
-    private User user;
+    private int userID;
     
     /**
      * TODO
@@ -120,13 +120,15 @@ public class UserPane extends GenericPane<GridPane> implements EventHandler, Add
      * @param mainPaneCallbacks
      * @param progressSpinnerCallbacks
      */
-    public UserPane(final User user, final Callbacks callbacks, final MainPaneCallbacks mainPaneCallbacks,
+    public UserPane(final int userID, final Callbacks callbacks, final MainPaneCallbacks mainPaneCallbacks,
             final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
         super(new GridPane(), callbacks);
         addMainPaneCallBacks(mainPaneCallbacks);
         addProgressSpinnerCallBacks(progressSpinnerCallbacks);
         
-        this.user = user;
+        this.userID = userID;
+        User user = User.userFromID(userID);
+        
         id = user.getID();
         userName = user.getFullName();
         email = user.getEmail();
@@ -140,7 +142,7 @@ public class UserPane extends GenericPane<GridPane> implements EventHandler, Add
     }
     
 	public GenericPane<GridPane> refresh() {
-		return new UserPane(user, callbacks, mainPaneCallbacks, progressSpinnerCallbacks);
+		return new UserPane(userID, callbacks, mainPaneCallbacks, progressSpinnerCallbacks);
 	}
     
     /**
@@ -153,10 +155,13 @@ public class UserPane extends GenericPane<GridPane> implements EventHandler, Add
         final Text userEmailText = new Text("Email: " + email);
         pane.add(userEmailText, 0, 1);
         
+        /*
         usersConferencesTable.setOnMouseClicked(this);
         pane.add(usersConferencesTable, 0, 2);
+        */
         
         new LoadDataService(progressSpinnerCallbacks).start();
+        
         
     }
     
