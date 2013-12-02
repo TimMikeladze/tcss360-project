@@ -207,7 +207,7 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
             }
         }
         if (source == recommendPaperButton) {
-            
+            new RecommendPaperService(progressSpinnerCallbacks).start();
         }
         if (source == reuploadPaperButton) {
             
@@ -216,7 +216,7 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
             new RemovePaperService(progressSpinnerCallbacks).start();
         }
         if (source == downloadPaperButton) {
-            
+            fileChooser.showSaveDialog(callbacks.getPrimaryStage());
         }
     }
     
@@ -224,6 +224,38 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
     public void addReviewer(final int userID) {
         // TODO Auto-generated method stub
         
+    }
+    
+    private class RecommendPaperService extends ProgressSpinnerService {
+        
+        public RecommendPaperService(final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
+            super(progressSpinnerCallbacks);
+        }
+        
+        @Override
+        protected Task<String> createTask() {
+            return new Task<String>() {
+                
+                @Override
+                protected String call() {
+                    try {
+                        PaperManager.recommendPaper(paperID);
+                        setSuccess(true);
+                    }
+                    catch (Exception e) {
+                        //TODO make sure message dialog works
+                        new MessageDialog(callbacks.getPrimaryStage()).showDialog(e.getMessage(), false);
+                        
+                    }
+                    return null;
+                }
+            };
+        }
+        
+        @Override
+        protected void succeeded() {
+            super.succeeded();
+        }
     }
     
     private class RemovePaperService extends ProgressSpinnerService {
@@ -236,9 +268,6 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
         protected Task<String> createTask() {
             return new Task<String>() {
                 
-                /**
-                 * Calls the new task.
-                 */
                 @Override
                 protected String call() {
                     try {

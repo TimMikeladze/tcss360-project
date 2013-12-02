@@ -83,10 +83,12 @@ public class Paper {
      */
     private String conferenceName;
     
+    private int recommended;
+    
     public static Paper paperFromID(final int paperID) {
         List<Paper> results = Database.getInstance()
                                       .createQuery(
-                                              "SELECT ConferenceID, ID AS PaperID, Title, Description, AuthorID, SubmissionDate, Status, Revised, FileExtension, File, RevisionDate FROM papers WHERE ID = :paperID")
+                                              "SELECT ConferenceID, ID AS PaperID, Title, Description, AuthorID, SubmissionDate, Status, Revised, FileExtension, File, RevisionDate, Recommended FROM papers WHERE ID = :paperID")
                                       .addParameter("paperID", paperID)
                                       .executeAndFetch(Paper.class);
         return Database.hasResults(results) ? results.get(0) : null;
@@ -217,6 +219,10 @@ public class Paper {
      */
     public String getConferenceName() {
         return conferenceName;
+    }
+    
+    public boolean isRecommended() {
+        return recommended == 1;
     }
     
 }

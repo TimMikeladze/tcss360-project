@@ -124,7 +124,7 @@ public class PaperManager {
     private static List<Paper> getAssignedPapers(final int conferenceID, final int userID, final PermissionLevel permission) {
         return Database.getInstance()
                        .createQuery(
-                               "SELECT p.ConferenceID, p.ID AS PaperID, p.Title, p.Description, p.AuthorID, p.SubmissionDate, p.Status, p.Revised, p.FileExtension, p.File, p.RevisionDate FROM papers AS p JOIN assigned_papers AS a ON a.PaperID = p.ID WHERE p.ConferenceID = :conferenceID AND a.UserID = :userID AND a.PermissionID = :permissionID")
+                               "SELECT p.ConferenceID, p.ID AS PaperID, p.Title, p.Description, p.AuthorID, p.SubmissionDate, p.Status, p.Revised, p.FileExtension, p.File, p.RevisionDate, Recommended FROM papers AS p JOIN assigned_papers AS a ON a.PaperID = p.ID WHERE p.ConferenceID = :conferenceID AND a.UserID = :userID AND a.PermissionID = :permissionID")
                        .addParameter("conferenceID", conferenceID)
                        .addParameter("userID", userID)
                        .addParameter("permissionID", permission.getPermission())
@@ -222,7 +222,7 @@ public class PaperManager {
     public static List<Paper> getPapers(final int conferenceID) {
         return Database.getInstance()
                        .createQuery(
-                               "SELECT ConferenceID, ID AS PaperID, Title, Description, AuthorID, SubmissionDate, Status, Revised, FileExtension, File, RevisionDate FROM papers WHERE ConferenceID = :conferenceID")
+                               "SELECT ConferenceID, ID AS PaperID, Title, Description, AuthorID, SubmissionDate, Status, Revised, FileExtension, File, RevisionDate, Recommended  FROM papers WHERE ConferenceID = :conferenceID")
                        .addParameter("conferenceID", conferenceID)
                        .executeAndFetch(Paper.class);
     }
@@ -231,7 +231,7 @@ public class PaperManager {
     public static List<Paper> getAuthorsSubmittedPapers(final int authorID) {
         return Database.getInstance()
                        .createQuery(
-                               "SELECT p.ConferenceID, p.ID AS PaperID, c.Name AS ConferenceName, p.Title, p.Description, p.AuthorID, p.SubmissionDate, p.Status, p.Revised, p.FileExtension, p.File, p.RevisionDate FROM papers AS p JOIN conferences AS c ON c.ID = p.ConferenceID WHERE p.AuthorID = :authorID")
+                               "SELECT p.ConferenceID, p.ID AS PaperID, c.Name AS ConferenceName, p.Title, p.Description, p.AuthorID, p.SubmissionDate, p.Status, p.Revised, p.FileExtension, p.File, p.RevisionDate, Recommended  FROM papers AS p JOIN conferences AS c ON c.ID = p.ConferenceID WHERE p.AuthorID = :authorID")
                        .addParameter("authorID", authorID)
                        .executeAndFetch(Paper.class);
         
@@ -261,5 +261,22 @@ public class PaperManager {
                                "SELECT cu.ConferenceID, cu.UserID, CONCAT(u.Firstname, ' ', u.Lastname) AS Username, cu.PermissionID FROM conference_users AS cu JOIN users AS u ON u.ID = cu.UserID JOIN papers AS p ON p.ConferenceID = cu.ConferenceID WHERE p.ID = :paperID ORDER BY cu.PermissionID DESC")
                        .addParameter("paperID", paperID)
                        .executeAndFetch(ConferenceUser.class);
+    }
+    
+    @Permission(level = 300)
+    public static void recommendPaper(final int paperID) {
+        Database.getInstance()
+                .createQuery("UPDATE papers SET Recommended = 1 WHERE ID = :paperID")
+                .addParameter("paperID", paperID)
+                .executeUpdate();
+    }
+    
+    @Permission(level = 100, strict = true)
+    public static void reuploadPaper(final int paperID, final File file) throws IOException {
+        Database.getInstance()
+                .createQuery("UPDATE papers SET File = :file, FileExtension = :fileExtension WHERE ID = :paperID")
+                .addParameter("file", FileHandler.convertFileToBytes(file))
+                .addParameter("fileExtension", FileHandler.getFileExtension(file))
+                .executeUpdate();
     }
 }
