@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import model.conferences.ConferenceUser;
 import model.database.Database;
 import model.database.DatabaseException;
 import model.database.Errors;
@@ -251,5 +252,13 @@ public class PaperManager {
                        .rows()
                        .get(0)
                        .getInteger(0);
+    }
+    
+    public static List<ConferenceUser> getAssignedUsers(final int paperID) {
+        return Database.getInstance()
+                       .createQuery(
+                               "SELECT cu.ConferenceID, cu.UserID, CONCAT(u.Firstname, ' ', u.Lastname) AS Username, cu.PermissionID FROM conference_users AS cu JOIN users AS u ON u.ID = cu.UserID JOIN papers AS p ON p.ConferenceID = cu.ConferenceID WHERE p.ID = :id ORDER BY cu.PermissionID DESC")
+                       .addParameter("paperID", paperID)
+                       .executeAndFetch(ConferenceUser.class);
     }
 }

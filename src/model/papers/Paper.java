@@ -4,7 +4,9 @@ package model.papers;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.List;
 
+import model.database.Database;
 import model.util.FileHandler;
 
 /**
@@ -80,6 +82,16 @@ public class Paper {
      * The conference name;
      */
     private String conferenceName;
+    
+    public static Paper paperFromID(final int paperID) {
+        List<Paper> results = Database.getInstance()
+                                      .createQuery(
+                                              "SELECT ConferenceID, ID AS PaperID, Title, Description, AuthorID, SubmissionDate, Status, Revised, FileExtension, File, RevisionDate FROM papers WHERE ID = :paperID")
+                                      .addParameter("paperID", paperID)
+                                      .executeAndFetch(Paper.class);
+        return Database.hasResults(results) ? results.get(0) : null;
+        
+    }
     
     /**
      * Returns the papers id.

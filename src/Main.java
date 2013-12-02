@@ -67,7 +67,8 @@ public class Main extends Application implements Callbacks {
         LoginPane loginPane = new LoginPane();
         loginPane.addCallbacks(this);
         scene = new Scene(loginPane.getPane(), DEFAULT_WIDTH, DEFAULT_HEIGHT);
-        scene.getStylesheets().add("styling/styles.css");
+        scene.getStylesheets()
+             .add("view/styling/styles.css");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -93,7 +94,8 @@ public class Main extends Application implements Callbacks {
     public void changeScene(final GenericPane<?> genericPane, final int width, final int height) {
         genericPane.addCallbacks(this);
         scene = new Scene(genericPane.getPane(), width, height);
-        scene.getStylesheets().add("styling/styles.css");
+        scene.getStylesheets()
+             .add("view/styling/styles.css");
         
         primaryStage.setScene(scene);
         primaryStage.show();
