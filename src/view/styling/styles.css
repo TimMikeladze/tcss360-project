@@ -20,7 +20,7 @@
 }
 
 /* regular text */
-.label {
+.label, #dialogtext {
 	-fx-text-fill: bisque;
 	-fx-font-weight: bold;
 	-fx-font-size: 12px;

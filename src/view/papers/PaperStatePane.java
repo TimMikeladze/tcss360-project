@@ -26,12 +26,12 @@ public class PaperStatePane extends Stage implements EventHandler {
     /**
      * The default width.
      */
-    private static final int DEFAULT_WIDTH = 400;
+    private static final int DEFAULT_WIDTH = 280;
     
     /**
      * The default height.
      */
-    private static final int DEFAULT_HEIGHT = 400;
+    private static final int DEFAULT_HEIGHT = 90;
     
     /**
      * The root pane.
@@ -56,18 +56,25 @@ public class PaperStatePane extends Stage implements EventHandler {
         this.progressSpinnerCallbacks = progressSpinnerCallbacks;
         this.paperId = paperId;
         root = new GridPane();
+        root.setStyle("padding: 10px;");
         scene = new Scene(root, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        
         initModality(Modality.WINDOW_MODAL);
         initOwner(owner);
     }
     
     public void showDialog() {
-        Text approveRejectText = new Text("Approve / Reject Paper");
+        Text approveRejectText = new Text("Would you like to approve or reject?");
+        approveRejectText.setStyle("-fx-fill:black; -fx-font-size:13px; -fx-font-weight:bold;");
         approveRejectText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         
-        approveButton = new Button("Aprrove");
+        approveButton = new Button("Approve");
+        approveButton
+                .setStyle("-fx-text-fill: bisque; -fx-background-color: linear-gradient(crimson, darkred);");
         approveButton.setOnMouseClicked(this);
         rejectButton = new Button("Reject");
+        rejectButton
+                .setStyle("-fx-text-fill: bisque; -fx-background-color: linear-gradient(crimson, darkred);");
         rejectButton.setOnMouseClicked(this);
         
         HBox buttonsBox = new HBox(4);
@@ -131,7 +138,7 @@ public class PaperStatePane extends Stage implements EventHandler {
                     try {
                         if (paperStatus == PaperStatus.ACCEPTED) {
                             PaperManager.acceptPaper(paperID);
-                            System.out.println("Accpeted Paper  " + paperID);
+                            System.out.println("Accepted Paper  " + paperID);
                         }
                         else if (paperStatus == PaperStatus.REJECTED) {
                             PaperManager.rejectPaper(paperID);
