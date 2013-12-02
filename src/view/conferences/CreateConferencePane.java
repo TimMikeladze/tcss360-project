@@ -115,6 +115,10 @@ public class CreateConferencePane extends GenericPane<GridPane> implements
         create();
     }
     
+	public GenericPane<GridPane> refresh() {
+		return new CreateConferencePane(callbacks, mainPaneCallbacks, progressSpinnerCallbacks);
+	}
+    
     /**
      * Creates the components of this pane.
      * @author Mohammad Juma
@@ -283,4 +287,6 @@ public class CreateConferencePane extends GenericPane<GridPane> implements
             super.succeeded();
         }
     }
+
+	
 }

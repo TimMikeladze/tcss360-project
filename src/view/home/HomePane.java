@@ -124,6 +124,10 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
         create();
     }
     
+	public GenericPane<GridPane> refresh() {
+		return new HomePane(callbacks, mainPaneCallbacks, progressSpinnerCallbacks);
+	}
+    
     /**
      * Creates the main components of the HomePane pane.
      */
@@ -262,5 +266,7 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
             super.succeeded();
         }
     }
+
+
     
 }

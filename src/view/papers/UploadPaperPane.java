@@ -55,6 +55,10 @@ public class UploadPaperPane extends GenericPane<GridPane> implements EventHandl
         create();
     }
     
+	public GenericPane<GridPane> refresh() {
+		return new UploadPaperPane(conferenceID, callbacks, mainPaneCallbacks, progressSpinnerCallbacks);
+	}
+    
     private void create() {
         scenetitle = new Text("Upload paper");
         scenetitle.setId("header1");

@@ -92,6 +92,10 @@ public class TopPane extends GenericPane<StackPane> implements EventHandler<Acti
         create();
     }
     
+	public GenericPane<StackPane> refresh() {
+		return new TopPane(mainPaneCallbacks, callbacks);
+	}
+    
     /**
      * Creates the top pane.
      */
@@ -180,6 +184,5 @@ public class TopPane extends GenericPane<StackPane> implements EventHandler<Acti
     
     public void enableBackButton(final boolean enabled) {
         backButton.setDisable(!enabled);
-    }
-    
+    }    
 }

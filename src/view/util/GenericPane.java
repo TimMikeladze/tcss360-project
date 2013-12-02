@@ -32,6 +32,14 @@ public abstract class GenericPane<T extends Pane> {
     protected MainPaneCallbacks mainPaneCallbacks;
     
     /**
+     * Returns the refreshed pane.
+     * 
+     * @return The refreshed pane.
+     */
+    public abstract GenericPane<T> refresh();
+    
+    
+    /**
      * Creates a new Generic Pane.
      * 
      * @param t the pane.

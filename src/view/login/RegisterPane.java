@@ -55,6 +55,10 @@ public class RegisterPane extends GenericPane<GridPane> implements EventHandler<
         create();
     }
     
+	public GenericPane<GridPane> refresh() {
+		return new RegisterPane();
+	}
+    
     /**
      * Creates the main components of the RegisterPane pane.
      */
@@ -163,4 +167,6 @@ public class RegisterPane extends GenericPane<GridPane> implements EventHandler<
             }
         }
     }
+
+	
 }
