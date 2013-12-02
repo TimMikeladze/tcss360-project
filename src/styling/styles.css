@@ -71,10 +71,6 @@
  	-fx-focus-color: gold;
 }
 
-.table-view:pressed, .table-view:visited {
-	-fx-background-color: lightgrey;
-}
-
 /* selected table + row */
 .table-view:focused .table-row-cell:filled:focused:selected {
 	-fx-background-color: khaki;
