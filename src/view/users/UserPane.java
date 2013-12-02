@@ -110,6 +110,8 @@ public class UserPane extends GenericPane<GridPane> implements EventHandler, Add
      */
     private List<Review> listOfReviews;
     
+    private User user;
+    
     /**
      * TODO
      * 
@@ -124,6 +126,7 @@ public class UserPane extends GenericPane<GridPane> implements EventHandler, Add
         addMainPaneCallBacks(mainPaneCallbacks);
         addProgressSpinnerCallBacks(progressSpinnerCallbacks);
         
+        this.user = user;
         id = user.getID();
         userName = user.getFullName();
         email = user.getEmail();
@@ -135,6 +138,10 @@ public class UserPane extends GenericPane<GridPane> implements EventHandler, Add
         
         create();
     }
+    
+	public GenericPane<GridPane> refresh() {
+		return new UserPane(user, callbacks, mainPaneCallbacks, progressSpinnerCallbacks);
+	}
     
     /**
      * TODO
