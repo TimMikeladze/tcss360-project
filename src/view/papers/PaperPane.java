@@ -17,6 +17,7 @@ import javafx.scene.text.Text;
 import model.conferences.ConferenceUser;
 import model.papers.Paper;
 import model.papers.PaperManager;
+import model.permissions.PermissionLevel;
 import model.reviews.Review;
 import model.reviews.ReviewManager;
 import view.conferences.AddUserCallback;
@@ -165,6 +166,7 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
     private void populate() {
         if (listOfReviews != null) {
             for (Review r : listOfReviews) {
+                paperReviewsTable.add(new ReviewRow(r.getID(), "Review #" + r.getID()));
             }
             paperReviewsTable.updateItems();
         }
@@ -190,29 +192,28 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
                                                .getSelectedItem()
                                                .getId();
             }
-        } 
+        }
         else if (source == reviewersTable) {
             MouseEvent mouseEvent = (MouseEvent) event;
             if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
                 int userID = reviewersTable.getSelectionModel()
                                            .getSelectedItem()
                                            .getID();
-                mainPaneCallbacks.pushPane(new UserPane(userID, callbacks, mainPaneCallbacks, 
-                		progressSpinnerCallbacks));
+                mainPaneCallbacks.pushPane(new UserPane(userID, callbacks, mainPaneCallbacks, progressSpinnerCallbacks));
             }
-        } 
+        }
         else if (source == assignReviewer) {
-            
-        } 
+            new AddReviewersPane(paper.getConferenceID(), callbacks.getPrimaryStage(), progressSpinnerCallbacks, this).showDialog();
+        }
         else if (source == submitReviewButton) {
             File file = fileChooser.showOpenDialog(callbacks.getPrimaryStage());
             if (file != null) {
                 new SubmitReviewService(progressSpinnerCallbacks, file).start();
             }
-        } 
+        }
         else if (source == recommendPaperButton) {
             new RecommendPaperService(progressSpinnerCallbacks).start();
-        } 
+        }
         else if (source == reuploadPaperButton) {
             File file = fileChooser.showOpenDialog(callbacks.getPrimaryStage());
             if (file != null) {
@@ -229,8 +230,43 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
     
     @Override
     public void addReviewer(final int userID) {
-        // TODO Auto-generated method stub
+        new AddReviewerService(progressSpinnerCallbacks, userID).start();
+    }
+    
+    private class AddReviewerService extends ProgressSpinnerService {
         
+        private int userID;
+        
+        public AddReviewerService(final ProgressSpinnerCallbacks progressSpinnerCallbacks, final int userID) {
+            super(progressSpinnerCallbacks);
+            this.userID = userID;
+        }
+        
+        @Override
+        protected Task<String> createTask() {
+            return new Task<String>() {
+                
+                @Override
+                protected String call() {
+                    try {
+                        PaperManager.assignPaper(paperID, userID, PermissionLevel.REVIEWER);
+                        setSuccess(true);
+                    }
+                    catch (Exception e) {
+                        
+                    }
+                    return null;
+                }
+            };
+        }
+        
+        @Override
+        protected void succeeded() {
+            if (getSuccess()) {
+                refresh();
+            }
+            super.succeeded();
+        }
     }
     
     private class ReUploadPaperService extends ProgressSpinnerService {

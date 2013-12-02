@@ -23,6 +23,8 @@ public class ReviewRow {
     
     private Timestamp date;
     
+    private String reviewName;
+    
     /**
      * @param id
      * @param paperName
@@ -41,8 +43,9 @@ public class ReviewRow {
         this.date = date;
     }
     
-    public ReviewRow(final int id) {
+    public ReviewRow(final int id, final String reviewName) {
         this.id = id;
+        this.reviewName = reviewName;
     }
     
     /**
@@ -85,5 +88,9 @@ public class ReviewRow {
      */
     public Timestamp getDate() {
         return date;
+    }
+    
+    public String getReviewName() {
+        return reviewName;
     }
 }
