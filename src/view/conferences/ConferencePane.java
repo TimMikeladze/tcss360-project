@@ -158,9 +158,7 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
         authorsText.setId("conf-text");
         reviewersText = new Text("Reviewers: " + Integer.toString(conference.getReviewers()));
         reviewersText.setId("conf-text");
-        
         conferencePapersTable = new CustomTable<PaperRow>(conferencePapersColumnolumnNames, conferencePapersVariableNames);
-        
         conferenceUsersTable = new CustomTable<UserRow>(conferenceUsersColumnNames, conferenceUsersVariableNames);
         
         pane.setAlignment(Pos.TOP_LEFT);
