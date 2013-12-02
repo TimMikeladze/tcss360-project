@@ -20,6 +20,7 @@ import model.papers.PaperManager;
 import model.reviews.Review;
 import view.conferences.ConferencePane;
 import view.conferences.ConferenceRow;
+import view.papers.PaperPane;
 import view.papers.PaperRow;
 import view.reviews.ReviewRow;
 import view.util.Callbacks;
@@ -124,9 +125,10 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
         create();
     }
     
-	public GenericPane<GridPane> refresh() {
-		return new HomePane(callbacks, mainPaneCallbacks, progressSpinnerCallbacks);
-	}
+    @Override
+    public GenericPane<GridPane> refresh() {
+        return new HomePane(callbacks, mainPaneCallbacks, progressSpinnerCallbacks);
+    }
     
     /**
      * Creates the main components of the HomePane pane.
@@ -195,9 +197,7 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
                 int conferenceID = conferencesTable.getSelectionModel()
                                                    .getSelectedItem()
                                                    .getID();
-                //TODO binary search
-                mainPaneCallbacks.pushPane(new ConferencePane(Conference.conferenceFromID(conferenceID), callbacks, mainPaneCallbacks,
-                        progressSpinnerCallbacks));
+                mainPaneCallbacks.pushPane(new ConferencePane(conferenceID, callbacks, mainPaneCallbacks, progressSpinnerCallbacks));
             }
         }
         if (event.getSource() == papersTable) {
@@ -206,6 +206,8 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
                 int paperID = papersTable.getSelectionModel()
                                          .getSelectedItem()
                                          .getId();
+                mainPaneCallbacks.pushPane(new PaperPane(paperID, callbacks, mainPaneCallbacks, progressSpinnerCallbacks));
+                
             }
             if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
                 int reviewID = reviewsTable.getSelectionModel()
@@ -266,7 +268,5 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
             super.succeeded();
         }
     }
-
-
     
 }

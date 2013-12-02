@@ -20,7 +20,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import model.conferences.Conference;
 import model.conferences.ConferenceManager;
 import view.util.Callbacks;
 import view.util.GenericPane;
@@ -33,14 +32,14 @@ import view.util.calendar.DatePicker;
 import controller.user.LoggedUser;
 
 /**
- * JavaFX pane responsible for displaying the pane that allows a user to create a new conference.
+ * JavaFX pane responsible for displaying the pane that allows a user to create a new
+ * conference.
  * 
  * @author Tim Mikeladze
  * @author Mohammad Juma
  * @version 11-23-2013
  */
-public class CreateConferencePane extends GenericPane<GridPane> implements
-        EventHandler<ActionEvent> {
+public class CreateConferencePane extends GenericPane<GridPane> implements EventHandler<ActionEvent> {
     
     /**
      * Create Conference Text.
@@ -99,8 +98,7 @@ public class CreateConferencePane extends GenericPane<GridPane> implements
      * @param mainPaneCallbacks Callback for the center pane of the main pane.
      * @param progressSpinnerCallbacks Callback for the progress spinner.
      */
-    public CreateConferencePane(final Callbacks callbacks,
-            final MainPaneCallbacks mainPaneCallbacks,
+    public CreateConferencePane(final Callbacks callbacks, final MainPaneCallbacks mainPaneCallbacks,
             final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
         super(new GridPane());
         addCallbacks(callbacks);
@@ -115,12 +113,14 @@ public class CreateConferencePane extends GenericPane<GridPane> implements
         create();
     }
     
-	public GenericPane<GridPane> refresh() {
-		return new CreateConferencePane(callbacks, mainPaneCallbacks, progressSpinnerCallbacks);
-	}
+    @Override
+    public GenericPane<GridPane> refresh() {
+        return new CreateConferencePane(callbacks, mainPaneCallbacks, progressSpinnerCallbacks);
+    }
     
     /**
      * Creates the components of this pane.
+     * 
      * @author Mohammad Juma
      */
     private void create() {
@@ -145,20 +145,28 @@ public class CreateConferencePane extends GenericPane<GridPane> implements
         pane.add(conferenceDateLabel, 0, 3);
         
         datePicker = new DatePicker();
-        datePicker.localeProperty().set(Locale.US);
-        datePicker.getCalendarView().todayButtonTextProperty().set("Today");
-        datePicker.getCalendarView().setShowWeeks(false);
-        callbacks.getScene().getStylesheets().add("view/styling/calendarstyle.css");
-        datePicker.selectedDateProperty().addListener(new InvalidationListener() {
-            
-            @Override
-            public void invalidated(final Observable observable) {
-                Date selected = datePicker.selectedDateProperty().get();
-                System.out.println(selected);
-                conferenceDate = new Timestamp(selected.getTime());
-                System.out.println(conferenceDate);
-            }
-        });
+        datePicker.localeProperty()
+                  .set(Locale.US);
+        datePicker.getCalendarView()
+                  .todayButtonTextProperty()
+                  .set("Today");
+        datePicker.getCalendarView()
+                  .setShowWeeks(false);
+        callbacks.getScene()
+                 .getStylesheets()
+                 .add("view/styling/calendarstyle.css");
+        datePicker.selectedDateProperty()
+                  .addListener(new InvalidationListener() {
+                      
+                      @Override
+                      public void invalidated(final Observable observable) {
+                          Date selected = datePicker.selectedDateProperty()
+                                                    .get();
+                          System.out.println(selected);
+                          conferenceDate = new Timestamp(selected.getTime());
+                          System.out.println(conferenceDate);
+                      }
+                  });
         pane.add(datePicker, 1, 3);
         
         createConferenceButton = new Button("Create");
@@ -166,7 +174,8 @@ public class CreateConferencePane extends GenericPane<GridPane> implements
         HBox buttonHBox = new HBox(10);
         buttonHBox.setAlignment(Pos.BOTTOM_RIGHT);
         
-        buttonHBox.getChildren().add(createConferenceButton);
+        buttonHBox.getChildren()
+                  .add(createConferenceButton);
         
         pane.add(buttonHBox, 1, 5);
         
@@ -194,8 +203,7 @@ public class CreateConferencePane extends GenericPane<GridPane> implements
         String location = conferenceLocationTextField.getText();
         
         if (!Validator.isEmpty(name, location, conferenceDate.toString())) {
-            new CreateConferenceService(progressSpinnerCallbacks, name, location,
-                    conferenceDate).start();
+            new CreateConferenceService(progressSpinnerCallbacks, name, location, conferenceDate).start();
         }
         else {
             statusText.setErrorText("Missing field");
@@ -203,7 +211,8 @@ public class CreateConferencePane extends GenericPane<GridPane> implements
     }
     
     /**
-     * A service class that runs on its own thread and queries the database to create a new conference.
+     * A service class that runs on its own thread and queries the database to create a new
+     * conference.
      * 
      * @author Tim Mikeladze
      * @version 11-23-2013
@@ -225,10 +234,7 @@ public class CreateConferencePane extends GenericPane<GridPane> implements
          */
         private final Timestamp conferenceDate;
         
-        /**
-         * The new conference.
-         */
-        private Conference conference;
+        private int conferenceID;
         
         /**
          * Creates a new conference.
@@ -238,9 +244,8 @@ public class CreateConferencePane extends GenericPane<GridPane> implements
          * @param conferenceLocation The conference location
          * @param conferenceDate The conference date
          */
-        public CreateConferenceService(final ProgressSpinnerCallbacks progressSpinnerCallbacks,
-                final String conferenceName, final String conferenceLocation,
-                final Timestamp conferenceDate) {
+        public CreateConferenceService(final ProgressSpinnerCallbacks progressSpinnerCallbacks, final String conferenceName,
+                final String conferenceLocation, final Timestamp conferenceDate) {
             super(progressSpinnerCallbacks);
             this.conferenceName = conferenceName;
             this.conferenceLocation = conferenceLocation;
@@ -260,11 +265,11 @@ public class CreateConferencePane extends GenericPane<GridPane> implements
                 @Override
                 protected String call() {
                     try {
-                        int userID = LoggedUser.getInstance().getUser().getID();
+                        int userID = LoggedUser.getInstance()
+                                               .getUser()
+                                               .getID();
                         
-                        int conferenceID = ConferenceManager.createConference(conferenceName,
-                                conferenceLocation, conferenceDate, userID);
-                        conference = Conference.conferenceFromID(conferenceID);
+                        conferenceID = ConferenceManager.createConference(conferenceName, conferenceLocation, conferenceDate, userID);
                         setSuccess(true);
                     }
                     catch (Exception e) {
@@ -281,12 +286,10 @@ public class CreateConferencePane extends GenericPane<GridPane> implements
         @Override
         protected void succeeded() {
             if (getSuccess()) {
-                mainPaneCallbacks.pushPane(new ConferencePane(conference, callbacks,
-                        mainPaneCallbacks, progressSpinnerCallbacks));
+                mainPaneCallbacks.pushPane(new ConferencePane(conferenceID, callbacks, mainPaneCallbacks, progressSpinnerCallbacks));
             }
             super.succeeded();
         }
     }
-
-	
+    
 }

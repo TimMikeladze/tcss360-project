@@ -19,7 +19,6 @@ import model.conferences.ConferenceUser;
 import model.papers.Paper;
 import model.papers.PaperManager;
 import model.permissions.PermissionLevel;
-import model.users.User;
 import view.papers.PaperPane;
 import view.papers.PaperRow;
 import view.papers.UploadPaperPane;
@@ -39,8 +38,7 @@ import view.util.ProgressSpinnerService;
  * @author Mohammad Juma
  * @version 11-23-2013
  */
-public class ConferencePane extends GenericPane<GridPane> implements EventHandler,
-        AddUserCallback {
+public class ConferencePane extends GenericPane<GridPane> implements EventHandler, AddUserCallback {
     
     /**
      * Number of clicks for a double click.
@@ -70,37 +68,37 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
     /**
      * The name of the conference.
      */
-    private final Text conferenceNameText;
+    private Text conferenceNameText;
     
     /**
      * The location of the conference.
      */
-    private final Text conferenceLocationText;
+    private Text conferenceLocationText;
     
     /**
      * The date of the conference.
      */
-    private final Text conferenceDateText;
+    private Text conferenceDateText;
     
     /**
      * The program chair of the conference.
      */
-    private final Text conferenceProgramChairText;
+    private Text conferenceProgramChairText;
     
     /**
      * The number of authors in the conference.
      */
-    private final Text authorsText;
+    private Text authorsText;
     
     /**
      * The number of reviewers in the conference.
      */
-    private final Text reviewersText;
+    private Text reviewersText;
     
     /**
      * The id of the conference.
      */
-    private final int conferenceID;
+    private int conferenceID;
     
     /**
      * List of papers in the conference.
@@ -144,20 +142,39 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
      * Constructs a new Conference Pane that extends GridPane and displays the information about
      * the given conference.
      */
-    public ConferencePane(final Conference conference, final Callbacks callbacks,
-            final MainPaneCallbacks mainPaneCallbacks,
+    public ConferencePane(final int conferenceID, final Callbacks callbacks, final MainPaneCallbacks mainPaneCallbacks,
             final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
         super(new GridPane(), callbacks);
         addMainPaneCallBacks(mainPaneCallbacks);
         addProgressSpinnerCallBacks(progressSpinnerCallbacks);
         
-        this.conference = conference;
-        conferenceID = conference.getID();
+        this.conferenceID = conferenceID;
+        
+        pane.setAlignment(Pos.TOP_LEFT);
+        pane.setHgap(10);
+        pane.setVgap(10);
+        pane.setPadding(new Insets(0, 5, 5, 5));
+        
+        new LoadDataService(progressSpinnerCallbacks).start();
+    }
+    
+    @Override
+    public GenericPane<GridPane> refresh() {
+        return new ConferencePane(conferenceID, callbacks, mainPaneCallbacks, progressSpinnerCallbacks);
+    }
+    
+    //TODO need to add permission checks for buttons
+    /**
+     * Creates the main components of the ConferencePane pane.
+     */
+    private void create() {
+        
         conferenceNameText = new Text("Conference: " + conference.getName());
         conferenceNameText.setId("conf-text");
         conferenceLocationText = new Text("Location: " + conference.getLocation());
         conferenceLocationText.setId("conf-text");
-        conferenceDateText = new Text("Date: " + conference.getDate().toString());
+        conferenceDateText = new Text("Date: " + conference.getDate()
+                                                           .toString());
         conferenceDateText.setId("conf-text");
         conferenceProgramChairText = new Text("Program Chair: " + conference.getProgramChair());
         conferenceProgramChairText.setId("conf-text");
@@ -165,31 +182,9 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
         authorsText.setId("conf-text");
         reviewersText = new Text("Reviewers: " + Integer.toString(conference.getReviewers()));
         reviewersText.setId("conf-text");
-        conferencePapersTable = new CustomTable<PaperRow>(conferencePapersColumnolumnNames,
-                conferencePapersVariableNames);
+        conferencePapersTable = new CustomTable<PaperRow>(conferencePapersColumnolumnNames, conferencePapersVariableNames);
         
-        conferenceUsersTable = new CustomTable<ConferenceUserRow>(conferenceUsersColumnNames,
-                conferenceUsersVariableNames);
-        
-        pane.setAlignment(Pos.TOP_LEFT);
-        pane.setHgap(10);
-        pane.setVgap(10);
-        pane.setPadding(new Insets(0, 5, 5, 5));
-        
-        create();
-    }
-    
-	public GenericPane<GridPane> refresh() {
-		return new ConferencePane(conference, callbacks, mainPaneCallbacks, progressSpinnerCallbacks);
-	}
-
-
-	//TODO need to add permission checks for buttons
-    /**
-     * Creates the main components of the ConferencePane pane.
-     */
-    private void create() {
-        new LoadDataService(progressSpinnerCallbacks).start();
+        conferenceUsersTable = new CustomTable<ConferenceUserRow>(conferenceUsersColumnNames, conferenceUsersVariableNames);
         
         pane.add(conferenceNameText, 0, 0);
         pane.add(conferenceLocationText, 1, 0);
@@ -230,11 +225,16 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
         uploadReviewButton.setOnAction(this);
         
         HBox bottomBox = new HBox(12);
-        bottomBox.getChildren().add(removeConferenceButton);
-        bottomBox.getChildren().add(addSubprogramChairButton);
-        bottomBox.getChildren().add(addReviewerButton);
-        bottomBox.getChildren().add(uploadPaperButton);
-        bottomBox.getChildren().add(uploadReviewButton);
+        bottomBox.getChildren()
+                 .add(removeConferenceButton);
+        bottomBox.getChildren()
+                 .add(addSubprogramChairButton);
+        bottomBox.getChildren()
+                 .add(addReviewerButton);
+        bottomBox.getChildren()
+                 .add(uploadPaperButton);
+        bottomBox.getChildren()
+                 .add(uploadReviewButton);
         
         pane.add(bottomBox, 0, 7);
     }
@@ -245,15 +245,13 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
     private void populate() {
         if (listOfPapers != null) {
             for (Paper p : listOfPapers) {
-                conferencePapersTable.add(new PaperRow(p.getPaperID(), p.getTitle(), p
-                        .getSubmissionDate()));
+                conferencePapersTable.add(new PaperRow(p.getPaperID(), p.getTitle(), p.getSubmissionDate()));
             }
             conferencePapersTable.updateItems();
         }
         if (listOfUsers != null) {
             for (ConferenceUser u : listOfUsers) {
-                conferenceUsersTable.add(new ConferenceUserRow(u.getUserID(), u.getUsername(),
-                        u.getRole()));
+                conferenceUsersTable.add(new ConferenceUserRow(u.getUserID(), u.getUsername(), u.getRole()));
             }
             conferenceUsersTable.updateItems();
         }
@@ -268,40 +266,38 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
         if (source == conferencePapersTable) {
             MouseEvent mouseEvent = (MouseEvent) event;
             if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
-                int paperID = conferencePapersTable.getSelectionModel().getSelectedItem()
-                        .getId();
-                mainPaneCallbacks.pushPane(new PaperPane(paperID, callbacks, mainPaneCallbacks,
-                        progressSpinnerCallbacks));
+                int paperID = conferencePapersTable.getSelectionModel()
+                                                   .getSelectedItem()
+                                                   .getId();
+                mainPaneCallbacks.pushPane(new PaperPane(paperID, callbacks, mainPaneCallbacks, progressSpinnerCallbacks));
                 
             }
         }
         if (source == conferenceUsersTable) {
             MouseEvent mouseEvent = (MouseEvent) event;
             if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
-                int userID = conferenceUsersTable.getSelectionModel().getSelectedItem().getID();
-                mainPaneCallbacks.pushPane(new UserPane(userID, callbacks, 
-                		mainPaneCallbacks, progressSpinnerCallbacks));
+                int userID = conferenceUsersTable.getSelectionModel()
+                                                 .getSelectedItem()
+                                                 .getID();
+                mainPaneCallbacks.pushPane(new UserPane(userID, callbacks, mainPaneCallbacks, progressSpinnerCallbacks));
             }
         }
         
         if (source == addReviewerButton) {
-            new UsersPane(callbacks.getPrimaryStage(), progressSpinnerCallbacks, this)
-                    .showDialog();
+            new UsersPane(callbacks.getPrimaryStage(), progressSpinnerCallbacks, this).showDialog();
         }
         
         if (source == addSubprogramChairButton) {
             //TODO finish
         }
         if (source == uploadPaperButton) {
-            mainPaneCallbacks.pushPane(new UploadPaperPane(conferenceID, callbacks,
-                    mainPaneCallbacks, progressSpinnerCallbacks));
+            mainPaneCallbacks.pushPane(new UploadPaperPane(conferenceID, callbacks, mainPaneCallbacks, progressSpinnerCallbacks));
         }
     }
     
     @Override
     public void addReviewer(final int userID) {
-        new AddUserService(progressSpinnerCallbacks, conferenceID, userID,
-                PermissionLevel.REVIEWER).start();
+        new AddUserService(progressSpinnerCallbacks, conferenceID, userID, PermissionLevel.REVIEWER).start();
     }
     
     /**
@@ -315,8 +311,8 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
         private int userID;
         private PermissionLevel permission;
         
-        public AddUserService(final ProgressSpinnerCallbacks progressSpinnerCallbacks,
-                final int ConferenceID, final int UserID, final PermissionLevel permission) {
+        public AddUserService(final ProgressSpinnerCallbacks progressSpinnerCallbacks, final int ConferenceID, final int UserID,
+                final PermissionLevel permission) {
             super(progressSpinnerCallbacks);
             
             this.conferenceID = ConferenceID;
@@ -340,8 +336,7 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
                     }
                     catch (Exception e) {
                         //TODO make sure message dialog works
-                        new MessageDialog(callbacks.getPrimaryStage()).showDialog(
-                                e.getMessage(), false);
+                        new MessageDialog(callbacks.getPrimaryStage()).showDialog(e.getMessage(), false);
                         
                     }
                     return null;
@@ -385,6 +380,7 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
                 @Override
                 protected String call() {
                     try {
+                        conference = Conference.conferenceFromID(conferenceID);
                         listOfPapers = PaperManager.getPapers(conferenceID);
                         listOfUsers = ConferenceManager.getUsersInConference(conferenceID);
                         
@@ -404,6 +400,7 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
         @Override
         protected void succeeded() {
             if (getSuccess()) {
+                create();
                 populate();
             }
             super.succeeded();
