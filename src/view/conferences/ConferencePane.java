@@ -158,7 +158,6 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
         authorsText.setId("conf-text");
         reviewersText = new Text("Reviewers: " + Integer.toString(conference.getReviewers()));
         reviewersText.setId("conf-text");
-        
         conferencePapersTable = new CustomTable<PaperRow>(conferencePapersColumnolumnNames, conferencePapersVariableNames);
         
         conferenceUsersTable = new CustomTable<ConferenceUserRow>(conferenceUsersColumnNames, conferenceUsersVariableNames);
@@ -186,15 +185,12 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
         pane.add(reviewersText, 1, 2);
         
         Text conferencePapersText = new Text("Conference Papers");
-        
         conferencePapersText.setId("conf-title");
-        //   conferencePapersText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         pane.add(conferencePapersText, 0, 3);
         conferencePapersTable.setOnMouseClicked(this);
         pane.add(conferencePapersTable, 0, 4);
         
         Text conferenceUsersText = new Text("Conference Users");
-        
         conferenceUsersText.setId("conf-title");
         
         pane.add(conferenceUsersText, 0, 5);

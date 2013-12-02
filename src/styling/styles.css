@@ -45,25 +45,39 @@
 
 .table-view, .table-view:empty { 
     -fx-color: darkred;
-    -fx-selection-bar: silver;
-    -fx-selection-bar-text: black;
     -fx-cell-hover-color: gainsboro;
+    -fx-selection-bar-text: black;
 }
 
 /* attribute headers in table view */
-.table-view .column-header {
+.table-view .column-header, .table-view:empty .column-header {
+	-fx-border-width: 0;
     -fx-border-color: darkred; 
 }
 
-/* attribute names in table view */
+/* attribute text of headers */
 .table-view .column-header .label {
+	-fx-font-size: 13px;
 	-fx-font-weight: normal;
 	-fx-text-fill: white;
 }
 
-.table_view:empty {
-	-fx-font-weight:normal;
-	-fx-text-fill: #778899;
-    -fx-fill: #778899;
+/* entire table */
+.table-view {
+	-fx-font-size: 13px;
+ 	-fx-base: darkred;
+ 	-fx-control-inner-background: white;
+ 	-fx-background-color: transparent;
+ 	-fx-focus-color: gold;
 }
 
+.table-view:pressed, .table-view:visited {
+	-fx-background-color: lightgrey;
+}
+
+/* selected table + row */
+.table-view:focused .table-row-cell:filled:focused:selected {
+	-fx-background-color: khaki;
+	-fx-border-width: 1;
+    -fx-border-color: goldenrod; 
+}
