@@ -17,7 +17,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import model.conferences.Conference;
 import model.conferences.ConferenceManager;
-import model.conferences.CreateConferencePane;
 import view.util.Callbacks;
 import view.util.CustomTable;
 import view.util.GenericPane;

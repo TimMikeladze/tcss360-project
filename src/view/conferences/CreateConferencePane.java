@@ -1,5 +1,5 @@
 
-package model.conferences;
+package view.conferences;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -17,7 +17,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import view.conferences.ConferencePane;
+import model.conferences.Conference;
+import model.conferences.ConferenceManager;
 import view.util.Callbacks;
 import view.util.GenericPane;
 import view.util.MainPaneCallbacks;
