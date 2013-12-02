@@ -79,7 +79,10 @@ public class UsersPane extends Stage implements EventHandler {
         scene = new Scene(root, DEFAULT_WIDTH, DEFAULT_HEIGHT);
         
         usersTable = new CustomTable<UserRow>(usersColumnNames, usersVariableNames);
-        usersTable.setStyle("-fx-color: darkred; -fx-border-width: 1; -fx-border-color: aqua;");
+        usersTable.setStyle(
+        		"-fx-selection-bar: khaki; -fx-selection-bar-border: goldenrod; -fx-cell-focus-inner-border: goldenrod;" 
+        		+ "-fx-selection-bar-text: black; -fx-base: indianred; -fx-cell-hover-color: lightgrey;");
+        
         
         initModality(Modality.WINDOW_MODAL);
         initOwner(owner);
