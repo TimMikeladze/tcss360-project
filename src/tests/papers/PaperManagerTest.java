@@ -20,7 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests the PaperManager Class
+ * Tests the PaperManager Class from models.papers
  *
  * @author Jordan Matthews
  * @author Srdjan Stojcic
