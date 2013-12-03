@@ -36,16 +36,6 @@ import controller.user.LoggedUser;
 public class LoginPane extends GenericPane<GridPane> implements EventHandler {
     
     /**
-     * Text component for showing the welcome text.
-     */
-    private Text welcomeText;
-    
-    /**
-     * Label for showing the email label text.
-     */
-    private Label emailLabel;
-    
-    /**
      * TextField for inputing the email.
      */
     private TextField emailTextField;
@@ -84,6 +74,9 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
         create();
     }
     
+    /**
+     * Refreshes the current pane after data has been changed.
+     */
     @Override
     public GenericPane<GridPane> refresh() {
         return new LoginPane();
@@ -93,11 +86,11 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
      * Creates the main components of the LoginPane pane.
      */
     private void create() {
-        welcomeText = new Text("Welcome");
+        final Text welcomeText = new Text("Welcome");
         welcomeText.setId("header1");
         pane.add(welcomeText, 0, 0, 2, 1);
         
-        emailLabel = new Label("Email:");
+        final Label emailLabel = new Label("Email:");
         pane.add(emailLabel, 0, 1);
         
         emailTextField = new TextField();
@@ -123,9 +116,9 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
         pane.add(progressIndicator, 1, 1);
         
         //TODO remove this when done
-        // emailTextField.setText("bobama@email.us");
-        //login();
-        
+        emailTextField.setText("srdjan@email.com");
+        login();
+        // End here
     }
     
     /**
@@ -134,12 +127,12 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
      * @param show the new progress indicator visible
      */
     private void setProgressIndicatorVisible(final boolean show) {
-        for (Node n : pane.getChildren()) {
-            if (n instanceof ProgressIndicator) {
-                n.setVisible(show);
+        for (Node node : pane.getChildren()) {
+            if (node instanceof ProgressIndicator) {
+                node.setVisible(show);
             }
             else {
-                n.setVisible(!show);
+                node.setVisible(!show);
             }
         }
     }
@@ -152,9 +145,8 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
     @Override
     public void handle(final Event event) {
         signInText.clear();
-        
         if (event.getSource() == emailTextField) {
-            KeyEvent keyEvent = (KeyEvent) event;
+            final KeyEvent keyEvent = (KeyEvent) event;
             if (keyEvent.getCode() == KeyCode.ENTER) {
                 login();
             }
@@ -171,7 +163,7 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
      * Validates fields and logs in.
      */
     private void login() {
-        String email = emailTextField.getText().trim();
+        final String email = emailTextField.getText().trim();
         if (email.isEmpty()) {
             signInText.setErrorText("Forgot to enter an email");
         }
@@ -184,13 +176,16 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
     }
     
     /**
-     * Private inner class for login into the application.
+     * Private inner class for logging into the application.
      * 
      * @author Tim Mikeladze
      * @version 11-17-2013
      */
     private class LoginService extends Service<String> {
         
+        /**
+         * Boolean for tracking a successful login.
+         */
         private boolean success;
         
         /**
@@ -220,12 +215,18 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
             };
         }
         
+        /**
+         * Called when the operation is cancelled.
+         */
         @Override
         protected void cancelled() {
             setProgressIndicatorVisible(false);
             super.cancelled();
         }
         
+        /**
+         * Executes the progress spinner.
+         */
         @Override
         protected void executeTask(final Task<String> task) {
             progressIndicator.progressProperty().bind(task.progressProperty());
@@ -234,12 +235,18 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
             super.executeTask(task);
         }
         
+        /**
+         * Called when the operation fails.
+         */
         @Override
         protected void failed() {
             setProgressIndicatorVisible(false);
             super.failed();
         }
         
+        /**
+         * Called when the operation succeeds.
+         */
         @Override
         protected void succeeded() {
             super.succeeded();
@@ -247,9 +254,6 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
             if (success) {
                 sceneCallback.changeScene(new MainPane(sceneCallback));
             }
-            
         }
-        
     }
-    
 }

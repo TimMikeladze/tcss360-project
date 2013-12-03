@@ -23,13 +23,13 @@ import view.conferences.ConferenceRow;
 import view.papers.PaperPane;
 import view.papers.PaperRow;
 import view.reviews.ReviewRow;
-import view.util.SceneCallbacks;
+import view.util.CenterPaneCallbacks;
 import view.util.CustomTable;
 import view.util.GenericPane;
-import view.util.CenterPaneCallbacks;
 import view.util.MessageDialog;
 import view.util.ProgressSpinnerCallbacks;
 import view.util.ProgressSpinnerService;
+import view.util.SceneCallbacks;
 import controller.user.LoggedUser;
 
 /**
@@ -41,88 +41,88 @@ import controller.user.LoggedUser;
 public class HomePane extends GenericPane<GridPane> implements EventHandler {
     
     /**
-     * TODO COMMENT THIS
+     * Number of clicks for a double click.
      */
     private static final int DOUBLE_CLICK = 2;
     
     /**
-     * TODO COMMENT THIS
-     */
-    private CustomTable<ConferenceRow> conferencesTable;
-    
-    /**
-     * TODO COMMENT THIS
-     */
-    private CustomTable<PaperRow> papersTable;
-    
-    /**
-     * TODO COMMENT THIS
-     */
-    private CustomTable<ReviewRow> reviewsTable;
-    
-    /**
      * Column names of conferences in TableView.
      */
-    private String[] conferencesColumnNames = { "Conference Name", "Program Chair", "Authors",
+    private static final String[] conferencesColumnNames = { "Conference Name", "Program Chair", "Authors",
             "Reviewers", "Date" };
     
     /**
      * The variable names for the conferences table used by Java FX's table classes
      */
-    private String[] conferencesVariableNames = { "name", "programChair", "authors",
-            "reviewers", "date" };
+    private static final String[] conferencesVariableNames = { "name", "programChair", "authors", "reviewers", "date" };
     
     /**
      * Column names of papers in TableView.
      */
-    private String[] papersColumnNames = { "Paper Name", "Conference Name", "Reviewed",
-            "Revised", "Submission Date" };
+    private static final String[] papersColumnNames = { "Paper Name", "Conference Name", "Reviewed", "Revised",
+            "Submission Date" };
     
     /**
      * The variable names for the papers table used by Java FX's table classes
      */
-    private String[] papersVariableNames = { "paperName", "conferenceName", "reviewed",
-            "revised", "date" };
+    private static final String[] papersVariableNames = { "paperName", "conferenceName", "reviewed", "revised", "date" };
     
     /**
      * Column names of reviews in TableView.
      */
-    private String[] reviewsColumnsNames = { "Paper Name", "Author", "Conference Name",
-            "Reviewed", "Submission Date" };
+    private static final String[] reviewsColumnsNames = { "Paper Name", "Author", "Conference Name", "Reviewed",
+            "Submission Date" };
     
     /**
      * The variable names for the reviews table used by Java FX's table classes
      */
-    private String[] reviewsVariableNames = { "paperName", "author", "conferenceName",
-            "reviewed", "date" };
+    private static final String[] reviewsVariableNames = { "paperName", "author", "conferenceName", "reviewed", "date" };
     
     /**
-     * The list of conferences for the table.
+     * A table for the conferences the user is a Program Chair of.
+     */
+    private CustomTable<ConferenceRow> conferencesTable;
+    
+    /**
+     * A table for the papers the user is an author of.
+     */
+    private CustomTable<PaperRow> papersTable;
+    
+    /**
+     * A table for the reviews the user has written.
+     */
+    private CustomTable<ReviewRow> reviewsTable;
+    
+    /**
+     * The list of conferences the user is a Program Chair of.
      */
     private List<Conference> listOfConferences;
     
     /**
-     * The list of papers for the table.
+     * The list of papers the user has written.
      */
     private List<Paper> listOfPapers;
     
     /**
-     * The list of reviews for the table.
+     * The list of reviews the user has written.
      */
     private List<Review> listOfReviews;
     
     /**
      * Constructs a new HomePane pane that extends GridPane and displays the initial user
      * interface the user is greeted with upon login in.
+     * 
+     * @param sceneCallback A callback to the scene this pane is in
+     * @param centerPaneCallback A callback to the center pane
+     * @param progressSpinnerCallback A callback to the progress spinner
      */
-    public HomePane(final SceneCallbacks callbacks, final CenterPaneCallbacks mainPaneCallbacks,
-            final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
-        super(new GridPane(), callbacks);
-        addCenterPaneCallBacks(mainPaneCallbacks);
-        addProgressSpinnerCallBack(progressSpinnerCallbacks);
+    public HomePane(final SceneCallbacks sceneCallback, final CenterPaneCallbacks centerPaneCallback,
+            final ProgressSpinnerCallbacks progressSpinnerCallback) {
+        super(new GridPane(), sceneCallback);
+        addCenterPaneCallBacks(centerPaneCallback);
+        addProgressSpinnerCallBack(progressSpinnerCallback);
         
-        conferencesTable = new CustomTable<ConferenceRow>(conferencesColumnNames,
-                conferencesVariableNames);
+        conferencesTable = new CustomTable<ConferenceRow>(conferencesColumnNames, conferencesVariableNames);
         papersTable = new CustomTable<PaperRow>(papersColumnNames, papersVariableNames);
         reviewsTable = new CustomTable<ReviewRow>(reviewsColumnsNames, reviewsVariableNames);
         
@@ -133,9 +133,12 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
         
         LoggedUser.getInstance().clearPermissions();
         
-        create();
+        new LoadDataService(progressSpinnerCallback).start();
     }
     
+    /**
+     * Refreshes the current pane after data has been changed.
+     */
     @Override
     public GenericPane<GridPane> refresh() {
         return new HomePane(sceneCallback, centerPaneCallback, progressSpinnerCallback);
@@ -145,53 +148,51 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
      * Creates the main components of the HomePane pane.
      */
     private void create() {
-        Text myConferencesText = new Text("My Conferences");
+        final Text myConferencesText = new Text("My Conferences");
         myConferencesText.setId("header2");
         myConferencesText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         conferencesTable.setOnMouseClicked(this);
         pane.add(myConferencesText, 0, 0);
         pane.add(conferencesTable, 0, 1);
         
-        Text myPapersText = new Text("My Papers");
+        final Text myPapersText = new Text("My Papers");
         myPapersText.setId("header2");
         myPapersText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         papersTable.setOnMouseClicked(this);
         pane.add(myPapersText, 0, 3);
         pane.add(papersTable, 0, 4);
-        /*
-                Text myReviewsText = new Text("My Reviews");
-                myReviewsText.setId("header2");
-                myReviewsText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-                papersTable.setOnMouseClicked(this);
-                pane.add(myReviewsText, 0, 6);
-                pane.add(reviewsTable, 0, 7);
-        */
-        new LoadDataService(progressSpinnerCallback).start();
         
+        final Text myReviewsText = new Text("My Reviews");
+        myReviewsText.setId("header2");
+        myReviewsText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+        papersTable.setOnMouseClicked(this);
+        pane.add(myReviewsText, 0, 6);
+        pane.add(reviewsTable, 0, 7);
     }
     
     /**
      * Populates the tables from the database.
      */
-    private void populate() { // TODO WHY NULL?
+    private void populate() {
         if (listOfConferences != null) {
-            for (Conference c : listOfConferences) {
-                conferencesTable.add(new ConferenceRow(c.getID(), c.getName(), c.getLocation(),
-                        c.getDate(), c.getProgramChair(), c.getAuthors(), c.getReviewers()));
+            for (Conference conference : listOfConferences) {
+                conferencesTable.add(new ConferenceRow(conference.getID(), conference.getName(), conference
+                        .getLocation(), conference.getDate(), conference.getProgramChair(), conference.getAuthors(),
+                        conference.getReviewers()));
             }
             conferencesTable.updateItems();
         }
         if (listOfPapers != null) {
-            for (Paper p : listOfPapers) {
-                papersTable.add(new PaperRow(p.getPaperID(), p.getTitle(), p
-                        .getConferenceName(), p.getStatus().getStringValue(), p.getRevised(), p
-                        .getSubmissionDate()));
+            for (Paper paper : listOfPapers) {
+                papersTable.add(new PaperRow(paper.getPaperID(), paper.getTitle(), paper.getConferenceName(), paper
+                        .getStatus().getStringValue(), paper.getRevised(), paper.getSubmissionDate()));
             }
             papersTable.updateItems();
         }
         if (listOfReviews != null) {
-            for (Review r : listOfReviews) {
+            for (Review review : listOfReviews) {
                 //reviewsTable.add(new ReviewRow());
+                // TODO this needs to be finished.
             }
             reviewsTable.updateItems();
         }
@@ -205,10 +206,9 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
         if (event.getSource() == conferencesTable) {
             MouseEvent mouseEvent = (MouseEvent) event;
             if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
-                int conferenceID = conferencesTable.getSelectionModel().getSelectedItem()
-                        .getID();
-                centerPaneCallback.pushPane(new ConferencePane(conferenceID, sceneCallback,
-                        centerPaneCallback, progressSpinnerCallback));
+                int conferenceID = conferencesTable.getSelectionModel().getSelectedItem().getID();
+                centerPaneCallback.pushPane(new ConferencePane(conferenceID, sceneCallback, centerPaneCallback,
+                        progressSpinnerCallback));
             }
         }
         else if (event.getSource() == papersTable) {
@@ -223,6 +223,7 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
             MouseEvent mouseEvent = (MouseEvent) event;
             if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
                 int reviewID = reviewsTable.getSelectionModel().getSelectedItem().getId();
+                // TODO this needs to be finished
             }
         }
         
@@ -233,8 +234,13 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
      */
     private class LoadDataService extends ProgressSpinnerService {
         
-        public LoadDataService(final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
-            super(progressSpinnerCallbacks);
+        /**
+         * Creates a new LoadDataService.
+         *
+         * @param progressSpinnerCallback Spinner that spins during database query.
+         */
+        public LoadDataService(final ProgressSpinnerCallbacks progressSpinnerCallback) {
+            super(progressSpinnerCallback);
         }
         
         /**
@@ -259,8 +265,7 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
                         setSuccess(true);
                     }
                     catch (Exception e) {
-                        new MessageDialog(sceneCallback.getPrimaryStage()).showDialog(
-                                e.getMessage(), false);
+                        new MessageDialog(sceneCallback.getPrimaryStage()).showDialog(e.getMessage(), false);
                     }
                     return null;
                 }
@@ -273,10 +278,10 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
         @Override
         protected void succeeded() {
             if (getSuccess()) {
+                create();
                 populate();
             }
             super.succeeded();
         }
     }
-    
 }

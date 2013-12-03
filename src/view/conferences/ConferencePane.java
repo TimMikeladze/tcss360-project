@@ -321,7 +321,7 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
         }
         
         /**
-         * Called when data loading is done to populate tables
+         * Called when data loading is done to populate tables.
          */
         @Override
         protected void succeeded() {

@@ -5,13 +5,13 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.TilePane;
-import view.util.SceneCallbacks;
 import view.util.GenericPane;
+import view.util.SceneCallbacks;
 
 /**
+ * TODO: Remove this class as it has been deprecated.
  * Creates a pane that functions as the navigation bar for the application and runs along the
  * windows left border.
- * 
  */
 public class SidePane extends GenericPane<TilePane> {
     
@@ -27,9 +27,10 @@ public class SidePane extends GenericPane<TilePane> {
         create();
     }
     
-	public GenericPane<TilePane> refresh() {
-		return new SidePane(sceneCallback);
-	}
+    @Override
+    public GenericPane<TilePane> refresh() {
+        return new SidePane(sceneCallback);
+    }
     
     /**
      * Creates the side pane.
@@ -47,8 +48,6 @@ public class SidePane extends GenericPane<TilePane> {
         Button usersButton = new Button("Users");
         usersButton.setMaxWidth(Double.MAX_VALUE);
         
-        pane.getChildren()
-            .addAll(homeButton, conferencesButton, submissionsButton, usersButton);
-        
+        pane.getChildren().addAll(homeButton, conferencesButton, submissionsButton, usersButton);
     }
 }

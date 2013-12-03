@@ -5,9 +5,9 @@ import java.util.Stack;
 
 import javafx.scene.layout.BorderPane;
 import view.home.HomePane;
-import view.util.SceneCallbacks;
-import view.util.GenericPane;
 import view.util.CenterPaneCallbacks;
+import view.util.GenericPane;
+import view.util.SceneCallbacks;
 
 /**
  * Main JavaFX pane for holding the applications UI upon successful login.
@@ -27,6 +27,9 @@ public class MainPane extends GenericPane<BorderPane> implements CenterPaneCallb
      */
     private HomePane homePane;
     
+    /**
+     * The stack for handling panes in the center of this Border Pane layout.
+     */
     private Stack<GenericPane<?>> stack;
     
     /**
@@ -43,10 +46,17 @@ public class MainPane extends GenericPane<BorderPane> implements CenterPaneCallb
         pushPane(homePane);
     }
     
-	public GenericPane<BorderPane> refresh() {
-		return new MainPane(sceneCallback);
-	}
+    /**
+     * Refreshes the current pane after data has been changed.
+     */
+    @Override
+    public GenericPane<BorderPane> refresh() {
+        return new MainPane(sceneCallback);
+    }
     
+    /**
+     * Pushes a pane onto the center stack.
+     */
     @Override
     public void pushPane(final GenericPane<?> pane) {
         stack.push(pane);
@@ -54,11 +64,13 @@ public class MainPane extends GenericPane<BorderPane> implements CenterPaneCallb
         updateBackButton();
     }
     
+    /**
+     * Pops a pane of the center stack.
+     */
     @Override
     public GenericPane<?> popPane() {
         GenericPane<?> pane = null;
-        if (stack.peek()
-                 .getClass() != HomePane.class) {
+        if (stack.peek().getClass() != HomePane.class) {
             pane = stack.pop();
         }
         else {
@@ -69,6 +81,9 @@ public class MainPane extends GenericPane<BorderPane> implements CenterPaneCallb
         return pane;
     }
     
+    /**
+     * Clears all panes from the stack and returns HomePane to the top of the stack.
+     */
     @Override
     public GenericPane<?> clearPanes() {
         stack.clear();
@@ -79,6 +94,9 @@ public class MainPane extends GenericPane<BorderPane> implements CenterPaneCallb
         return homePane;
     }
     
+    /**
+     * Updates the state of the back button in the top pane.
+     */
     public void updateBackButton() {
         topPane.enableBackButton(stack.size() > 1);
     }

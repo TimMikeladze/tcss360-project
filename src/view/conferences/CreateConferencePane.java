@@ -73,12 +73,12 @@ public class CreateConferencePane extends GenericPane<GridPane> implements Event
      * @param centerPaneCallback A callback to the center pane
      * @param progressSpinnerCallback A callback to the progress spinner
      */
-    public CreateConferencePane(final SceneCallbacks callbacks, final CenterPaneCallbacks mainPaneCallbacks,
-            final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
+    public CreateConferencePane(final SceneCallbacks sceneCallback, final CenterPaneCallbacks centerPaneCallback,
+            final ProgressSpinnerCallbacks progressSpinnerCallback) {
         super(new GridPane());
-        addSceneCallback(callbacks);
-        addCenterPaneCallBacks(mainPaneCallbacks);
-        addProgressSpinnerCallBack(progressSpinnerCallbacks);
+        addSceneCallback(sceneCallback);
+        addCenterPaneCallBacks(centerPaneCallback);
+        addProgressSpinnerCallBack(progressSpinnerCallback);
         
         pane.setAlignment(Pos.CENTER);
         pane.setHgap(10);

@@ -14,11 +14,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import view.conferences.ConferencesPane;
 import view.login.LoginPane;
-import view.util.SceneCallbacks;
+import view.util.CenterPaneCallbacks;
 import view.util.CustomProgressIndicator;
 import view.util.GenericPane;
-import view.util.CenterPaneCallbacks;
 import view.util.ProgressSpinnerCallbacks;
+import view.util.SceneCallbacks;
 import controller.user.LoggedUser;
 
 /**
@@ -29,28 +29,12 @@ import controller.user.LoggedUser;
  * @author Tim Mikeladze
  * @version 11-11-2013
  */
-public class TopPane extends GenericPane<StackPane> implements EventHandler<ActionEvent>,
-        ProgressSpinnerCallbacks {
-    
-    /**
-     * The left pane holding the welcome message and the users name.
-     */
-    private HBox leftBox;
-    
-    /**
-     * The right box holding the static buttons for the application.
-     */
-    private HBox rightBox;
+public class TopPane extends GenericPane<StackPane> implements EventHandler<ActionEvent>, ProgressSpinnerCallbacks {
     
     /**
      * The logout button to logout of the application.
      */
     private Button logoutButton;
-    
-    /**
-     * The welcome label showing the users name.
-     */
-    private Label welcomeLabel;
     
     /**
      * The progress indicator, displayed when the database is being queried.
@@ -83,8 +67,6 @@ public class TopPane extends GenericPane<StackPane> implements EventHandler<Acti
         addCenterPaneCallBacks(mainPaneCallbacks);
         
         pane.setPadding(new Insets(5));
-        leftBox = new HBox(12);
-        rightBox = new HBox(12);
         
         progressSpinner = new CustomProgressIndicator();
         progressSpinner.setStyle(" -fx-progress-color: gold;");
@@ -102,13 +84,14 @@ public class TopPane extends GenericPane<StackPane> implements EventHandler<Acti
      * Creates the top pane.
      */
     private void create() {
+        final HBox leftBox = new HBox(12);
         leftBox.setAlignment(Pos.CENTER_LEFT);
-        welcomeLabel = new Label("Welcome: " + LoggedUser.getInstance().getUser().getFullName());
+        final Label welcomeLabel = new Label("Welcome: " + LoggedUser.getInstance().getUser().getFullName());
         welcomeLabel.setFont(Font.font(welcomeLabel.getFont().getName(), FontWeight.BOLD, 12));
         leftBox.getChildren().add(welcomeLabel);
         
+        final HBox rightBox = new HBox(12);
         rightBox.setAlignment(Pos.CENTER_RIGHT);
-        
         rightBox.getChildren().add(progressSpinner);
         
         homeButton = new Button("Home");
@@ -136,6 +119,11 @@ public class TopPane extends GenericPane<StackPane> implements EventHandler<Acti
         pane.getChildren().add(rightBox);
     }
     
+    /**
+     * Event handler for handling user input.
+     * 
+     * @param event The event that occurred
+     */
     @Override
     public void handle(final ActionEvent event) {
         Object source = event.getSource();
@@ -156,21 +144,35 @@ public class TopPane extends GenericPane<StackPane> implements EventHandler<Acti
         
     }
     
+    /**
+     * Stops the progress spinner.
+     */
     @Override
     public void stop() {
         progressSpinner.setVisible(false);
     }
     
+    /**
+     * Starts the progress spinner.
+     */
     @Override
     public void start() {
         progressSpinner.setVisible(true);
     }
     
+    /**
+     * Binds the progress spinner.
+     */
     @Override
     public void bindTask(final Task<?> task) {
         progressSpinner.progressProperty().bind(task.progressProperty());
     }
     
+    /**
+     * Changes the state of the back button.
+     * 
+     * @param enabled true to enable
+     */
     public void enableBackButton(final boolean enabled) {
         backButton.setDisable(!enabled);
     }
