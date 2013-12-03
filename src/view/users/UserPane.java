@@ -12,6 +12,7 @@ import model.users.User;
 import view.util.Callbacks;
 import view.util.GenericPane;
 import view.util.MainPaneCallbacks;
+import view.util.MessageDialog;
 import view.util.ProgressSpinnerCallbacks;
 import view.util.ProgressSpinnerService;
 
@@ -35,7 +36,8 @@ public class UserPane extends GenericPane<GridPane> implements EventHandler {
      * @param mainPaneCallbacks
      * @param progressSpinnerCallbacks
      */
-    public UserPane(final int userID, final Callbacks callbacks, final MainPaneCallbacks mainPaneCallbacks,
+    public UserPane(final int userID, final Callbacks callbacks,
+            final MainPaneCallbacks mainPaneCallbacks,
             final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
         super(new GridPane(), callbacks);
         addMainPaneCallBacks(mainPaneCallbacks);
@@ -96,7 +98,8 @@ public class UserPane extends GenericPane<GridPane> implements EventHandler {
                         setSuccess(true);
                     }
                     catch (Exception e) {
-                        //TODO show error
+                        new MessageDialog(callbacks.getPrimaryStage()).showDialog(
+                                e.getMessage(), false);
                     }
                     return null;
                 }

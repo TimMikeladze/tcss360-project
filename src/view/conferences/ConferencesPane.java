@@ -19,6 +19,7 @@ import view.util.Callbacks;
 import view.util.CustomTable;
 import view.util.GenericPane;
 import view.util.MainPaneCallbacks;
+import view.util.MessageDialog;
 import view.util.ProgressSpinnerCallbacks;
 import view.util.ProgressSpinnerService;
 
@@ -43,12 +44,14 @@ public class ConferencesPane extends GenericPane<GridPane> implements EventHandl
     /**
      * Column names of conferences in TableView.
      */
-    private String[] conferencesColumnNames = { "Conference Name", "Program Chair", "Authors", "Reviewers", "Date" };
+    private String[] conferencesColumnNames = { "Conference Name", "Program Chair", "Authors",
+            "Reviewers", "Date" };
     
     /**
      * The variable names for the conferences table used by Java FX's table classes
      */
-    private String[] conferencesVariableNames = { "name", "programChair", "authors", "reviewers", "date" };
+    private String[] conferencesVariableNames = { "name", "programChair", "authors",
+            "reviewers", "date" };
     
     /**
      * The list of conferences for the table.
@@ -57,13 +60,15 @@ public class ConferencesPane extends GenericPane<GridPane> implements EventHandl
     
     private Button addConferenceButton;
     
-    public ConferencesPane(final Callbacks callbacks, final MainPaneCallbacks mainPaneCallbacks,
+    public ConferencesPane(final Callbacks callbacks,
+            final MainPaneCallbacks mainPaneCallbacks,
             final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
         super(new GridPane(), callbacks);
         addMainPaneCallBacks(mainPaneCallbacks);
         addProgressSpinnerCallBacks(progressSpinnerCallbacks);
         
-        conferencesTable = new CustomTable<ConferenceRow>(conferencesColumnNames, conferencesVariableNames);
+        conferencesTable = new CustomTable<ConferenceRow>(conferencesColumnNames,
+                conferencesVariableNames);
         
         pane.setAlignment(Pos.TOP_LEFT);
         pane.setHgap(10);
@@ -93,8 +98,7 @@ public class ConferencesPane extends GenericPane<GridPane> implements EventHandl
         addConferenceButton = new Button("Add Conference");
         addConferenceButton.setOnAction(this);
         
-        bottomBox.getChildren()
-                 .add(addConferenceButton);
+        bottomBox.getChildren().add(addConferenceButton);
         
         pane.add(bottomBox, 0, 7);
         
@@ -108,8 +112,8 @@ public class ConferencesPane extends GenericPane<GridPane> implements EventHandl
     private void populate() {
         if (listOfConferences != null) {
             for (Conference c : listOfConferences) {
-                conferencesTable.add(new ConferenceRow(c.getID(), c.getName(), c.getLocation(), c.getDate(), c.getProgramChair(), c.getAuthors(),
-                        c.getReviewers()));
+                conferencesTable.add(new ConferenceRow(c.getID(), c.getName(), c.getLocation(),
+                        c.getDate(), c.getProgramChair(), c.getAuthors(), c.getReviewers()));
             }
             conferencesTable.updateItems();
         }
@@ -123,15 +127,16 @@ public class ConferencesPane extends GenericPane<GridPane> implements EventHandl
         if (event.getSource() == conferencesTable) {
             MouseEvent mouseEvent = (MouseEvent) event;
             if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
-                int conferenceID = conferencesTable.getSelectionModel()
-                                                   .getSelectedItem()
-                                                   .getID();
+                int conferenceID = conferencesTable.getSelectionModel().getSelectedItem()
+                        .getID();
                 //TODO binary search
-                mainPaneCallbacks.pushPane(new ConferencePane(conferenceID, callbacks, mainPaneCallbacks, progressSpinnerCallbacks));
+                mainPaneCallbacks.pushPane(new ConferencePane(conferenceID, callbacks,
+                        mainPaneCallbacks, progressSpinnerCallbacks));
             }
         }
         if (event.getSource() == addConferenceButton) {
-            mainPaneCallbacks.pushPane(new CreateConferencePane(callbacks, mainPaneCallbacks, progressSpinnerCallbacks));
+            mainPaneCallbacks.pushPane(new CreateConferencePane(callbacks, mainPaneCallbacks,
+                    progressSpinnerCallbacks));
         }
     }
     
@@ -161,7 +166,8 @@ public class ConferencesPane extends GenericPane<GridPane> implements EventHandl
                         setSuccess(true);
                     }
                     catch (Exception e) {
-                        //TODO show error
+                        new MessageDialog(callbacks.getPrimaryStage()).showDialog(
+                                e.getMessage(), false);
                     }
                     return null;
                 }

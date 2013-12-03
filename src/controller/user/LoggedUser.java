@@ -16,35 +16,35 @@ import model.users.User;
  * @version 11-17-2013
  */
 public class LoggedUser {
-
+    
     /**
      * The logged in user.
      */
     private static LoggedUser loggedUser;
-
+    
     /**
      * The current user.
      */
     private User user;
-
+    
     /**
      * Tree set used holding the permissions of the user, automatically sorts.
      */
     private TreeSet<PermissionLevel> permissions;
-
+    
     /**
      * Active conference id
      */
     private int activeConferenceID;
-
+    
     /**
      * Logs a user in and gets their permissions.
      */
     private LoggedUser() {
         permissions = new TreeSet<PermissionLevel>(new PermissionLevelComparator());
-
+        
     }
-
+    
     /**
      * Gets the single instance of LoggedUser.
      *
@@ -57,7 +57,7 @@ public class LoggedUser {
         }
         return loggedUser;
     }
-
+    
     /**
      * Sets the user object, this needs be called when logging in.
      *
@@ -66,7 +66,7 @@ public class LoggedUser {
     public void setUser(final User user) {
         this.user = user;
     }
-
+    
     /**
      * Gets the user.
      *
@@ -75,7 +75,7 @@ public class LoggedUser {
     public User getUser() {
         return user;
     }
-
+    
     /**
      * Gets the permissions set, the permission set holds the user's current permission levels.
      *
@@ -84,7 +84,7 @@ public class LoggedUser {
     public TreeSet<PermissionLevel> getPermissions() {
         return permissions;
     }
-
+    
     /**
      * Gets the highest permission.
      *
@@ -93,7 +93,7 @@ public class LoggedUser {
     public PermissionLevel getHighestPermission() {
         return permissions.last();
     }
-
+    
     /**
      * Gets the lowest permission.
      *
@@ -102,7 +102,7 @@ public class LoggedUser {
     public PermissionLevel getLowestPermission() {
         return permissions.first();
     }
-
+    
     public void setPermissions(final List<ConferencePermission> conferencePermission) {
         for (ConferencePermission cp : conferencePermission) {
             if (cp.getPermissionID() == PermissionLevel.AUTHOR.getPermission()) {
@@ -110,27 +110,29 @@ public class LoggedUser {
             }
             if (cp.getPermissionID() == PermissionLevel.REVIEWER.getPermission()) {
                 permissions.add(PermissionLevel.REVIEWER);
-
+                
             }
             if (cp.getPermissionID() == PermissionLevel.SUBPROGRAM_CHAIR.getPermission()) {
                 permissions.add(PermissionLevel.SUBPROGRAM_CHAIR);
-
+                
             }
             if (cp.getPermissionID() == PermissionLevel.PROGRAM_CHAIR.getPermission()) {
                 permissions.add(PermissionLevel.PROGRAM_CHAIR);
             }
         }
     }
-
+    
     /**
      * This method "logs out" the user. It resets the user and permissions.
      */
     public void logout() {
         user = null;
+        clearPermissions();
         permissions = new TreeSet<PermissionLevel>(new PermissionLevelComparator());
         activeConferenceID = 0;
+        
     }
-
+    
     public void clearPermissions() {
         permissions.clear();
     }

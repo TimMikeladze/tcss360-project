@@ -33,14 +33,5 @@ public class MessageDialog extends Stage {
         setScene(scene);
         show();
         
-        try {
-            Thread.sleep(EXPIRATION);
-        }
-        catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        close();
-        
     }
 }

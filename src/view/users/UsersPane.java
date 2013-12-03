@@ -221,7 +221,7 @@ public class UsersPane extends Stage implements EventHandler {
                         setSuccess(true);
                     }
                     catch (Exception e) {
-                        // TODO show error
+                        
                     }
                     return null;
                 }

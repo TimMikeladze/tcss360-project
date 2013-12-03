@@ -151,16 +151,17 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
         acceptRejectPaperButton.setOnAction(this);
         
         HBox bottomBox = new HBox(12);
+        
         bottomBox.getChildren().add(removePaperButton);
+        
         bottomBox.getChildren().add(recommendPaperButton);
         bottomBox.getChildren().add(reuploadPaperButton);
         bottomBox.getChildren().add(downloadPaperButton);
         bottomBox.getChildren().add(acceptRejectPaperButton);
-        if (!isReviewed) {
-            bottomBox.getChildren().add(submitReviewButton);
-        }
-        bottomBox.getChildren().add(assignReviewer);
         
+        bottomBox.getChildren().add(submitReviewButton);
+        
+        bottomBox.getChildren().add(assignReviewer);
         pane.add(bottomBox, 0, 7);
     }
     
@@ -448,7 +449,8 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
                         setSuccess(true);
                     }
                     catch (Exception e) {
-                        // TODO show error
+                        new MessageDialog(callbacks.getPrimaryStage()).showDialog(
+                                e.getMessage(), false);
                     }
                     return null;
                 }
@@ -493,7 +495,8 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
                         setSuccess(true);
                     }
                     catch (Exception e) {
-                        // TODO show error
+                        new MessageDialog(callbacks.getPrimaryStage()).showDialog(
+                                e.getMessage(), false);
                     }
                     return null;
                 }
@@ -506,7 +509,7 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
         @Override
         protected void succeeded() {
             if (getSuccess()) {
-                //TODO refresh
+                refresh();
             }
             super.succeeded();
         }

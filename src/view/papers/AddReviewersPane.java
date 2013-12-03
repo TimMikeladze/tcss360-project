@@ -70,7 +70,8 @@ public class AddReviewersPane extends Stage implements EventHandler {
     
     private int conferenceID;
     
-    public AddReviewersPane(final int conferenceID, final Stage owner, final ProgressSpinnerCallbacks progressSpinnerCallbacks,
+    public AddReviewersPane(final int conferenceID, final Stage owner,
+            final ProgressSpinnerCallbacks progressSpinnerCallbacks,
             final AddUserCallback addUserCallback) {
         this.conferenceID = conferenceID;
         this.progressSpinnerCallbacks = progressSpinnerCallbacks;
@@ -80,8 +81,9 @@ public class AddReviewersPane extends Stage implements EventHandler {
         scene = new Scene(root, DEFAULT_WIDTH, DEFAULT_HEIGHT);
         
         usersTable = new CustomTable<ConferenceUserRow>(usersColumnNames, usersVariableNames);
-        usersTable.setStyle("-fx-selection-bar: khaki; -fx-selection-bar-border: goldenrod; -fx-cell-focus-inner-border: goldenrod;"
-                + "-fx-selection-bar-text: black; -fx-base: indianred; -fx-cell-hover-color: lightgrey;");
+        usersTable
+                .setStyle("-fx-selection-bar: khaki; -fx-selection-bar-border: goldenrod; -fx-cell-focus-inner-border: goldenrod;"
+                        + "-fx-selection-bar-text: black; -fx-base: indianred; -fx-cell-hover-color: lightgrey;");
         
         initModality(Modality.WINDOW_MODAL);
         initOwner(owner);
@@ -108,7 +110,8 @@ public class AddReviewersPane extends Stage implements EventHandler {
     private void populateTable() {
         if (listOfUser != null) {
             for (ConferenceUser u : listOfUser) {
-                usersTable.add(new ConferenceUserRow(u.getUserID(), u.getUsername(), u.getRole()));
+                usersTable.add(new ConferenceUserRow(u.getUserID(), u.getUsername(), u
+                        .getRole()));
             }
             usersTable.updateItems();
         }
@@ -121,9 +124,8 @@ public class AddReviewersPane extends Stage implements EventHandler {
             MouseEvent mouseEvent = (MouseEvent) event;
             if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
                 close();
-                addUserCallback.addReviewer(usersTable.getSelectionModel()
-                                                      .getSelectedItem()
-                                                      .getID());
+                addUserCallback.addReviewer(usersTable.getSelectionModel().getSelectedItem()
+                        .getID());
             }
         }
     }
@@ -152,11 +154,12 @@ public class AddReviewersPane extends Stage implements EventHandler {
                 @Override
                 protected String call() {
                     try {
-                        listOfUser = ConferenceManager.getUsersInConference(conferenceID, PermissionLevel.REVIEWER);
+                        listOfUser = ConferenceManager.getUsersInConference(conferenceID,
+                                PermissionLevel.REVIEWER);
                         setSuccess(true);
                     }
                     catch (Exception e) {
-                        // TODO show error
+                        
                     }
                     return null;
                 }
