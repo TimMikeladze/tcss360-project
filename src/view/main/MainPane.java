@@ -5,9 +5,9 @@ import java.util.Stack;
 
 import javafx.scene.layout.BorderPane;
 import view.home.HomePane;
-import view.util.Callbacks;
+import view.util.SceneCallbacks;
 import view.util.GenericPane;
-import view.util.MainPaneCallbacks;
+import view.util.CenterPaneCallbacks;
 
 /**
  * Main JavaFX pane for holding the applications UI upon successful login.
@@ -15,7 +15,7 @@ import view.util.MainPaneCallbacks;
  * @author Mohammad Juma
  * @version 11-11-2013
  */
-public class MainPane extends GenericPane<BorderPane> implements MainPaneCallbacks {
+public class MainPane extends GenericPane<BorderPane> implements CenterPaneCallbacks {
     
     /**
      * The top pane of this BorderPane.
@@ -33,7 +33,7 @@ public class MainPane extends GenericPane<BorderPane> implements MainPaneCallbac
      * Constructs a new MainPane pane that extends BorderPane and displays the main user
      * interface that all other panes are placed upon.
      */
-    public MainPane(final Callbacks callbacks) {
+    public MainPane(final SceneCallbacks callbacks) {
         super(new BorderPane(), callbacks);
         stack = new Stack<GenericPane<?>>();
         
@@ -44,7 +44,7 @@ public class MainPane extends GenericPane<BorderPane> implements MainPaneCallbac
     }
     
 	public GenericPane<BorderPane> refresh() {
-		return new MainPane(callbacks);
+		return new MainPane(sceneCallback);
 	}
     
     @Override
@@ -73,7 +73,7 @@ public class MainPane extends GenericPane<BorderPane> implements MainPaneCallbac
     public GenericPane<?> clearPanes() {
         stack.clear();
         
-        homePane = new HomePane(callbacks, this, topPane);
+        homePane = new HomePane(sceneCallback, this, topPane);
         pushPane(homePane);
         
         return homePane;

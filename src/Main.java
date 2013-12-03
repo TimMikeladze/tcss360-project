@@ -10,7 +10,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import view.login.LoginPane;
-import view.util.Callbacks;
+import view.util.SceneCallbacks;
 import view.util.GenericPane;
 
 /**
@@ -20,7 +20,7 @@ import view.util.GenericPane;
  * @author Tim Mikeladze
  * @version 11-11-2013
  */
-public class Main extends Application implements Callbacks {
+public class Main extends Application implements SceneCallbacks {
     
     /**
      * The default width of the application.
@@ -65,7 +65,7 @@ public class Main extends Application implements Callbacks {
         primaryStage.setTitle("TCSS360 Project");
         
         LoginPane loginPane = new LoginPane();
-        loginPane.addCallbacks(this);
+        loginPane.addSceneCallback(this);
         scene = new Scene(loginPane.getPane(), DEFAULT_WIDTH, DEFAULT_HEIGHT);
         scene.getStylesheets()
              .add("view/styling/styles.css");
@@ -92,7 +92,7 @@ public class Main extends Application implements Callbacks {
      */
     @Override
     public void changeScene(final GenericPane<?> genericPane, final int width, final int height) {
-        genericPane.addCallbacks(this);
+        genericPane.addSceneCallback(this);
         scene = new Scene(genericPane.getPane(), width, height);
         scene.getStylesheets()
              .add("view/styling/styles.css");

@@ -1,7 +1,6 @@
 
 package view.papers;
 
-
 /**
  * Wrapper class around paper data in a conference
  * 
@@ -29,6 +28,8 @@ public class PaperRow {
     private String subprogramChair;
     
     /**
+     * TODO HomePane
+     * 
      * @param id
      * @param paperName
      * @param conferenceName
@@ -52,30 +53,15 @@ public class PaperRow {
     }
     
     /**
+     * TODO ConferencePane
+     * 
      * @param id
      * @param paperName
+     * @param subprogramChair
      * @param date
+     * @param isRecommendedString
+     * @param isAccepted
      */
-    public PaperRow(final int id, final String paperName, final String date) {
-        this.id = id;
-        this.paperName = paperName;
-        this.date = date;
-    }
-    
-    /**
-     * @param id
-     * @param paperName
-     * @param date
-     * @param isRecommended
-     */
-    public PaperRow(final int id, final String paperName, final String date,
-            final String isRecommendedString) {
-        this.id = id;
-        this.paperName = paperName;
-        this.date = date;
-        this.isRecommended = isRecommendedString;
-    }
-    
     public PaperRow(final int id, final String paperName, final String subprogramChair,
             final String date, final String isRecommendedString, final String isAccepted) {
         this.id = id;

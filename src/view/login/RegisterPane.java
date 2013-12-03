@@ -118,12 +118,12 @@ public class RegisterPane extends GenericPane<GridPane> implements EventHandler<
                 registrationText.setErrorText("Not a valid email");
             }
             else {
-                new RegistrationService(callbacks.getPrimaryStage(), firstName, lastName, email)
+                new RegistrationService(sceneCallback.getPrimaryStage(), firstName, lastName, email)
                         .start();
             }
         } 
         else if (event.getSource() == returnButton) {
-            callbacks.changeScene(new LoginPane());
+            sceneCallback.changeScene(new LoginPane());
         }
     }
     
@@ -163,7 +163,7 @@ public class RegisterPane extends GenericPane<GridPane> implements EventHandler<
         protected void succeeded() {
             super.succeeded();
             if (getSuccess()) {
-                callbacks.changeScene(new LoginPane());
+                sceneCallback.changeScene(new LoginPane());
             }
         }
     }

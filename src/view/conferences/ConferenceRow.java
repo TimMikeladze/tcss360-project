@@ -1,25 +1,62 @@
 
 package view.conferences;
 
-
 /**
- * Wrapper for confenece row data in the table
+ * Wrapper for conference row data in the table.
  *
  * @author Tim Mikeladze
  * @version 11-16-2013
  */
 public class ConferenceRow {
     
+    /**
+     * The id of the conference.
+     */
     private int id;
+    
+    /**
+     * The name of the conference.
+     */
     private String name;
+    
+    /**
+     * The location of the conference.
+     */
     private String location;
+    
+    /**
+     * The date of the conference.
+     */
     private String date;
+    
+    /**
+     * The program chair of the conference.
+     */
     private String programChair;
+    
+    /**
+     * The number of authors in the conference.
+     */
     private int authors = 0;
+    
+    /**
+     * The number of reviewers in the conference.
+     */
     private int reviewers = 0;
     
-    public ConferenceRow(final int id, final String name, final String location,
-            final String date, final String programChair, final int authors, final int reviewers) {
+    /**
+     * Creates a conference row that displays all fields available.
+     * 
+     * @param id The id of the conference
+     * @param name The name of the conference
+     * @param location The location of the conference
+     * @param date The date of the conference
+     * @param programChair The program chair of the conference
+     * @param authors The number of authors in the conference
+     * @param reviewers  The number of reviewers in the conference
+     */
+    public ConferenceRow(final int id, final String name, final String location, final String date,
+            final String programChair, final int authors, final int reviewers) {
         super();
         this.id = id;
         this.name = name;
@@ -30,8 +67,15 @@ public class ConferenceRow {
         this.reviewers = reviewers;
     }
     
-    public ConferenceRow(final int id, final String name, final String date,
-            final String programChair) {
+    /**
+     * Creates a conference row that only displays the name, date and Program Chair.
+     * 
+     * @param id The id of the conference
+     * @param name The name of the conference
+     * @param date The date of the conference
+     * @param programChair The program chair of the conference
+     */
+    public ConferenceRow(final int id, final String name, final String date, final String programChair) {
         super();
         this.id = id;
         this.name = name;
@@ -40,7 +84,8 @@ public class ConferenceRow {
     }
     
     /**
-     *
+     * The id.
+     * 
      * @return the id
      */
     public int getID() {
@@ -48,6 +93,8 @@ public class ConferenceRow {
     }
     
     /**
+     * The name.
+     * 
      * @return the name
      */
     public String getName() {
@@ -55,6 +102,8 @@ public class ConferenceRow {
     }
     
     /**
+     * The location.
+     * 
      * @return the location
      */
     public String getLocation() {
@@ -62,6 +111,8 @@ public class ConferenceRow {
     }
     
     /**
+     * The date.
+     * 
      * @return the date
      */
     public String getDate() {
@@ -69,6 +120,8 @@ public class ConferenceRow {
     }
     
     /**
+     * The Program Chair.
+     * 
      * @return the programChair
      */
     public String getProgramChair() {
@@ -76,14 +129,18 @@ public class ConferenceRow {
     }
     
     /**
-     * @return the authors
+     * The number of authors.
+     * 
+     * @return the number of authors
      */
     public int getAuthors() {
         return authors;
     }
     
     /**
-     * @return the reviewers
+     * The number of reviewers.
+     * 
+     * @return the number of reviewers
      */
     public int getReviewers() {
         return reviewers;

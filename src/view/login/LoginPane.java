@@ -163,7 +163,7 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
             login();
         }
         else if (event.getSource() == registerButton) {
-            callbacks.changeScene(new RegisterPane());
+            sceneCallback.changeScene(new RegisterPane());
         }
     }
     
@@ -245,7 +245,7 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
             super.succeeded();
             setProgressIndicatorVisible(false);
             if (success) {
-                callbacks.changeScene(new MainPane(callbacks));
+                sceneCallback.changeScene(new MainPane(sceneCallback));
             }
             
         }

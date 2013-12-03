@@ -15,10 +15,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import model.papers.PaperManager;
-import view.util.Callbacks;
+import view.util.SceneCallbacks;
 import view.util.CustomFileChooser;
 import view.util.GenericPane;
-import view.util.MainPaneCallbacks;
+import view.util.CenterPaneCallbacks;
 import view.util.ProgressSpinnerCallbacks;
 import view.util.ProgressSpinnerService;
 import view.util.StatusText;
@@ -37,13 +37,13 @@ public class UploadPaperPane extends GenericPane<GridPane> implements EventHandl
     private CustomFileChooser fileChooser;
     private int conferenceID;
     
-    public UploadPaperPane(final int conferenceID, final Callbacks callbacks, final MainPaneCallbacks mainPaneCallbacks,
+    public UploadPaperPane(final int conferenceID, final SceneCallbacks callbacks, final CenterPaneCallbacks mainPaneCallbacks,
             final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
         super(new GridPane());
         this.conferenceID = conferenceID;
-        addCallbacks(callbacks);
-        addMainPaneCallBacks(mainPaneCallbacks);
-        addProgressSpinnerCallBacks(progressSpinnerCallbacks);
+        addSceneCallback(callbacks);
+        addCenterPaneCallBacks(mainPaneCallbacks);
+        addProgressSpinnerCallBack(progressSpinnerCallbacks);
         
         fileChooser = new CustomFileChooser();
         
@@ -56,7 +56,7 @@ public class UploadPaperPane extends GenericPane<GridPane> implements EventHandl
     }
     
 	public GenericPane<GridPane> refresh() {
-		return new UploadPaperPane(conferenceID, callbacks, mainPaneCallbacks, progressSpinnerCallbacks);
+		return new UploadPaperPane(conferenceID, sceneCallback, centerPaneCallback, progressSpinnerCallback);
 	}
     
     private void create() {
@@ -103,10 +103,10 @@ public class UploadPaperPane extends GenericPane<GridPane> implements EventHandl
         String name = paperNameTextField.getText();
         String description = paperDescriptionTextField.getText();
         
-        File file = fileChooser.showOpenDialog(callbacks.getPrimaryStage());
+        File file = fileChooser.showOpenDialog(sceneCallback.getPrimaryStage());
         
         if (!Validator.isEmpty(name, description) && file != null) {
-            new CreatepaperService(progressSpinnerCallbacks, name, description, file).start();
+            new CreatepaperService(progressSpinnerCallback, name, description, file).start();
         }
         else if (file == null) {
             statusText.setErrorText("Missing file");
@@ -164,7 +164,7 @@ public class UploadPaperPane extends GenericPane<GridPane> implements EventHandl
         @Override
         protected void succeeded() {
             if (getSuccess()) {
-                mainPaneCallbacks.popPane();
+                centerPaneCallback.popPane();
             }
             super.succeeded();
         }

@@ -229,7 +229,7 @@ public class PaperManager {
         return Database
                 .getInstance()
                 .createQuery(
-                        "SELECT p.ConferenceID, p.ID AS PaperID, c.Name AS ConferenceName, p.Title, p.Description, p.AuthorID, p.SubmissionDate, p.Status, p.Revised, p.FileExtension, p.File, p.RevisionDate, Recommended  FROM papers AS p JOIN conferences AS c ON c.ID = p.ConferenceID WHERE p.AuthorID = :authorID")
+                        "SELECT p.ConferenceID, p.ID AS PaperID, c.Name AS ConferenceName, p.Title, p.Description, p.AuthorID, p.SubmissionDate, p.Status, p.Revised, p.FileExtension, p.File, p.RevisionDate, p.Recommended  FROM papers AS p JOIN conferences AS c ON c.ID = p.ConferenceID WHERE p.AuthorID = :authorID")
                 .addParameter("authorID", authorID).executeAndFetch(Paper.class);
         
     }

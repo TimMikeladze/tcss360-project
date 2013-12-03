@@ -15,13 +15,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import model.conferences.Conference;
 import model.conferences.ConferenceManager;
-import view.util.Callbacks;
+import view.util.CenterPaneCallbacks;
 import view.util.CustomTable;
 import view.util.GenericPane;
-import view.util.MainPaneCallbacks;
 import view.util.MessageDialog;
 import view.util.ProgressSpinnerCallbacks;
 import view.util.ProgressSpinnerService;
+import view.util.SceneCallbacks;
 
 /**
  * JavaFX pane responsible for displaying all conferences in the database.
@@ -32,78 +32,84 @@ import view.util.ProgressSpinnerService;
 public class ConferencesPane extends GenericPane<GridPane> implements EventHandler {
     
     /**
-     * TODO COMMENT THIS
+     * Number of clicks for a double click.
      */
     private static final int DOUBLE_CLICK = 2;
     
     /**
-     * TODO COMMENT THIS
-     */
-    private CustomTable<ConferenceRow> conferencesTable;
-    
-    /**
      * Column names of conferences in TableView.
      */
-    private String[] conferencesColumnNames = { "Conference Name", "Program Chair", "Authors",
+    private static final String[] conferencesColumnNames = { "Conference Name", "Program Chair", "Authors",
             "Reviewers", "Date" };
     
     /**
      * The variable names for the conferences table used by Java FX's table classes
      */
-    private String[] conferencesVariableNames = { "name", "programChair", "authors",
-            "reviewers", "date" };
+    private static final String[] conferencesVariableNames = { "name", "programChair", "authors", "reviewers", "date" };
     
     /**
-     * The list of conferences for the table.
+     * A table for all the conferences in the application.
+     */
+    private CustomTable<ConferenceRow> conferencesTable;
+    
+    /**
+     * The list of conferences in the application.
      */
     private List<Conference> listOfConferences;
     
+    /**
+     * A button for adding conferences.
+     */
     private Button addConferenceButton;
     
-    public ConferencesPane(final Callbacks callbacks,
-            final MainPaneCallbacks mainPaneCallbacks,
-            final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
-        super(new GridPane(), callbacks);
-        addMainPaneCallBacks(mainPaneCallbacks);
-        addProgressSpinnerCallBacks(progressSpinnerCallbacks);
+    /**
+     * Constructs a new Conferences Pane that extends GridPane and displays the information about
+     * all the conferences as well as allows the user to create a new one.
+     * 
+     * @param sceneCallback A callback to the scene this pane is in
+     * @param centerPaneCallback A callback to the center pane
+     * @param progressSpinnerCallback A callback to the progress spinner
+     */
+    public ConferencesPane(final SceneCallbacks sceneCallback, final CenterPaneCallbacks centerPaneCallback,
+            final ProgressSpinnerCallbacks progressSpinnerCallback) {
+        super(new GridPane(), sceneCallback);
+        addCenterPaneCallBacks(centerPaneCallback);
+        addProgressSpinnerCallBack(progressSpinnerCallback);
         
-        conferencesTable = new CustomTable<ConferenceRow>(conferencesColumnNames,
-                conferencesVariableNames);
+        conferencesTable = new CustomTable<ConferenceRow>(conferencesColumnNames, conferencesVariableNames);
         
         pane.setAlignment(Pos.TOP_LEFT);
         pane.setHgap(10);
         pane.setVgap(10);
         pane.setPadding(new Insets(0, 5, 5, 5));
         
-        create();
-    }
-    
-    @Override
-    public GenericPane<GridPane> refresh() {
-        return new ConferencesPane(callbacks, mainPaneCallbacks, progressSpinnerCallbacks);
+        new LoadDataService(progressSpinnerCallback).start();
     }
     
     /**
-     * Creates the main components of the HomePane pane.
+     * Refreshes the current pane after data has been changed.
+     */
+    @Override
+    public GenericPane<GridPane> refresh() {
+        return new ConferencesPane(sceneCallback, centerPaneCallback, progressSpinnerCallback);
+    }
+    
+    /**
+     * Creates the main components of the ConfrencesPane pane.
      */
     private void create() {
-        Text myConferencesText = new Text("All Conferences");
+        final Text myConferencesText = new Text("All Conferences");
         myConferencesText.setId("header2");
         conferencesTable.setOnMouseClicked(this);
         pane.add(myConferencesText, 0, 0);
         pane.add(conferencesTable, 0, 1);
         
-        HBox bottomBox = new HBox(12);
-        
+        final HBox bottomBox = new HBox(12);
         addConferenceButton = new Button("Add Conference");
         addConferenceButton.setOnAction(this);
-        
         bottomBox.getChildren().add(addConferenceButton);
         
-        pane.add(bottomBox, 0, 7);
-        
-        new LoadDataService(progressSpinnerCallbacks).start();
-        
+        pane.add(bottomBox, 0, 2);
     }
     
     /**
@@ -111,42 +117,50 @@ public class ConferencesPane extends GenericPane<GridPane> implements EventHandl
      */
     private void populate() {
         if (listOfConferences != null) {
-            for (Conference c : listOfConferences) {
-                conferencesTable.add(new ConferenceRow(c.getID(), c.getName(), c.getLocation(),
-                        c.getDate(), c.getProgramChair(), c.getAuthors(), c.getReviewers()));
+            for (Conference conference : listOfConferences) {
+                conferencesTable.add(new ConferenceRow(conference.getID(), conference.getName(), conference
+                        .getLocation(), conference.getDate(), conference.getProgramChair(), conference.getAuthors(),
+                        conference.getReviewers()));
             }
             conferencesTable.updateItems();
         }
     }
     
     /**
-     * Handles user input
+     * Handles user input.
+     * 
+     * @param event The event that occurred
      */
     @Override
     public void handle(final Event event) {
-        if (event.getSource() == conferencesTable) {
-            MouseEvent mouseEvent = (MouseEvent) event;
+        final Object source = event.getSource();
+        if (source == conferencesTable) {
+            final MouseEvent mouseEvent = (MouseEvent) event;
             if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
-                int conferenceID = conferencesTable.getSelectionModel().getSelectedItem()
-                        .getID();
+                int conferenceID = conferencesTable.getSelectionModel().getSelectedItem().getID();
                 //TODO binary search
-                mainPaneCallbacks.pushPane(new ConferencePane(conferenceID, callbacks,
-                        mainPaneCallbacks, progressSpinnerCallbacks));
+                centerPaneCallback.pushPane(new ConferencePane(conferenceID, sceneCallback, centerPaneCallback,
+                        progressSpinnerCallback));
             }
         }
-        if (event.getSource() == addConferenceButton) {
-            mainPaneCallbacks.pushPane(new CreateConferencePane(callbacks, mainPaneCallbacks,
-                    progressSpinnerCallbacks));
+        else if (source == addConferenceButton) {
+            centerPaneCallback.pushPane(new CreateConferencePane(sceneCallback, centerPaneCallback,
+                    progressSpinnerCallback));
         }
     }
     
     /**
-     * Loads conference
+     * Loads conference data from database.
      */
     private class LoadDataService extends ProgressSpinnerService {
         
-        public LoadDataService(final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
-            super(progressSpinnerCallbacks);
+        /**
+         * Creates a new LoadDataService.
+         *
+         * @param progressSpinnerCallback Spinner that spins during database query.
+         */
+        public LoadDataService(final ProgressSpinnerCallbacks progressSpinnerCallback) {
+            super(progressSpinnerCallback);
         }
         
         /**
@@ -166,8 +180,7 @@ public class ConferencesPane extends GenericPane<GridPane> implements EventHandl
                         setSuccess(true);
                     }
                     catch (Exception e) {
-                        new MessageDialog(callbacks.getPrimaryStage()).showDialog(
-                                e.getMessage(), false);
+                        new MessageDialog(sceneCallback.getPrimaryStage()).showDialog(e.getMessage(), false);
                     }
                     return null;
                 }
@@ -180,10 +193,10 @@ public class ConferencesPane extends GenericPane<GridPane> implements EventHandl
         @Override
         protected void succeeded() {
             if (getSuccess()) {
+                create();
                 populate();
             }
             super.succeeded();
         }
     }
-    
 }

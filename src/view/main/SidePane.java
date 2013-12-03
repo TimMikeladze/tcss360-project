@@ -5,7 +5,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.TilePane;
-import view.util.Callbacks;
+import view.util.SceneCallbacks;
 import view.util.GenericPane;
 
 /**
@@ -20,7 +20,7 @@ public class SidePane extends GenericPane<TilePane> {
      * 
      * @param callbacks the callbacks
      */
-    public SidePane(final Callbacks callbacks) {
+    public SidePane(final SceneCallbacks callbacks) {
         super(new TilePane(), callbacks);
         pane.setPadding(new Insets(5, 5, 5, 5));
         pane.setAlignment(Pos.TOP_LEFT);
@@ -28,7 +28,7 @@ public class SidePane extends GenericPane<TilePane> {
     }
     
 	public GenericPane<TilePane> refresh() {
-		return new SidePane(callbacks);
+		return new SidePane(sceneCallback);
 	}
     
     /**

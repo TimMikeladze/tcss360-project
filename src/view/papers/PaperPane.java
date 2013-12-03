@@ -24,11 +24,11 @@ import view.conferences.AddUserCallback;
 import view.conferences.ConferenceUserRow;
 import view.reviews.ReviewRow;
 import view.users.UserPane;
-import view.util.Callbacks;
+import view.util.SceneCallbacks;
 import view.util.CustomFileChooser;
 import view.util.CustomTable;
 import view.util.GenericPane;
-import view.util.MainPaneCallbacks;
+import view.util.CenterPaneCallbacks;
 import view.util.MessageDialog;
 import view.util.ProgressSpinnerCallbacks;
 import view.util.ProgressSpinnerService;
@@ -69,13 +69,13 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
     private boolean isReviewed;
     private CustomFileChooser fileChooser;
     
-    public PaperPane(final int paperID, final Callbacks callbacks,
-            final MainPaneCallbacks mainPaneCallbacks,
+    public PaperPane(final int paperID, final SceneCallbacks callbacks,
+            final CenterPaneCallbacks mainPaneCallbacks,
             final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
         super(new GridPane(), callbacks);
         this.paperID = paperID;
-        addMainPaneCallBacks(mainPaneCallbacks);
-        addProgressSpinnerCallBacks(progressSpinnerCallbacks);
+        addCenterPaneCallBacks(mainPaneCallbacks);
+        addProgressSpinnerCallBack(progressSpinnerCallbacks);
         
         fileChooser = new CustomFileChooser();
         
@@ -93,12 +93,12 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
     
     @Override
     public GenericPane<GridPane> refresh() {
-        return new PaperPane(paperID, callbacks, mainPaneCallbacks, progressSpinnerCallbacks);
+        return new PaperPane(paperID, sceneCallback, centerPaneCallback, progressSpinnerCallback);
     }
     
     private void loadPaper() {
-        new LoadPaperService(progressSpinnerCallbacks).start();
-        new LoadDataService(progressSpinnerCallbacks).start();
+        new LoadPaperService(progressSpinnerCallback).start();
+        new LoadDataService(progressSpinnerCallback).start();
     }
     
     //TODO need to add permission checks for buttons
@@ -201,45 +201,45 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
             MouseEvent mouseEvent = (MouseEvent) event;
             if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
                 int userID = reviewersTable.getSelectionModel().getSelectedItem().getID();
-                mainPaneCallbacks.pushPane(new UserPane(userID, callbacks, mainPaneCallbacks,
-                        progressSpinnerCallbacks));
+                centerPaneCallback.pushPane(new UserPane(userID, sceneCallback, centerPaneCallback,
+                        progressSpinnerCallback));
             }
         }
         else if (source == assignReviewer) {
-            new AddReviewersPane(paper.getConferenceID(), callbacks.getPrimaryStage(),
-                    progressSpinnerCallbacks, this).showDialog();
+            new AddReviewersPane(paper.getConferenceID(), sceneCallback.getPrimaryStage(),
+                    progressSpinnerCallback, this).showDialog();
             // TODO new UsersPane(callbacks.getPrimaryStage(), progressSpinnerCallbacks, paper.getConferenceID(), PermissionLevel.REVIEWER).showDialog();
         }
         else if (source == submitReviewButton) {
-            File file = fileChooser.showOpenDialog(callbacks.getPrimaryStage());
+            File file = fileChooser.showOpenDialog(sceneCallback.getPrimaryStage());
             if (file != null) {
-                new SubmitReviewService(progressSpinnerCallbacks, file).start();
+                new SubmitReviewService(progressSpinnerCallback, file).start();
             }
         }
         else if (source == recommendPaperButton) {
-            new RecommendPaperService(progressSpinnerCallbacks).start();
+            new RecommendPaperService(progressSpinnerCallback).start();
         }
         else if (source == reuploadPaperButton) {
-            File file = fileChooser.showOpenDialog(callbacks.getPrimaryStage());
+            File file = fileChooser.showOpenDialog(sceneCallback.getPrimaryStage());
             if (file != null) {
-                new ReUploadPaperService(progressSpinnerCallbacks, file).start();
+                new ReUploadPaperService(progressSpinnerCallback, file).start();
             }
         }
         else if (source == removePaperButton) {
-            new RemovePaperService(progressSpinnerCallbacks).start();
+            new RemovePaperService(progressSpinnerCallback).start();
         }
         else if (source == downloadPaperButton) {
-            File saveLocation = fileChooser.showSaveDialog(callbacks.getPrimaryStage());
+            File saveLocation = fileChooser.showSaveDialog(sceneCallback.getPrimaryStage());
         }
         else if (source == acceptRejectPaperButton) {
-            new PaperStatePane(callbacks.getPrimaryStage(), progressSpinnerCallbacks, paperID)
+            new PaperStatePane(sceneCallback.getPrimaryStage(), progressSpinnerCallback, paperID)
                     .showDialog();
         }
     }
     
     @Override
     public void addReviewer(final int userID) {
-        new AddReviewerService(progressSpinnerCallbacks, userID).start();
+        new AddReviewerService(progressSpinnerCallback, userID).start();
     }
     
     private class AddReviewerService extends ProgressSpinnerService {
@@ -331,7 +331,7 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
                     }
                     catch (Exception e) {
                         //TODO make sure message dialog works
-                        new MessageDialog(callbacks.getPrimaryStage()).showDialog(
+                        new MessageDialog(sceneCallback.getPrimaryStage()).showDialog(
                                 e.getMessage(), false);
                         
                     }
@@ -365,7 +365,7 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
                     }
                     catch (Exception e) {
                         //TODO make sure message dialog works
-                        new MessageDialog(callbacks.getPrimaryStage()).showDialog(
+                        new MessageDialog(sceneCallback.getPrimaryStage()).showDialog(
                                 e.getMessage(), false);
                         
                     }
@@ -377,7 +377,7 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
         @Override
         protected void succeeded() {
             if (getSuccess()) {
-                mainPaneCallbacks.popPane();
+                centerPaneCallback.popPane();
             }
             super.succeeded();
         }
@@ -406,7 +406,7 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
                     }
                     catch (Exception e) {
                         //TODO make sure message dialog works
-                        new MessageDialog(callbacks.getPrimaryStage()).showDialog(
+                        new MessageDialog(sceneCallback.getPrimaryStage()).showDialog(
                                 e.getMessage(), false);
                         
                     }
@@ -449,7 +449,7 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
                         setSuccess(true);
                     }
                     catch (Exception e) {
-                        new MessageDialog(callbacks.getPrimaryStage()).showDialog(
+                        new MessageDialog(sceneCallback.getPrimaryStage()).showDialog(
                                 e.getMessage(), false);
                     }
                     return null;
@@ -495,7 +495,7 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
                         setSuccess(true);
                     }
                     catch (Exception e) {
-                        new MessageDialog(callbacks.getPrimaryStage()).showDialog(
+                        new MessageDialog(sceneCallback.getPrimaryStage()).showDialog(
                                 e.getMessage(), false);
                     }
                     return null;

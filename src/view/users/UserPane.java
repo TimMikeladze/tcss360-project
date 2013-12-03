@@ -9,9 +9,9 @@ import javafx.geometry.Pos;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import model.users.User;
-import view.util.Callbacks;
+import view.util.SceneCallbacks;
 import view.util.GenericPane;
-import view.util.MainPaneCallbacks;
+import view.util.CenterPaneCallbacks;
 import view.util.MessageDialog;
 import view.util.ProgressSpinnerCallbacks;
 import view.util.ProgressSpinnerService;
@@ -36,12 +36,12 @@ public class UserPane extends GenericPane<GridPane> implements EventHandler {
      * @param mainPaneCallbacks
      * @param progressSpinnerCallbacks
      */
-    public UserPane(final int userID, final Callbacks callbacks,
-            final MainPaneCallbacks mainPaneCallbacks,
+    public UserPane(final int userID, final SceneCallbacks callbacks,
+            final CenterPaneCallbacks mainPaneCallbacks,
             final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
         super(new GridPane(), callbacks);
-        addMainPaneCallBacks(mainPaneCallbacks);
-        addProgressSpinnerCallBacks(progressSpinnerCallbacks);
+        addCenterPaneCallBacks(mainPaneCallbacks);
+        addProgressSpinnerCallBack(progressSpinnerCallbacks);
         
         this.userID = userID;
         
@@ -55,7 +55,7 @@ public class UserPane extends GenericPane<GridPane> implements EventHandler {
     
     @Override
     public GenericPane<GridPane> refresh() {
-        return new UserPane(userID, callbacks, mainPaneCallbacks, progressSpinnerCallbacks);
+        return new UserPane(userID, sceneCallback, centerPaneCallback, progressSpinnerCallback);
     }
     
     /**
@@ -98,7 +98,7 @@ public class UserPane extends GenericPane<GridPane> implements EventHandler {
                         setSuccess(true);
                     }
                     catch (Exception e) {
-                        new MessageDialog(callbacks.getPrimaryStage()).showDialog(
+                        new MessageDialog(sceneCallback.getPrimaryStage()).showDialog(
                                 e.getMessage(), false);
                     }
                     return null;

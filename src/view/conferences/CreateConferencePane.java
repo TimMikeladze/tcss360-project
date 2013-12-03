@@ -21,11 +21,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import model.conferences.ConferenceManager;
-import view.util.Callbacks;
+import view.util.CenterPaneCallbacks;
 import view.util.GenericPane;
-import view.util.MainPaneCallbacks;
 import view.util.ProgressSpinnerCallbacks;
 import view.util.ProgressSpinnerService;
+import view.util.SceneCallbacks;
 import view.util.StatusText;
 import view.util.Validator;
 import view.util.calendar.DatePicker;
@@ -39,18 +39,7 @@ import controller.user.LoggedUser;
  * @author Mohammad Juma
  * @version 11-23-2013
  */
-public class CreateConferencePane extends GenericPane<GridPane> implements
-        EventHandler<ActionEvent> {
-    
-    /**
-     * Create Conference Text.
-     */
-    private Text createConferenceText;
-    
-    /**
-     * Conference Name Label.
-     */
-    private Label conferenceNameLabel;
+public class CreateConferencePane extends GenericPane<GridPane> implements EventHandler<ActionEvent> {
     
     /**
      * Conference Name TextField.
@@ -58,24 +47,9 @@ public class CreateConferencePane extends GenericPane<GridPane> implements
     private TextField conferenceNameTextField;
     
     /**
-     * Conference Location Label.
-     */
-    private Label conferenceLocationLabel;
-    
-    /**
      * Conference Location TextField.
      */
     private TextField conferenceLocationTextField;
-    
-    /**
-     * Conference Date Label.
-     */
-    private Label conferenceDateLabel;
-    
-    /**
-     * Conference DatePicker.
-     */
-    private DatePicker datePicker;
     
     /**
      * Create Conference Button.
@@ -95,17 +69,16 @@ public class CreateConferencePane extends GenericPane<GridPane> implements
     /**
      * Creates a new CreateConferencePane to allow the user to create a new conference.
      * 
-     * @param callbacks Callback for the stage of the application.
-     * @param mainPaneCallbacks Callback for the center pane of the main pane.
-     * @param progressSpinnerCallbacks Callback for the progress spinner.
+     * @param sceneCallback A callback to the scene this pane is in
+     * @param centerPaneCallback A callback to the center pane
+     * @param progressSpinnerCallback A callback to the progress spinner
      */
-    public CreateConferencePane(final Callbacks callbacks,
-            final MainPaneCallbacks mainPaneCallbacks,
+    public CreateConferencePane(final SceneCallbacks callbacks, final CenterPaneCallbacks mainPaneCallbacks,
             final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
         super(new GridPane());
-        addCallbacks(callbacks);
-        addMainPaneCallBacks(mainPaneCallbacks);
-        addProgressSpinnerCallBacks(progressSpinnerCallbacks);
+        addSceneCallback(callbacks);
+        addCenterPaneCallBacks(mainPaneCallbacks);
+        addProgressSpinnerCallBack(progressSpinnerCallbacks);
         
         pane.setAlignment(Pos.CENTER);
         pane.setHgap(10);
@@ -115,9 +88,12 @@ public class CreateConferencePane extends GenericPane<GridPane> implements
         create();
     }
     
+    /**
+     * Refreshes the current pane after data has been changed.
+     */
     @Override
     public GenericPane<GridPane> refresh() {
-        return new CreateConferencePane(callbacks, mainPaneCallbacks, progressSpinnerCallbacks);
+        return new CreateConferencePane(sceneCallback, centerPaneCallback, progressSpinnerCallback);
     }
     
     /**
@@ -126,36 +102,36 @@ public class CreateConferencePane extends GenericPane<GridPane> implements
      * @author Mohammad Juma
      */
     private void create() {
-        createConferenceText = new Text("Create Conference");
+        final Text createConferenceText = new Text("Create Conference");
         createConferenceText.setId("header1");
         createConferenceText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         pane.add(createConferenceText, 0, 0);
         
-        conferenceNameLabel = new Label("Name:");
+        final Label conferenceNameLabel = new Label("Name:");
         pane.add(conferenceNameLabel, 0, 1);
         
         conferenceNameTextField = new TextField();
         pane.add(conferenceNameTextField, 1, 1);
         
-        conferenceLocationLabel = new Label("Location:");
+        final Label conferenceLocationLabel = new Label("Location:");
         pane.add(conferenceLocationLabel, 0, 2);
         
         conferenceLocationTextField = new TextField();
         pane.add(conferenceLocationTextField, 1, 2);
         
-        conferenceDateLabel = new Label("Date:");
+        final Label conferenceDateLabel = new Label("Date:");
         pane.add(conferenceDateLabel, 0, 3);
         
-        datePicker = new DatePicker();
+        final DatePicker datePicker = new DatePicker();
         datePicker.localeProperty().set(Locale.US);
         datePicker.getCalendarView().todayButtonTextProperty().set("Today");
         datePicker.getCalendarView().setShowWeeks(false);
-        callbacks.getScene().getStylesheets().add("view/styling/calendarstyle.css");
+        sceneCallback.getScene().getStylesheets().add("view/styling/calendarstyle.css");
         datePicker.selectedDateProperty().addListener(new InvalidationListener() {
             
             @Override
             public void invalidated(final Observable observable) {
-                Date selected = datePicker.selectedDateProperty().get();
+                final Date selected = datePicker.selectedDateProperty().get();
                 System.out.println(selected);
                 conferenceDate = new Timestamp(selected.getTime());
                 System.out.println(conferenceDate.toString().split("\\s+")[0].toString());
@@ -164,18 +140,15 @@ public class CreateConferencePane extends GenericPane<GridPane> implements
         pane.add(datePicker, 1, 3);
         
         createConferenceButton = new Button("Create");
+        createConferenceButton.setOnAction(this);
         
-        HBox buttonHBox = new HBox(10);
+        final HBox buttonHBox = new HBox(10);
         buttonHBox.setAlignment(Pos.BOTTOM_RIGHT);
-        
         buttonHBox.getChildren().add(createConferenceButton);
-        
         pane.add(buttonHBox, 1, 5);
         
         statusText = new StatusText();
         pane.add(statusText, 1, 6);
-        
-        createConferenceButton.setOnAction(this);
     }
     
     /**
@@ -192,12 +165,11 @@ public class CreateConferencePane extends GenericPane<GridPane> implements
      * Creates a new conference once all the fields have been properly filled in.
      */
     private void createConference() {
-        String name = conferenceNameTextField.getText();
-        String location = conferenceLocationTextField.getText();
+        final String name = conferenceNameTextField.getText();
+        final String location = conferenceLocationTextField.getText();
         
         if (!Validator.isEmpty(name, location, conferenceDate.toString())) {
-            new CreateConferenceService(progressSpinnerCallbacks, name, location,
-                    conferenceDate).start();
+            new CreateConferenceService(progressSpinnerCallback, name, location, conferenceDate).start();
         }
         else {
             statusText.setErrorText("Missing field");
@@ -228,20 +200,22 @@ public class CreateConferencePane extends GenericPane<GridPane> implements
          */
         private final Timestamp conferenceDate;
         
+        /**
+         * The conference id.
+         */
         private int conferenceID;
         
         /**
          * Creates a new conference.
          * 
-         * @param progressSpinnerCallbacks The progress spinner
+         * @param progressSpinnerCallback The progress spinner
          * @param conferenceName The conference name
          * @param conferenceLocation The conference location
          * @param conferenceDate The conference date
          */
-        public CreateConferenceService(final ProgressSpinnerCallbacks progressSpinnerCallbacks,
-                final String conferenceName, final String conferenceLocation,
-                final Timestamp conferenceDate) {
-            super(progressSpinnerCallbacks);
+        public CreateConferenceService(final ProgressSpinnerCallbacks progressSpinnerCallback,
+                final String conferenceName, final String conferenceLocation, final Timestamp conferenceDate) {
+            super(progressSpinnerCallback);
             this.conferenceName = conferenceName;
             this.conferenceLocation = conferenceLocation;
             this.conferenceDate = conferenceDate;
@@ -262,8 +236,8 @@ public class CreateConferencePane extends GenericPane<GridPane> implements
                     try {
                         int userID = LoggedUser.getInstance().getUser().getID();
                         
-                        conferenceID = ConferenceManager.createConference(conferenceName,
-                                conferenceLocation, conferenceDate, userID);
+                        conferenceID = ConferenceManager.createConference(conferenceName, conferenceLocation,
+                                conferenceDate, userID);
                         setSuccess(true);
                     }
                     catch (Exception e) {
@@ -280,11 +254,10 @@ public class CreateConferencePane extends GenericPane<GridPane> implements
         @Override
         protected void succeeded() {
             if (getSuccess()) {
-                mainPaneCallbacks.pushPane(new ConferencePane(conferenceID, callbacks,
-                        mainPaneCallbacks, progressSpinnerCallbacks));
+                centerPaneCallback.pushPane(new ConferencePane(conferenceID, sceneCallback, centerPaneCallback,
+                        progressSpinnerCallbacks));
             }
             super.succeeded();
         }
     }
-    
 }

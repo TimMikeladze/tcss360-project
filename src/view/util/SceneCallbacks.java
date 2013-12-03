@@ -5,22 +5,22 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * Handles JavaFX GUI callbacks.
+ * Handles JavaFX GUI scene Callbacks for changing the entire scene of the window.
  * 
  * @author Tim Mikeladze
  * @version 11-16-2013
  */
-public interface Callbacks {
+public interface SceneCallbacks {
     
     /**
-     * Changes the pane in the scene.
+     * Changes the scene in the window.
      * 
      * @param genericPane The pane to change to
      */
     public void changeScene(final GenericPane<?> genericPane);
     
     /**
-     * Changes the pane in the scene.
+     * Changes the scene in the window.
      * 
      * @param genericPane The pane to change to
      * @param width the width of the new pane
@@ -41,5 +41,4 @@ public interface Callbacks {
      * @return the stage
      */
     public Stage getPrimaryStage();
-    
 }

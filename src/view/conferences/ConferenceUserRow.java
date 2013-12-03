@@ -2,22 +2,34 @@
 package view.conferences;
 
 /**
- * The Class ConferenceUserRow.
+ * Wrapper for conference user row data in the table.
+ * 
+ * @author Mohammad Juma
+ * @version 11-28-2013
  */
 public class ConferenceUserRow {
     
+    /**
+     * The id of the conference user.
+     */
     private int userID;
     
+    /**
+     * The name of the conference user.
+     */
     private String name;
     
+    /**
+     * The role of the conference user.
+     */
     private String role;
     
     /**
-     * Instantiates a new conference user row.
+     * Creates a conference user that displays the users name and role.
      * 
-     * @param userID the user id
-     * @param name the name
-     * @param role the role
+     * @param userID The conference users id
+     * @param name The conference users name
+     * @param role The conference users role
      */
     public ConferenceUserRow(final int userID, final String name, final String role) {
         this.userID = userID;
@@ -26,7 +38,7 @@ public class ConferenceUserRow {
     }
     
     /**
-     * Gets the id.
+     * The id.
      * 
      * @return the userID
      */
@@ -35,7 +47,7 @@ public class ConferenceUserRow {
     }
     
     /**
-     * Gets the name.
+     * The name.
      * 
      * @return the name
      */
@@ -44,7 +56,7 @@ public class ConferenceUserRow {
     }
     
     /**
-     * Gets the role.
+     * The role.
      * 
      * @return the role
      */

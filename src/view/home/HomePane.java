@@ -23,10 +23,10 @@ import view.conferences.ConferenceRow;
 import view.papers.PaperPane;
 import view.papers.PaperRow;
 import view.reviews.ReviewRow;
-import view.util.Callbacks;
+import view.util.SceneCallbacks;
 import view.util.CustomTable;
 import view.util.GenericPane;
-import view.util.MainPaneCallbacks;
+import view.util.CenterPaneCallbacks;
 import view.util.MessageDialog;
 import view.util.ProgressSpinnerCallbacks;
 import view.util.ProgressSpinnerService;
@@ -115,11 +115,11 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
      * Constructs a new HomePane pane that extends GridPane and displays the initial user
      * interface the user is greeted with upon login in.
      */
-    public HomePane(final Callbacks callbacks, final MainPaneCallbacks mainPaneCallbacks,
+    public HomePane(final SceneCallbacks callbacks, final CenterPaneCallbacks mainPaneCallbacks,
             final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
         super(new GridPane(), callbacks);
-        addMainPaneCallBacks(mainPaneCallbacks);
-        addProgressSpinnerCallBacks(progressSpinnerCallbacks);
+        addCenterPaneCallBacks(mainPaneCallbacks);
+        addProgressSpinnerCallBack(progressSpinnerCallbacks);
         
         conferencesTable = new CustomTable<ConferenceRow>(conferencesColumnNames,
                 conferencesVariableNames);
@@ -138,7 +138,7 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
     
     @Override
     public GenericPane<GridPane> refresh() {
-        return new HomePane(callbacks, mainPaneCallbacks, progressSpinnerCallbacks);
+        return new HomePane(sceneCallback, centerPaneCallback, progressSpinnerCallback);
     }
     
     /**
@@ -166,7 +166,7 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
                 pane.add(myReviewsText, 0, 6);
                 pane.add(reviewsTable, 0, 7);
         */
-        new LoadDataService(progressSpinnerCallbacks).start();
+        new LoadDataService(progressSpinnerCallback).start();
         
     }
     
@@ -207,16 +207,16 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
             if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
                 int conferenceID = conferencesTable.getSelectionModel().getSelectedItem()
                         .getID();
-                mainPaneCallbacks.pushPane(new ConferencePane(conferenceID, callbacks,
-                        mainPaneCallbacks, progressSpinnerCallbacks));
+                centerPaneCallback.pushPane(new ConferencePane(conferenceID, sceneCallback,
+                        centerPaneCallback, progressSpinnerCallback));
             }
         }
         else if (event.getSource() == papersTable) {
             MouseEvent mouseEvent = (MouseEvent) event;
             if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
                 int paperID = papersTable.getSelectionModel().getSelectedItem().getId();
-                mainPaneCallbacks.pushPane(new PaperPane(paperID, callbacks, mainPaneCallbacks,
-                        progressSpinnerCallbacks));
+                centerPaneCallback.pushPane(new PaperPane(paperID, sceneCallback, centerPaneCallback,
+                        progressSpinnerCallback));
             }
         }
         else if (event.getSource() == reviewsTable) {
@@ -259,7 +259,7 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
                         setSuccess(true);
                     }
                     catch (Exception e) {
-                        new MessageDialog(callbacks.getPrimaryStage()).showDialog(
+                        new MessageDialog(sceneCallback.getPrimaryStage()).showDialog(
                                 e.getMessage(), false);
                     }
                     return null;

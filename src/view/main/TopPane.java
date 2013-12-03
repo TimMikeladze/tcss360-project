@@ -14,10 +14,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import view.conferences.ConferencesPane;
 import view.login.LoginPane;
-import view.util.Callbacks;
+import view.util.SceneCallbacks;
 import view.util.CustomProgressIndicator;
 import view.util.GenericPane;
-import view.util.MainPaneCallbacks;
+import view.util.CenterPaneCallbacks;
 import view.util.ProgressSpinnerCallbacks;
 import controller.user.LoggedUser;
 
@@ -78,9 +78,9 @@ public class TopPane extends GenericPane<StackPane> implements EventHandler<Acti
      * @param mainPaneCallbacks
      * @param
      */
-    public TopPane(final MainPaneCallbacks mainPaneCallbacks, final Callbacks callbacks) {
+    public TopPane(final CenterPaneCallbacks mainPaneCallbacks, final SceneCallbacks callbacks) {
         super(new StackPane(), callbacks);
-        addMainPaneCallBacks(mainPaneCallbacks);
+        addCenterPaneCallBacks(mainPaneCallbacks);
         
         pane.setPadding(new Insets(5));
         leftBox = new HBox(12);
@@ -95,7 +95,7 @@ public class TopPane extends GenericPane<StackPane> implements EventHandler<Acti
     
     @Override
     public GenericPane<StackPane> refresh() {
-        return new TopPane(mainPaneCallbacks, callbacks);
+        return new TopPane(centerPaneCallback, sceneCallback);
     }
     
     /**
@@ -141,17 +141,17 @@ public class TopPane extends GenericPane<StackPane> implements EventHandler<Acti
         Object source = event.getSource();
         if (source == logoutButton) {
             LoggedUser.getInstance().logout();
-            mainPaneCallbacks.clearPanes();
-            callbacks.changeScene(new LoginPane());
+            centerPaneCallback.clearPanes();
+            sceneCallback.changeScene(new LoginPane());
         }
         else if (source == homeButton) {
-            mainPaneCallbacks.clearPanes();
+            centerPaneCallback.clearPanes();
         }
         else if (source == viewConferencesButton) {
-            mainPaneCallbacks.pushPane(new ConferencesPane(callbacks, mainPaneCallbacks, this));
+            centerPaneCallback.pushPane(new ConferencesPane(sceneCallback, centerPaneCallback, this));
         }
         else if (source == backButton) {
-            mainPaneCallbacks.popPane();
+            centerPaneCallback.popPane();
         }
         
     }

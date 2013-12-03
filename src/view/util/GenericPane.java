@@ -12,14 +12,14 @@ import javafx.scene.layout.Pane;
 public abstract class GenericPane<T extends Pane> {
     
     /**
-     * The callback.
+     * A callback to the scene this pane is in.
      */
-    protected Callbacks callbacks;
+    protected SceneCallbacks sceneCallback;
     
     /**
-     * Progress spinner callbacks.
+     * Progress spinner callback.
      */
-    protected ProgressSpinnerCallbacks progressSpinnerCallbacks;
+    protected ProgressSpinnerCallbacks progressSpinnerCallback;
     
     /**
      * The pane.
@@ -27,9 +27,9 @@ public abstract class GenericPane<T extends Pane> {
     protected T pane;
     
     /**
-     * Main Pane callbacks.
+     * A callback for the center pane.
      */
-    protected MainPaneCallbacks mainPaneCallbacks;
+    protected CenterPaneCallbacks centerPaneCallback;
     
     /**
      * Creates a new Generic Pane.
@@ -45,36 +45,36 @@ public abstract class GenericPane<T extends Pane> {
      * 
      * @param t the pane.
      */
-    public GenericPane(final T t, final Callbacks callbacks) {
+    public GenericPane(final T t, final SceneCallbacks sceneCallback) {
         this.pane = t;
-        this.callbacks = callbacks;
+        this.sceneCallback = sceneCallback;
     }
     
     /**
-     * Adds a callback.
+     * Adds a callback to the scene.
      * 
-     * @param callbacks the callback
+     * @param sceneCallback the callback
      */
-    public void addCallbacks(final Callbacks callbacks) {
-        this.callbacks = callbacks;
+    public void addSceneCallback(final SceneCallbacks sceneCallback) {
+        this.sceneCallback = sceneCallback;
     }
     
     /**
-     * Add progress spinner callback.
+     * Adds a callback to the progress spinner.
      * 
-     * @param progressSpinnerCallbacks
+     * @param progressSpinnerCallbacks the callback
      */
-    public void addProgressSpinnerCallBacks(final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
-        this.progressSpinnerCallbacks = progressSpinnerCallbacks;
+    public void addProgressSpinnerCallBack(final ProgressSpinnerCallbacks progressSpinnerCallback) {
+        this.progressSpinnerCallback = progressSpinnerCallback;
     }
     
     /**
-     * Adds Main Pane callback.
+     * Adds a callback to the center pane.
      * 
-     * @param progressSpinnerCallbacks
+     * @param centerPaneCallback the callback
      */
-    public void addMainPaneCallBacks(final MainPaneCallbacks mainPaneCallbacks) {
-        this.mainPaneCallbacks = mainPaneCallbacks;
+    public void addCenterPaneCallBacks(final CenterPaneCallbacks centerPaneCallback) {
+        this.centerPaneCallback = centerPaneCallback;
     }
     
     /**
@@ -92,5 +92,4 @@ public abstract class GenericPane<T extends Pane> {
      * @return The refreshed pane.
      */
     public abstract GenericPane<T> refresh();
-    
 }
