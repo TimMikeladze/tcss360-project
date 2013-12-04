@@ -326,13 +326,10 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
         }
         else if (source == downloadPaperButton) {
             File saveLocation = fileChooser.showSaveDialog(sceneCallback.getPrimaryStage());
-            
+
+        	System.out.println("Save location: " + saveLocation.getAbsolutePath());
             try {
-                String result = saveLocation.getAbsolutePath()
-                                            .substring(0, saveLocation.getAbsolutePath()
-                                                                      .lastIndexOf("."));
-                result += "." + paper.getFileExtension();
-                File file = new File(result);
+                File file = new File(saveLocation.getPath());
                 if (!file.exists()) {
                     file.createNewFile();
                     FileWriter fw = new FileWriter(file);
