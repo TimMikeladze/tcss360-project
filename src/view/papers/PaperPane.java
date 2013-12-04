@@ -1,9 +1,8 @@
 
 package view.papers;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -332,10 +331,15 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
             try {
                 if (!file.exists()) {
                     file.createNewFile();
-                    FileWriter fw = new FileWriter(file);
-                    BufferedWriter bw = new BufferedWriter(fw);
-                    bw.write(paper.getFile());
-                    bw.close();
+                    FileOutputStream fop = new FileOutputStream(file);
+                    
+                    // get the content in bytes
+                    byte[] contentInBytes = paper.getFile()
+                                                 .getBytes();
+                    
+                    fop.write(contentInBytes);
+                    fop.flush();
+                    fop.close();
                 }
             }
             catch (IOException e) {
