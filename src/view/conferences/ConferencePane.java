@@ -50,12 +50,14 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
     /**
      * Column names of conference papers TableView.
      */
-    private static final String[] conferencePapersColumnolumnNames = { "Paper Name", "Date", "Recommended", "State" };
+    private static final String[] conferencePapersColumnolumnNames = { "Paper Name", "Subprogram Chair", "Date",
+            "Recommended", "State" };
     
     /**
      * The Database variables used to populate the conference papers TableView.
      */
-    private static final String[] conferencePapersVariableNames = { "paperName", "date", "isRecommended", "isAccepted" };
+    private static final String[] conferencePapersVariableNames = { "paperName", "subprogramChair", "date",
+            "isRecommended", "isAccepted" };
     
     /**
      * Column names of conference users TableView.
@@ -103,14 +105,19 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
     private Button removeConferenceButton;
     
     /**
-     * A button for adding a Subprogram Chair to the conference.
+     * A button for assigning a Subprogram Chair to a paper.
      */
-    private Button addSubprogramChairButton;
+    private Button assignSubprogramChairButton;
     
     /**
-     * A button for adding a reviewer to the conference.
+     * A button for assigning a Reviewer to a paper.
      */
-    private Button addReviewerButton;
+    private Button assignReviewerButton;
+    
+    /**
+     * A button for adding a user to the conference.
+     */
+    private Button addUserToConferenceButton;
     
     /**
      * A button for uploading a paper to the conference.
@@ -192,14 +199,17 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
         removeConferenceButton = new Button("Remove Conference");
         removeConferenceButton.setOnAction(this);
         
-        addSubprogramChairButton = new Button("Add Subprogram Chair");
-        addSubprogramChairButton.setOnAction(this);
-        
-        addReviewerButton = new Button("Add Reviewer");
-        addReviewerButton.setOnAction(this);
-        
         uploadPaperButton = new Button("Upload Paper");
         uploadPaperButton.setOnAction(this);
+        
+        assignSubprogramChairButton = new Button("Assign Subprogram Chair");
+        assignSubprogramChairButton.setOnAction(this);
+        
+        assignReviewerButton = new Button("Assign Reviewer");
+        assignReviewerButton.setOnAction(this);
+        
+        addUserToConferenceButton = new Button("Add User");
+        addUserToConferenceButton.setOnAction(this);
         
         /* TODO
          * Add permissions to these buttons:
@@ -211,8 +221,9 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
         
         final HBox bottomBox = new HBox(12);
         bottomBox.getChildren().add(removeConferenceButton);
-        bottomBox.getChildren().add(addSubprogramChairButton);
-        bottomBox.getChildren().add(addReviewerButton);
+        bottomBox.getChildren().add(assignSubprogramChairButton);
+        bottomBox.getChildren().add(assignReviewerButton);
+        bottomBox.getChildren().add(addUserToConferenceButton);
         bottomBox.getChildren().add(uploadPaperButton);
         
         pane.add(bottomBox, 0, 7);
@@ -263,11 +274,15 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
                         progressSpinnerCallback));
             }
         }
-        else if (source == addReviewerButton) {
+        else if (source == assignReviewerButton) {
             new UsersPane(sceneCallback.getPrimaryStage(), progressSpinnerCallback, conferenceID,
                     PermissionLevel.REVIEWER).showDialog();
         }
-        else if (source == addSubprogramChairButton) {
+        else if (source == assignSubprogramChairButton) {
+            new UsersPane(sceneCallback.getPrimaryStage(), progressSpinnerCallback, conferenceID,
+                    PermissionLevel.SUBPROGRAM_CHAIR).showDialog();
+        }
+        else if (source == addUserToConferenceButton) {
             new UsersPane(sceneCallback.getPrimaryStage(), progressSpinnerCallback, conferenceID,
                     PermissionLevel.SUBPROGRAM_CHAIR).showDialog();
         }

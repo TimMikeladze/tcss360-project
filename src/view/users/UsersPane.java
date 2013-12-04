@@ -162,8 +162,8 @@ public class UsersPane extends Stage implements EventHandler {
         final BorderPane rightPane = new BorderPane();
         final Text selectUserText = new Text("Select User");
         selectUserText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-        leftPane.setTop(selectUserText);
-        leftPane.setCenter(usersTable);
+        rightPane.setTop(selectUserText);
+        rightPane.setCenter(usersTable);
         root.setRight(rightPane);
         usersTable.setOnMouseClicked(this);
         
