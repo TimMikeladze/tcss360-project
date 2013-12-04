@@ -49,7 +49,7 @@ public class PaperManager {
     public static void submitPaper(final int conferenceID, final int authorID, final String title, final String description, final File file)
             throws DatabaseException, IOException {
         if (Database.hasResults(Database.getInstance()
-                                        .createQuery("SELECT 1 FROM conferences WHERE NOW() > Date WHERE ID = :id")
+                                        .createQuery("SELECT 1 FROM conferences WHERE NOW() > Date AND ID = :id")
                                         .addParameter("id", conferenceID)
                                         .executeAndFetchTable())) {
             throw new DatabaseException(Errors.PAST_CONFERENCE_DATE);
