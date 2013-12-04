@@ -190,12 +190,12 @@ public class AssignUserPane extends Stage implements EventHandler {
                 }
                 if (isInTable) {
                     papersTable.add(new PaperRow(paper.getPaperID(), paper.getTitle()));
+                    papersTable.updateItems();
                 }
                 else {
                     isInTable = true;
                 }
             }
-            papersTable.updateItems();
         }
     }
     
@@ -216,12 +216,12 @@ public class AssignUserPane extends Stage implements EventHandler {
                 }
                 if (isInTable) {
                     usersTable.add(new UserRow(user.getUserID(), user.getFirstname(), user.getLastname()));
+                    usersTable.updateItems();
                 }
                 else {
                     isInTable = true;
                 }
             }
-            usersTable.updateItems();
         }
     }
     
@@ -395,8 +395,15 @@ public class AssignUserPane extends Stage implements EventHandler {
             }
             else if (permission == PermissionLevel.SUBPROGRAM_CHAIR) {
                 for (int i = 0; i < listOfUsers.size(); i++) {
-                    if (listOfUsers.get(i).getAssignedAsSubProgramChair() >= 4) {
-                        listOfUsers.remove(i);
+                    try {
+                        if (listOfUsers.get(i).getAssignedAsSubProgramChair() >= 4
+                                || listOfUsers.get(i).getUserID() == PaperManager.getPaperAuthorID(paperId)) {
+                            listOfUsers.remove(i);
+                        }
+                    }
+                    catch (DatabaseException e) {
+                        // TODO What error is this?
+                        e.printStackTrace();
                     }
                 }
             }
