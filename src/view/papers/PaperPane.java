@@ -1,7 +1,10 @@
 
 package view.papers;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 
 import javafx.concurrent.Task;
@@ -312,6 +315,27 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
         }
         else if (source == downloadPaperButton) {
             File saveLocation = fileChooser.showSaveDialog(sceneCallback.getPrimaryStage());
+            
+            try {
+            	 
+    			File paperFile = new File(paper.getFile());
+     
+    			if (!file.exists()) {
+    				file.createNewFile();
+    			}
+     
+    			FileWriter fw = new FileWriter(file.getAbsoluteFile());
+    			BufferedWriter bw = new BufferedWriter(fw);
+    			bw.write(content);
+    			fw.close();
+    			bw.close();
+     
+    			System.out.println("Done");
+     
+    		} catch (IOException e) {
+    			e.printStackTrace();
+    		}
+            
         }
         else if (source == acceptRejectPaperButton) {
             new PaperStatePane(sceneCallback.getPrimaryStage(), progressSpinnerCallback, paperID).showDialog();
