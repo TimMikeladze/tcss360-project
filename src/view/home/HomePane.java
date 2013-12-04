@@ -21,11 +21,8 @@ import view.conferences.ConferencePane;
 import view.conferences.ConferenceRow;
 import view.papers.PaperPane;
 import view.papers.PaperRow;
-<<<<<<< HEAD
 import view.reviews.ReviewPane;
 import view.reviews.ReviewRow;
-=======
->>>>>>> a3d7e01ebcfaeb5508f64c0b4bea88bc4bbb0e7b
 import view.util.CenterPaneCallbacks;
 import view.util.CustomReviewRow;
 import view.util.CustomTable;
