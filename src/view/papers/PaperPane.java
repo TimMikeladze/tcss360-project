@@ -271,7 +271,7 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
         }
 
         if (Permissions.hasPermission(ReviewManager.class, "submitReview", LoggedUser.getInstance()
-                .getPermissions())) {
+                .getPermissions()) && paper.getAuthorID() != LoggedUser.getInstance().getUser().getID()) {
 	        bottomBox.getChildren().add(submitReviewButton);
         }
 
@@ -632,7 +632,9 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
                 protected String call() {
 
                     try {
+                        if(paper.getAuthorID() != LoggedUser.getInstance().getUser().getID() || paper.isAccepted().equals("Yes")) {
                         listOfReviews = ReviewManager.getReviews(paperID);
+                        }
                         listOfReviewers = PaperManager.getAssignedUsers(paperID);
                         setSuccess(true);
                     }
