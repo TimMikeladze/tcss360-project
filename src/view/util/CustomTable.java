@@ -78,4 +78,8 @@ public class CustomTable<T> extends TableView<T> {
         data.removeAll(data);
     }
     
+    public boolean isEmpty() {
+        return data.isEmpty();
+    }
+    
 }
