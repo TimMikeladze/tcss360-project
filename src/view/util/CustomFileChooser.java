@@ -11,6 +11,10 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Window;
 
+/**
+ * File chooser that only allows specified file extensions.
+ * @author Cathryn Castillo
+ */
 public class CustomFileChooser {
     
     private FileChooser fileChooser;
