@@ -132,7 +132,7 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
         
         LoggedUser.getInstance().clearPermissions();
         
-        new LoadDataService(progressSpinnerCallback).start();
+        create();
     }
     
     /**
@@ -164,6 +164,8 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
         reviewsTable.setOnMouseClicked(this);
         pane.add(myReviewsText, 0, 6);
         pane.add(reviewsTable, 0, 7);
+        
+        new LoadDataService(progressSpinnerCallback).start();
     }
     
     /**
@@ -278,7 +280,6 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
         @Override
         protected void succeeded() {
             if (getSuccess()) {
-                create();
                 populate();
             }
             super.succeeded();
