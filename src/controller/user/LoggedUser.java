@@ -11,7 +11,7 @@ import model.users.User;
 
 /**
  * This class represents the currently logged in user.
- *
+ * 
  * @author Tim Mikeladze
  * @version 11-17-2013
  */
@@ -33,11 +33,6 @@ public class LoggedUser {
     private TreeSet<PermissionLevel> permissions;
     
     /**
-     * Active conference id
-     */
-    private int activeConferenceID;
-    
-    /**
      * Logs a user in and gets their permissions.
      */
     private LoggedUser() {
@@ -47,7 +42,7 @@ public class LoggedUser {
     
     /**
      * Gets the single instance of LoggedUser.
-     *
+     * 
      * @return single instance of LoggedUser
      */
     public static LoggedUser getInstance() {
@@ -60,7 +55,7 @@ public class LoggedUser {
     
     /**
      * Sets the user object, this needs be called when logging in.
-     *
+     * 
      * @param user the new user
      */
     public void setUser(final User user) {
@@ -69,7 +64,7 @@ public class LoggedUser {
     
     /**
      * Gets the user.
-     *
+     * 
      * @return the user
      */
     public User getUser() {
@@ -78,7 +73,7 @@ public class LoggedUser {
     
     /**
      * Gets the permissions set, the permission set holds the user's current permission levels.
-     *
+     * 
      * @return the permission set
      */
     public TreeSet<PermissionLevel> getPermissions() {
@@ -87,7 +82,7 @@ public class LoggedUser {
     
     /**
      * Gets the highest permission.
-     *
+     * 
      * @return the highest permission
      */
     public PermissionLevel getHighestPermission() {
@@ -96,7 +91,7 @@ public class LoggedUser {
     
     /**
      * Gets the lowest permission.
-     *
+     * 
      * @return the lowest permission
      */
     public PermissionLevel getLowestPermission() {
@@ -110,11 +105,9 @@ public class LoggedUser {
             }
             if (cp.getPermissionID() == PermissionLevel.REVIEWER.getPermission()) {
                 permissions.add(PermissionLevel.REVIEWER);
-                
             }
             if (cp.getPermissionID() == PermissionLevel.SUBPROGRAM_CHAIR.getPermission()) {
                 permissions.add(PermissionLevel.SUBPROGRAM_CHAIR);
-                
             }
             if (cp.getPermissionID() == PermissionLevel.PROGRAM_CHAIR.getPermission()) {
                 permissions.add(PermissionLevel.PROGRAM_CHAIR);
@@ -129,7 +122,6 @@ public class LoggedUser {
         user = null;
         clearPermissions();
         permissions = new TreeSet<PermissionLevel>(new PermissionLevelComparator());
-        activeConferenceID = 0;
         
     }
     

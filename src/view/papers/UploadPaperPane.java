@@ -15,12 +15,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import model.papers.PaperManager;
-import view.util.SceneCallbacks;
+import view.util.CenterPaneCallbacks;
 import view.util.CustomFileChooser;
 import view.util.GenericPane;
-import view.util.CenterPaneCallbacks;
 import view.util.ProgressSpinnerCallbacks;
 import view.util.ProgressSpinnerService;
+import view.util.SceneCallbacks;
 import view.util.StatusText;
 import view.util.Validator;
 import controller.user.LoggedUser;
@@ -55,9 +55,10 @@ public class UploadPaperPane extends GenericPane<GridPane> implements EventHandl
         create();
     }
     
-	public GenericPane<GridPane> refresh() {
-		return new UploadPaperPane(conferenceID, sceneCallback, centerPaneCallback, progressSpinnerCallback);
-	}
+    @Override
+    public GenericPane<GridPane> refresh() {
+        return new UploadPaperPane(conferenceID, sceneCallback, centerPaneCallback, progressSpinnerCallback);
+    }
     
     private void create() {
         scenetitle = new Text("Upload paper");
@@ -151,7 +152,7 @@ public class UploadPaperPane extends GenericPane<GridPane> implements EventHandl
                         setSuccess(true);
                     }
                     catch (Exception e) {
-                        statusText.setErrorText("Error submitting paper");
+                        statusText.setErrorText(e.getMessage());
                     }
                     return null;
                 }

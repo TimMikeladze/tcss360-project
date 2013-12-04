@@ -25,7 +25,7 @@ public enum Errors {
     CONFERENCE_DOES_NOT_EXIST("This conference does not exist"),
     
     /**
-     * Error for submitting more than the allowed number of pepers per conference.
+     * Error for submitting more than the allowed number of papers per conference.
      */
     MAX_PAPER_SUBMISSIONS_EXCEEDED("You've submitted the maximum amount of papers allowed into this conference"),
     
@@ -39,7 +39,9 @@ public enum Errors {
     
     CANT_ASSIGN_PAPER("A user can't be assigned to a paper that they authored"),
     
-    CANT_REVIEW_PAPER("A user can't review a paper that they authord");
+    CANT_REVIEW_PAPER("A user can't review a paper that they authored"),
+    
+    PAST_CONFERENCE_DATE("You cannot submit a paper to a conference after conference date.");
     
     /**
      * The error.
