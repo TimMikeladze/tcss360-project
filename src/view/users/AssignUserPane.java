@@ -465,7 +465,7 @@ public class AssignUserPane extends Stage implements EventHandler {
         protected Task<String> createTask() {
             return new Task<String>() {
                 
-                /**
+                /**m
                  * Calls the new task.
                  */
                 @Override
@@ -473,7 +473,7 @@ public class AssignUserPane extends Stage implements EventHandler {
                     try {
                         PaperManager.assignPaper(paperId, userID, permissionLevel);
                         setSuccess(true);
-                        System.out.println("adding " + userID);
+                        System.out.println("adding " + userID + " " + permissionLevel);
                     }
                     catch (Exception e) {
                         //TODO make sure message dialog works

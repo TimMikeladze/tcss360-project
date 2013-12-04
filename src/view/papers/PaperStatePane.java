@@ -126,14 +126,14 @@ public class PaperStatePane extends Stage implements EventHandler {
             final MouseEvent mouseEvent = (MouseEvent) event;
             if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
                 close();
-                new ChangePaperStateService(progressSpinnerCallback, paperId, PaperStatus.ACCEPTED);
+                new ChangePaperStateService(progressSpinnerCallback, paperId, PaperStatus.ACCEPTED).start();;
             }
         }
         if (source == rejectButton) {
             final MouseEvent mouseEvent = (MouseEvent) event;
             if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
                 close();
-                new ChangePaperStateService(progressSpinnerCallback, paperId, PaperStatus.REJECTED);
+                new ChangePaperStateService(progressSpinnerCallback, paperId, PaperStatus.REJECTED).start();;
             }
         }
     }
