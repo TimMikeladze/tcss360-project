@@ -20,8 +20,6 @@ public class ReviewRow {
     
     private String author;
     
-    private String date;
-    
     private String reviewName;
     
     /**
@@ -30,16 +28,14 @@ public class ReviewRow {
      * @param conferenceName
      * @param reviewed
      * @param author
-     * @param date
      */
     public ReviewRow(final int id, final String paperName, final String conferenceName,
-            final boolean reviewed, final String author, final String date) {
+            final boolean reviewed, final String author) {
         this.id = id;
         this.paperName = paperName;
         this.conferenceName = conferenceName;
         this.reviewed = reviewed;
         this.author = author;
-        this.date = date;
     }
     
     public ReviewRow(final int id, final String reviewName) {
@@ -80,13 +76,6 @@ public class ReviewRow {
      */
     public String getAuthor() {
         return author;
-    }
-    
-    /**
-     * @return the date
-     */
-    public String getDate() {
-        return date;
     }
     
     public String getReviewName() {

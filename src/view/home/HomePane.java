@@ -15,6 +15,7 @@ import model.conferences.Conference;
 import model.conferences.ConferenceManager;
 import model.papers.Paper;
 import model.papers.PaperManager;
+import model.permissions.PermissionLevel;
 import model.reviews.Review;
 import model.reviews.ReviewManager;
 import view.conferences.ConferencePane;
@@ -91,9 +92,9 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
     private CustomTable<PaperRow> papersTable;
     
     /**
-     * A table for the reviews the user has written.
+     * A table of papers assigned to this user for reviewing.
      */
-    private CustomTable<CustomReviewRow> reviewsTable;
+    private CustomTable<ReviewRow> paperReviewTable;
     
     /**
      * The list of conferences the user is a Program Chair of.
@@ -108,7 +109,7 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
     /**
      * The list of reviews the user has written.
      */
-    private List<Review> listOfReviews;
+    private List<Paper> listOfPapersToReview;
     
     /**
      * Constructs a new HomePane pane that extends GridPane and displays the initial user
@@ -126,7 +127,7 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
         
         conferencesTable = new CustomTable<ConferenceRow>(conferencesColumnNames, conferencesVariableNames);
         papersTable = new CustomTable<PaperRow>(papersColumnNames, papersVariableNames);
-        reviewsTable = new CustomTable<CustomReviewRow>(reviewsColumnsNames, reviewsVariableNames);
+        paperReviewTable = new CustomTable<ReviewRow>(reviewsColumnsNames, reviewsVariableNames);
         
         pane.setAlignment(Pos.TOP_LEFT);
         pane.setHgap(10);
@@ -162,11 +163,11 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
         pane.add(myPapersText, 0, 3);
         pane.add(papersTable, 0, 4);
         
-        final Text myReviewsText = new Text("My Reviews");
+        final Text myReviewsText = new Text("My Papers to Review");
         myReviewsText.setId("header2");
-        reviewsTable.setOnMouseClicked(this);
+        paperReviewTable.setOnMouseClicked(this);
         pane.add(myReviewsText, 0, 6);
-        pane.add(reviewsTable, 0, 7);
+        pane.add(paperReviewTable, 0, 7);
         
         new LoadDataService(progressSpinnerCallback).start();
     }
@@ -190,13 +191,15 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
             }
             papersTable.updateItems();
         }
-        if (listOfReviews != null) {
-            Paper p = null;
-            for (Review review : listOfReviews) {
-                p = Paper.paperFromID(review.getPaperID());
-                reviewsTable.add(new CustomReviewRow(review.getID(), p.getTitle(), p.getConferenceName()));
+        if (listOfPapersToReview != null) {
+            for (Paper p : listOfPapersToReview) {
+                boolean reviewedFlag = ReviewManager.isReviewed(
+                		p.getPaperID(), LoggedUser.getInstance().getUser().getID());
+                
+                paperReviewTable.add(new ReviewRow(
+                		p.getPaperID(), p.getTitle(), p.getConferenceName(), reviewedFlag, p.getUsername()));
             }
-            reviewsTable.updateItems();
+            paperReviewTable.updateItems();
         }
     }
     
@@ -221,10 +224,10 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
                         progressSpinnerCallback));
             }
         }
-        else if (event.getSource() == reviewsTable) {
+        else if (event.getSource() == paperReviewTable) {
             MouseEvent mouseEvent = (MouseEvent) event;
             if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
-                int reviewID = reviewsTable.getSelectionModel().getSelectedItem().getId();
+                int reviewID = paperReviewTable.getSelectionModel().getSelectedItem().getId();
                 //centerPaneCallback.pushPane(new ReviewPane(reviewID, sceneCallback, centerPaneCallback,
                 //       progressSpinnerCallback));
                 // TODO uncomment me!
@@ -264,9 +267,17 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
                         listOfConferences = ConferenceManager.getConferencesForUser(id);
                         listOfPapers = PaperManager.getAuthorsSubmittedPapers(id);
                         
-                        for (Paper p : listOfPapers) {
-                            listOfReviews.add(ReviewManager.getSubmittedReview(p.getPaperID(), id));
+                        for (Conference conf : listOfConferences) {
+                        	// get the assigned papers from a specific conference
+                        	List<Paper> assigned = PaperManager.getAssignedPapersForReviewer(
+                        			conf.getID(), id, PermissionLevel.REVIEWER);
+                        	
+                        	// add each paper to the total list of assigned
+                        	for (Paper p : assigned) {
+                        		listOfPapersToReview.add(p);
+                        	}
                         }
+                        
                         setSuccess(true);
                     }
                     catch (Exception e) {
