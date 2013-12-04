@@ -73,4 +73,9 @@ public class CustomTable<T> extends TableView<T> {
     public void updateItems() {
         setItems(data);
     }
+    
+    public void clear() {
+        data.removeAll(data);
+    }
+    
 }
