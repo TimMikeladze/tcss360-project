@@ -10,22 +10,22 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import model.conferences.Conference;
 import model.conferences.ConferenceManager;
 import model.papers.Paper;
 import model.papers.PaperManager;
-import model.papers.PaperStatus;
 import model.reviews.Review;
 import model.reviews.ReviewManager;
 import view.conferences.ConferencePane;
 import view.conferences.ConferenceRow;
 import view.papers.PaperPane;
 import view.papers.PaperRow;
+<<<<<<< HEAD
 import view.reviews.ReviewPane;
 import view.reviews.ReviewRow;
+=======
+>>>>>>> a3d7e01ebcfaeb5508f64c0b4bea88bc4bbb0e7b
 import view.util.CenterPaneCallbacks;
 import view.util.CustomReviewRow;
 import view.util.CustomTable;
@@ -138,7 +138,7 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
         
         LoggedUser.getInstance().clearPermissions();
         
-        new LoadDataService(progressSpinnerCallback).start();
+        create();
     }
     
     /**
@@ -170,6 +170,8 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
         reviewsTable.setOnMouseClicked(this);
         pane.add(myReviewsText, 0, 6);
         pane.add(reviewsTable, 0, 7);
+        
+        new LoadDataService(progressSpinnerCallback).start();
     }
     
     /**
@@ -192,10 +194,10 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
             papersTable.updateItems();
         }
         if (listOfReviews != null) {
-        	Paper p = null;
+            Paper p = null;
             for (Review review : listOfReviews) {
-            	p = Paper.paperFromID(review.getPaperID());
-            	reviewsTable.add(new CustomReviewRow(review.getID(), p.getTitle(), p.getConferenceName()));
+                p = Paper.paperFromID(review.getPaperID());
+                reviewsTable.add(new CustomReviewRow(review.getID(), p.getTitle(), p.getConferenceName()));
             }
             reviewsTable.updateItems();
         }
@@ -226,8 +228,9 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
             MouseEvent mouseEvent = (MouseEvent) event;
             if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
                 int reviewID = reviewsTable.getSelectionModel().getSelectedItem().getId();
-                centerPaneCallback.pushPane(new ReviewPane(reviewID, sceneCallback, centerPaneCallback,
-                        progressSpinnerCallback));
+                //centerPaneCallback.pushPane(new ReviewPane(reviewID, sceneCallback, centerPaneCallback,
+                //       progressSpinnerCallback));
+                // TODO uncomment me!
             }
         }
         
@@ -265,7 +268,7 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
                         listOfPapers = PaperManager.getAuthorsSubmittedPapers(id);
                         
                         for (Paper p : listOfPapers) {
-                        	listOfReviews.add(ReviewManager.getSubmittedReview(p.getPaperID(), id));
+                            listOfReviews.add(ReviewManager.getSubmittedReview(p.getPaperID(), id));
                         }
                         setSuccess(true);
                     }
@@ -283,7 +286,6 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
         @Override
         protected void succeeded() {
             if (getSuccess()) {
-                create();
                 populate();
             }
             super.succeeded();
