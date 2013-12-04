@@ -37,6 +37,8 @@ public class ConferenceUser {
     private String firstName;
     private String lastName;
     
+    private int assignedAsSubProgramChair;
+    
     /**
      * Create a conference user object given the conference id and user id.
      * 
@@ -48,7 +50,7 @@ public class ConferenceUser {
         ConferenceUser user = null;
         List<ConferenceUser> results = Database.getInstance()
                                                .createQuery(
-                                                       "SELECT cu.ConferenceID, cu.UserID, CONCAT(u.Firstname, ' ', u.Lastname) AS Username, u.Firstname, u.Lastname, cu.PermissionID FROM conference_users AS cu JOIN users AS u ON u.ID = cu.UserID WHERE cu.ConferenceID = :conferenceID AND cu.UserID = :userID ORDER BY cu.PermissionID DESC LIMIT 1")
+                                                       "SELECT cu.ConferenceID, cu.UserID, CONCAT(u.Firstname, ' ', u.Lastname) AS Username, u.Firstname, u.Lastname, cu.PermissionID, (SELECT COUNT(1) FROM assigned_papers AS a WHERE a.UserID = cu.UserID AND PermissionID = 300) AS AssignedAsSubProgramChair FROM conference_users AS cu JOIN users AS u ON u.ID = cu.UserID WHERE cu.ConferenceID = :conferenceID AND cu.UserID = :userID ORDER BY cu.PermissionID DESC LIMIT 1")
                                                .addParameter("conferenceID", conferenceID)
                                                .addParameter("userID", userID)
                                                .executeAndFetch(ConferenceUser.class);
@@ -97,5 +99,9 @@ public class ConferenceUser {
     
     public String getLastname() {
         return lastName;
+    }
+    
+    public int getAssignedAsSubProgramChair() {
+        return assignedAsSubProgramChair;
     }
 }

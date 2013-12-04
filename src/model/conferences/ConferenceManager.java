@@ -176,7 +176,7 @@ public class ConferenceManager {
     public static List<ConferenceUser> getUsersInConference(final int id) {
         return Database.getInstance()
                        .createQuery(
-                               "SELECT cu.ConferenceID, cu.UserID, CONCAT(u.Firstname, ' ', u.Lastname) AS Username, u.Firstname, u.Lastname, cu.PermissionID FROM conference_users AS cu JOIN users AS u ON u.ID = cu.UserID WHERE cu.ConferenceID = :id ORDER BY cu.PermissionID DESC")
+                               "SELECT cu.ConferenceID, cu.UserID, CONCAT(u.Firstname, ' ', u.Lastname) AS Username, u.Firstname, u.Lastname, cu.PermissionID, (SELECT COUNT(1) FROM assigned_papers AS a WHERE a.UserID = cu.UserID AND PermissionID = 300) AS AssignedAsSubProgramChair FROM conference_users AS cu JOIN users AS u ON u.ID = cu.UserID WHERE cu.ConferenceID = :id ORDER BY cu.PermissionID DESC")
                        .addParameter("id", id)
                        .executeAndFetch(ConferenceUser.class);
     }
@@ -185,7 +185,7 @@ public class ConferenceManager {
     public static List<ConferenceUser> getUsersInConference(final int id, final PermissionLevel permissionLevel) {
         return Database.getInstance()
                        .createQuery(
-                               "SELECT cu.ConferenceID, cu.UserID, CONCAT(u.Firstname, ' ', u.Lastname) AS Username, cu.PermissionID FROM conference_users AS cu JOIN users AS u ON u.ID = cu.UserID WHERE cu.ConferenceID = :id AND cu.PermissionID = :permission ORDER BY cu.PermissionID DESC")
+                               "SELECT cu.ConferenceID, cu.UserID, CONCAT(u.Firstname, ' ', u.Lastname) AS Username, u.Firstname, u.Lastname, cu.PermissionID, (SELECT COUNT(1) FROM assigned_papers AS a WHERE a.UserID = cu.UserID AND PermissionID = 300) AS AssignedAsSubProgramChair FROM conference_users AS cu JOIN users AS u ON u.ID = cu.UserID WHERE cu.ConferenceID = :id AND cu.PermissionID = :permission ORDER BY cu.PermissionID DESC")
                        .addParameter("id", id)
                        .addParameter("permission", permissionLevel.getPermission())
                        .executeAndFetch(ConferenceUser.class);
