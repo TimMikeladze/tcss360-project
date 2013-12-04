@@ -72,7 +72,7 @@ public class ReviewManager {
      * @return the submitted reviews
      */
     @Permission(level = 200)
-    public static Review getSubmittedReviews(final int paperID, final int userID) {
+    public static Review getSubmittedReview(final int paperID, final int userID) {
         return Database.getInstance()
                        .createQuery(
                                "SELECT ID, PaperID, ReviewerID, File, FileExtension FROM reviews WHERE PaperID = :paperID AND reviewerID = :userID")

@@ -17,13 +17,16 @@ import model.conferences.Conference;
 import model.conferences.ConferenceManager;
 import model.papers.Paper;
 import model.papers.PaperManager;
+import model.papers.PaperStatus;
 import model.reviews.Review;
+import model.reviews.ReviewManager;
 import view.conferences.ConferencePane;
 import view.conferences.ConferenceRow;
 import view.papers.PaperPane;
 import view.papers.PaperRow;
 import view.reviews.ReviewRow;
 import view.util.CenterPaneCallbacks;
+import view.util.CustomReviewRow;
 import view.util.CustomTable;
 import view.util.GenericPane;
 import view.util.MessageDialog;
@@ -91,7 +94,7 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
     /**
      * A table for the reviews the user has written.
      */
-    private CustomTable<ReviewRow> reviewsTable;
+    private CustomTable<CustomReviewRow> reviewsTable;
     
     /**
      * The list of conferences the user is a Program Chair of.
@@ -124,7 +127,7 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
         
         conferencesTable = new CustomTable<ConferenceRow>(conferencesColumnNames, conferencesVariableNames);
         papersTable = new CustomTable<PaperRow>(papersColumnNames, papersVariableNames);
-        reviewsTable = new CustomTable<ReviewRow>(reviewsColumnsNames, reviewsVariableNames);
+        reviewsTable = new CustomTable<CustomReviewRow>(reviewsColumnsNames, reviewsVariableNames);
         
         pane.setAlignment(Pos.TOP_LEFT);
         pane.setHgap(10);
@@ -150,22 +153,19 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
     private void create() {
         final Text myConferencesText = new Text("My Conferences");
         myConferencesText.setId("header2");
-        myConferencesText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         conferencesTable.setOnMouseClicked(this);
         pane.add(myConferencesText, 0, 0);
         pane.add(conferencesTable, 0, 1);
         
         final Text myPapersText = new Text("My Papers");
         myPapersText.setId("header2");
-        myPapersText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         papersTable.setOnMouseClicked(this);
         pane.add(myPapersText, 0, 3);
         pane.add(papersTable, 0, 4);
         
         final Text myReviewsText = new Text("My Reviews");
         myReviewsText.setId("header2");
-        myReviewsText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-        papersTable.setOnMouseClicked(this);
+        reviewsTable.setOnMouseClicked(this);
         pane.add(myReviewsText, 0, 6);
         pane.add(reviewsTable, 0, 7);
     }
@@ -190,9 +190,10 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
             papersTable.updateItems();
         }
         if (listOfReviews != null) {
+        	Paper p = null;
             for (Review review : listOfReviews) {
-                //reviewsTable.add(new ReviewRow());
-                // TODO this needs to be finished.
+            	p = Paper.paperFromID(review.getPaperID());
+            	reviewsTable.add(new CustomReviewRow(review.getID(), p.getTitle(), p.getConferenceName()));
             }
             reviewsTable.updateItems();
         }
@@ -223,7 +224,8 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
             MouseEvent mouseEvent = (MouseEvent) event;
             if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
                 int reviewID = reviewsTable.getSelectionModel().getSelectedItem().getId();
-                // TODO this needs to be finished
+                centerPaneCallback.pushPane(new ReviewPane(reviewID, sceneCallback, centerPaneCallback,
+                        progressSpinnerCallback));
             }
         }
         
@@ -260,8 +262,9 @@ public class HomePane extends GenericPane<GridPane> implements EventHandler {
                         listOfConferences = ConferenceManager.getConferencesForUser(id);
                         listOfPapers = PaperManager.getAuthorsSubmittedPapers(id);
                         
-                        //TODO implement reviews
-                        //reviews = ReviewManager.getReviews(;
+                        for (Paper p : listOfPapers) {
+                        	listOfReviews.add(ReviewManager.getSubmittedReview(p.getPaperID(), id));
+                        }
                         setSuccess(true);
                     }
                     catch (Exception e) {
