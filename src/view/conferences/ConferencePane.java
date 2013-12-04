@@ -197,7 +197,6 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
         uploadPaperButton = new Button("Upload Paper");
         uploadPaperButton.setOnAction(this);
         
-        
         assignSubprogramChairButton = new Button("Assign Subprogram Chair");
         assignSubprogramChairButton.setOnAction(this);
         
@@ -206,7 +205,6 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
         
         addUserToConferenceButton = new Button("Add User");
         addUserToConferenceButton.setOnAction(this);
-        
         
         /* TODO
          * Add permissions to these buttons:
@@ -218,19 +216,23 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
         
         final HBox bottomBox = new HBox(12);
         if (Permissions.hasPermission(ConferenceManager.class, "addSubProgramChairToConference", LoggedUser.getInstance()
-                .getPermissions())) {
-	        bottomBox.getChildren().add(assignSubprogramChairButton);
-        } 
+                                                                                                           .getPermissions())) {
+            bottomBox.getChildren()
+                     .add(assignSubprogramChairButton);
+        }
         
         if (Permissions.hasPermission(ConferenceManager.class, "assignPaper", LoggedUser.getInstance()
-                .getPermissions())) {
-	        bottomBox.getChildren().add(assignReviewerButton);
+                                                                                        .getPermissions())) {
+            bottomBox.getChildren()
+                     .add(assignReviewerButton);
         }
         if (Permissions.hasPermission(ConferenceManager.class, "addReviewerToConference", LoggedUser.getInstance()
-                .getPermissions())) {
-	        bottomBox.getChildren().add(addUserToConferenceButton);
-        }    
-        bottomBox.getChildren().add(uploadPaperButton);
+                                                                                                    .getPermissions())) {
+            bottomBox.getChildren()
+                     .add(addUserToConferenceButton);
+        }
+        bottomBox.getChildren()
+                 .add(uploadPaperButton);
         
         pane.add(bottomBox, 0, 7);
     }
@@ -330,9 +332,9 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
                                                                                                                   .getUser()
                                                                                                                   .getID()));
                         conference = Conference.conferenceFromID(conferenceID);
-                        listOfPapers = PaperManager.getAssignedPapersForUser(LoggedUser.getInstance()
-                                                                                       .getUser()
-                                                                                       .getID());
+                        listOfPapers = PaperManager.getAssignedPapersForUserInConference(LoggedUser.getInstance()
+                                                                                                   .getUser()
+                                                                                                   .getID(), conferenceID);
                         listOfUsers = ConferenceManager.getUsersInConference(conferenceID);
                         setSuccess(true);
                     }
