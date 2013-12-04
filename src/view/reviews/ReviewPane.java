@@ -16,10 +16,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+import model.conferences.ConferenceManager;
 import model.conferences.ConferenceUser;
 import model.papers.Paper;
 import model.papers.PaperManager;
 import model.permissions.PermissionLevel;
+import model.permissions.Permissions;
 import model.reviews.Review;
 import model.reviews.ReviewManager;
 import view.conferences.AddUserCallback;
@@ -201,10 +203,19 @@ public class ReviewPane extends GenericPane<GridPane> implements EventHandler {
         downloadReviewButton.setOnAction(this);
       
         final HBox bottomBox = new HBox(12);
-
-        bottomBox.getChildren().add(downloadPaperButton);
-        bottomBox.getChildren().add(submitReviewButton);
-        bottomBox.getChildren().add(downloadReviewButton);
+        
+        if (Permissions.hasPermission(ReviewManager.class, "getSubmittedReview", LoggedUser.getInstance()
+                .getPermissions())) {
+        	bottomBox.getChildren().add(downloadPaperButton);
+        }
+        if (Permissions.hasPermission(ReviewManager.class, "submitReview", LoggedUser.getInstance()
+                .getPermissions())) {
+        	bottomBox.getChildren().add(submitReviewButton);
+        }
+        if (Permissions.hasPermission(ReviewManager.class, "getSubmittedReview", LoggedUser.getInstance()
+                .getPermissions())) {
+        	bottomBox.getChildren().add(downloadReviewButton);
+        }
         
         pane.add(bottomBox, 0, 4);
     }

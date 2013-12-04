@@ -197,23 +197,16 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
         uploadPaperButton = new Button("Upload Paper");
         uploadPaperButton.setOnAction(this);
         
-        if (Permissions.hasPermission(ConferenceManager.class, "addSubProgramChairToConference", LoggedUser.getInstance()
-                                                                                                           .getPermissions())) {
-            assignSubprogramChairButton = new Button("Assign Subprogram Chair");
-            assignSubprogramChairButton.setOnAction(this);
-        }
         
-        if (Permissions.hasPermission(ConferenceManager.class, "assignPaper", LoggedUser.getInstance()
-                                                                                        .getPermissions())) {
-            assignReviewerButton = new Button("Assign Reviewer");
-            assignReviewerButton.setOnAction(this);
-        }
+        assignSubprogramChairButton = new Button("Assign Subprogram Chair");
+        assignSubprogramChairButton.setOnAction(this);
         
-        if (Permissions.hasPermission(ConferenceManager.class, "addReviewerToConference", LoggedUser.getInstance()
-                                                                                                    .getPermissions())) {
-            addUserToConferenceButton = new Button("Add User");
-            addUserToConferenceButton.setOnAction(this);
-        }
+        assignReviewerButton = new Button("Assign Reviewer");
+        assignReviewerButton.setOnAction(this);
+        
+        addUserToConferenceButton = new Button("Add User");
+        addUserToConferenceButton.setOnAction(this);
+        
         
         /* TODO
          * Add permissions to these buttons:
@@ -224,14 +217,20 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
          */
         
         final HBox bottomBox = new HBox(12);
-        bottomBox.getChildren()
-                 .add(assignSubprogramChairButton);
-        bottomBox.getChildren()
-                 .add(assignReviewerButton);
-        bottomBox.getChildren()
-                 .add(addUserToConferenceButton);
-        bottomBox.getChildren()
-                 .add(uploadPaperButton);
+        if (Permissions.hasPermission(ConferenceManager.class, "addSubProgramChairToConference", LoggedUser.getInstance()
+                .getPermissions())) {
+	        bottomBox.getChildren().add(assignSubprogramChairButton);
+        } 
+        
+        if (Permissions.hasPermission(ConferenceManager.class, "assignPaper", LoggedUser.getInstance()
+                .getPermissions())) {
+	        bottomBox.getChildren().add(assignReviewerButton);
+        }
+        if (Permissions.hasPermission(ConferenceManager.class, "addReviewerToConference", LoggedUser.getInstance()
+                .getPermissions())) {
+	        bottomBox.getChildren().add(addUserToConferenceButton);
+        }    
+        bottomBox.getChildren().add(uploadPaperButton);
         
         pane.add(bottomBox, 0, 7);
     }
