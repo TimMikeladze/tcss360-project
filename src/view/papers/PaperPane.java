@@ -40,7 +40,7 @@ import controller.user.LoggedUser;
 /**
  * JavaFX pane responsible for displaying information about a selected paper. TODO there are too
  * many inner classes this is horrible design and can be fixed at some point.
- * 
+ *
  * @author Mohammad Juma
  * @author Tim Mikeladze
  * @version 11-23-2013
@@ -147,15 +147,18 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
      */
     private CustomFileChooser fileChooser;
     
+    private String subProgramChair;
+    
     /**
      * Constructs a new PaperPane for managing a paper.
-     * 
+     *
      * @param paperID The papers id.
      * @param sceneCallback A callback to the scene this pane is in
      * @param centerPaneCallback A callback to the center pane
      * @param progressSpinnerCallback A callback to the progress spinner
      */
-    public PaperPane(final int paperID, final SceneCallbacks sceneCallback, final CenterPaneCallbacks centerPaneCallback,
+    public PaperPane(final int paperID, final SceneCallbacks sceneCallback,
+            final CenterPaneCallbacks centerPaneCallback,
             final ProgressSpinnerCallbacks progressSpinnerCallback) {
         super(new GridPane(), sceneCallback);
         this.paperID = paperID;
@@ -163,8 +166,10 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
         addProgressSpinnerCallBack(progressSpinnerCallback);
         
         fileChooser = new CustomFileChooser();
-        paperReviewsTable = new CustomTable<ReviewRow>(reviewsTableColumnNames, reviewsTableVariableNames);
-        reviewersTable = new CustomTable<ConferenceUserRow>(reviewersTableColumnNames, reviewersTableVariableNames);
+        paperReviewsTable = new CustomTable<ReviewRow>(reviewsTableColumnNames,
+                reviewsTableVariableNames);
+        reviewersTable = new CustomTable<ConferenceUserRow>(reviewersTableColumnNames,
+                reviewersTableVariableNames);
         
         pane.setAlignment(Pos.TOP_LEFT);
         pane.setHgap(10);
@@ -179,7 +184,8 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
      */
     @Override
     public GenericPane<GridPane> refresh() {
-        return new PaperPane(paperID, sceneCallback, centerPaneCallback, progressSpinnerCallback);
+        return new PaperPane(paperID, sceneCallback, centerPaneCallback,
+                progressSpinnerCallback);
     }
     
     /**
@@ -204,6 +210,12 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
         paperDescriptionText.setId("conf-text");
         pane.add(paperDescriptionText, 0, 1);
         
+        if (LoggedUser.getInstance().getPermissions().contains(PermissionLevel.PROGRAM_CHAIR)) {
+            final Text subProgramChairText = new Text("Sub Program Chair: " + subProgramChair);
+            subProgramChairText.setId("conf-text");
+            pane.add(subProgramChairText, 1, 1);
+        }
+        
         final Text reviewTablesText = new Text("Reviews");
         reviewTablesText.setId("header2");
         pane.add(reviewTablesText, 0, 3);
@@ -223,62 +235,58 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
         
         recommendPaperButton = new Button("Recommend Paper");
         recommendPaperButton.setOnAction(this);
-
+        
         reuploadPaperButton = new Button("Reupload Paper");
         reuploadPaperButton.setOnAction(this);
- 
+        
         submitReviewButton = new Button("Submit Review");
         submitReviewButton.setOnAction(this);
-
+        
         assignReviewer = new Button("Add Reviewer");
         assignReviewer.setOnAction(this);
         
         downloadPaperButton = new Button("Download Paper");
         downloadPaperButton.setOnAction(this);
-          
+        
         acceptRejectPaperButton = new Button("Accept / Reject Paper");
         acceptRejectPaperButton.setOnAction(this);
         
         final HBox bottomBox = new HBox(12);
         
-        if (paper.getAuthorID() == LoggedUser.getInstance()
-                .getUser()
-                .getID()) {
-	        bottomBox.getChildren().add(removePaperButton);
+        if (paper.getAuthorID() == LoggedUser.getInstance().getUser().getID()) {
+            bottomBox.getChildren().add(removePaperButton);
         }
         
-        if (Permissions.hasPermission(PaperManager.class, "recommendPaper", LoggedUser.getInstance()
-                .getPermissions())) {
-	        bottomBox.getChildren().add(recommendPaperButton);
-        }    
-        
-        if (paper.getAuthorID() == LoggedUser.getInstance()
-                .getUser()
-                .getID()) {
-	        bottomBox.getChildren().add(reuploadPaperButton);
-        } 
-        
-        if (paper.getAuthorID() == LoggedUser.getInstance()
-                .getUser()
-                .getID() || Permissions.hasPermission(ReviewManager.class, "submitReview", LoggedUser.getInstance()
-                                                                                                     .getPermissions())) {
-	        bottomBox.getChildren().add(downloadPaperButton);
-        } 
-        
-        if (Permissions.hasPermission(ReviewManager.class, "acceptPaper", LoggedUser.getInstance()
-                .getPermissions())) {
-	        bottomBox.getChildren().add(acceptRejectPaperButton);
-        }    
-        
-        if (Permissions.hasPermission(ReviewManager.class, "submitReview", LoggedUser.getInstance()
-                .getPermissions())) {
-	        bottomBox.getChildren().add(submitReviewButton);
+        if (Permissions.hasPermission(PaperManager.class, "recommendPaper", LoggedUser
+                .getInstance().getPermissions())) {
+            bottomBox.getChildren().add(recommendPaperButton);
         }
         
-        if (Permissions.hasPermission(ReviewManager.class, "assignPaper", LoggedUser.getInstance()
-                .getPermissions())) {
-	        bottomBox.getChildren().add(assignReviewer);
-        }    
+        if (paper.getAuthorID() == LoggedUser.getInstance().getUser().getID()) {
+            bottomBox.getChildren().add(reuploadPaperButton);
+        }
+        
+        if (paper.getAuthorID() == LoggedUser.getInstance().getUser().getID()
+                || Permissions.hasPermission(ReviewManager.class, "submitReview", LoggedUser
+                        .getInstance().getPermissions())) {
+            bottomBox.getChildren().add(downloadPaperButton);
+        }
+        
+        if (Permissions.hasPermission(ReviewManager.class, "acceptPaper", LoggedUser
+                .getInstance().getPermissions())) {
+            bottomBox.getChildren().add(acceptRejectPaperButton);
+        }
+        
+        if (Permissions.hasPermission(ReviewManager.class, "submitReview", LoggedUser
+                .getInstance().getPermissions())
+                && paper.getAuthorID() != LoggedUser.getInstance().getUser().getID()) {
+            bottomBox.getChildren().add(submitReviewButton);
+        }
+        
+        if (Permissions.hasPermission(ReviewManager.class, "assignPaper", LoggedUser
+                .getInstance().getPermissions())) {
+            bottomBox.getChildren().add(assignReviewer);
+        }
         
         pane.add(bottomBox, 0, 7);
     }
@@ -297,7 +305,8 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
         }
         if (listOfReviewers != null) {
             for (ConferenceUser user : listOfReviewers) {
-                reviewersTable.add(new ConferenceUserRow(user.getUserID(), user.getUsername(), user.getRole()));
+                reviewersTable.add(new ConferenceUserRow(user.getUserID(), user.getUsername(),
+                        user.getRole()));
             }
             reviewersTable.updateItems();
         }
@@ -312,22 +321,20 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
         if (source == paperReviewsTable) {
             final MouseEvent mouseEvent = (MouseEvent) event;
             if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
-                int paperID = paperReviewsTable.getSelectionModel()
-                                               .getSelectedItem()
-                                               .getId();
+                int paperID = paperReviewsTable.getSelectionModel().getSelectedItem().getId();
             }
         }
         else if (source == reviewersTable) {
             final MouseEvent mouseEvent = (MouseEvent) event;
             if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
-                int userID = reviewersTable.getSelectionModel()
-                                           .getSelectedItem()
-                                           .getID();
-                centerPaneCallback.pushPane(new UserPane(userID, sceneCallback, centerPaneCallback, progressSpinnerCallback));
+                int userID = reviewersTable.getSelectionModel().getSelectedItem().getID();
+                centerPaneCallback.pushPane(new UserPane(userID, sceneCallback,
+                        centerPaneCallback, progressSpinnerCallback));
             }
         }
         else if (source == assignReviewer) {
-            new AddReviewersPane(paper.getConferenceID(), sceneCallback.getPrimaryStage(), progressSpinnerCallback, this).showDialog();
+            new AddReviewersPane(paper.getConferenceID(), sceneCallback.getPrimaryStage(),
+                    progressSpinnerCallback, this).showDialog();
             // TODO new UsersPane(callbacks.getPrimaryStage(), progressSpinnerCallbacks, paper.getConferenceID(), PermissionLevel.REVIEWER).showDialog();
         }
         else if (source == submitReviewButton) {
@@ -351,7 +358,8 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
         else if (source == downloadPaperButton) {
             File saveLocation = fileChooser.showSaveDialog(sceneCallback.getPrimaryStage());
             
-            File file = new File(saveLocation.getAbsoluteFile() + "." + paper.getFileExtension());
+            File file = new File(saveLocation.getAbsoluteFile() + "."
+                    + paper.getFileExtension());
             
             try {
                 if (!file.exists()) {
@@ -359,8 +367,7 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
                     FileOutputStream fop = new FileOutputStream(file);
                     
                     // get the content in bytes
-                    byte[] contentInBytes = paper.getFile()
-                                                 .getBytes();
+                    byte[] contentInBytes = paper.getFile().getBytes();
                     
                     fop.write(contentInBytes);
                     fop.flush();
@@ -373,7 +380,8 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
             
         }
         else if (source == acceptRejectPaperButton) {
-            new PaperStatePane(sceneCallback.getPrimaryStage(), progressSpinnerCallback, paperID).showDialog();
+            new PaperStatePane(sceneCallback.getPrimaryStage(), progressSpinnerCallback,
+                    paperID).showDialog();
         }
     }
     
@@ -387,7 +395,7 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
     
     /**
      * Starts a service that connects to the database and queries for papers and reviews.
-     * 
+     *
      * @author Tim Mikeladze
      * @version 11-24-2013
      */
@@ -400,11 +408,12 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
         
         /**
          * Starts the service.
-         * 
+         *
          * @param progressSpinnerCallback The progress spinner.
          * @param userID The users id.
          */
-        public AddReviewerService(final ProgressSpinnerCallbacks progressSpinnerCallback, final int userID) {
+        public AddReviewerService(final ProgressSpinnerCallbacks progressSpinnerCallback,
+                final int userID) {
             super(progressSpinnerCallback);
             this.userID = userID;
         }
@@ -447,7 +456,7 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
     
     /**
      * Starts a service that lets the author re-upload this paper.
-     * 
+     *
      * @author Tim Mikeladze
      * @version 11-24-2013
      */
@@ -460,11 +469,12 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
         
         /**
          * Creates the new service.
-         * 
+         *
          * @param progressSpinnerCallback The progress spinner
          * @param file The file to upload
          */
-        public ReUploadPaperService(final ProgressSpinnerCallbacks progressSpinnerCallback, final File file) {
+        public ReUploadPaperService(final ProgressSpinnerCallbacks progressSpinnerCallback,
+                final File file) {
             super(progressSpinnerCallback);
             this.file = file;
         }
@@ -520,7 +530,8 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
                     }
                     catch (Exception e) {
                         //TODO make sure message dialog works
-                        new MessageDialog(sceneCallback.getPrimaryStage()).showDialog(e.getMessage(), false);
+                        new MessageDialog(sceneCallback.getPrimaryStage()).showDialog(
+                                e.getMessage(), false);
                         
                     }
                     return null;
@@ -547,14 +558,14 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
                 @Override
                 protected String call() {
                     try {
-                        PaperManager.removePaper(paperID, LoggedUser.getInstance()
-                                                                    .getUser()
-                                                                    .getID());
+                        PaperManager.removePaper(paperID, LoggedUser.getInstance().getUser()
+                                .getID());
                         setSuccess(true);
                     }
                     catch (Exception e) {
                         //TODO make sure message dialog works
-                        new MessageDialog(sceneCallback.getPrimaryStage()).showDialog(e.getMessage(), false);
+                        new MessageDialog(sceneCallback.getPrimaryStage()).showDialog(
+                                e.getMessage(), false);
                         
                     }
                     return null;
@@ -589,13 +600,16 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
                     try {
                         paper = Paper.paperFromID(paperID);
                         isReviewed = ReviewManager.isReviewed(paperID, LoggedUser.getInstance()
-                                                                                 .getUser()
-                                                                                 .getID());
+                                .getUser().getID());
+                        subProgramChair = PaperManager.getSubProgramChair(paperID);
+                        System.out.println("Sub program chair " + subProgramChair
+                                + " paper id " + paperID);
                         setSuccess(true);
                     }
                     catch (Exception e) {
                         //TODO make sure message dialog works
-                        new MessageDialog(sceneCallback.getPrimaryStage()).showDialog(e.getMessage(), false);
+                        new MessageDialog(sceneCallback.getPrimaryStage()).showDialog(
+                                e.getMessage(), false);
                         
                     }
                     return null;
@@ -632,14 +646,16 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
                 protected String call() {
                     
                     try {
-                        System.out.println("a");
-                        listOfReviews = ReviewManager.getReviews(paperID);
-                        System.out.println("b");
+                        if (paper.getAuthorID() != LoggedUser.getInstance().getUser().getID()
+                                || paper.isAccepted().equals("Yes")) {
+                            listOfReviews = ReviewManager.getReviews(paperID);
+                        }
                         listOfReviewers = PaperManager.getAssignedUsers(paperID);
                         setSuccess(true);
                     }
                     catch (Exception e) {
-                        new MessageDialog(sceneCallback.getPrimaryStage()).showDialog(e.getMessage(), false);
+                        new MessageDialog(sceneCallback.getPrimaryStage()).showDialog(
+                                e.getMessage(), false);
                     }
                     return null;
                 }
@@ -662,7 +678,8 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
         
         private File file;
         
-        public SubmitReviewService(final ProgressSpinnerCallbacks progressSpinnerCallbacks, final File file) {
+        public SubmitReviewService(final ProgressSpinnerCallbacks progressSpinnerCallbacks,
+                final File file) {
             super(progressSpinnerCallbacks);
             this.file = file;
         }
@@ -677,14 +694,14 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
                 @Override
                 protected String call() {
                     try {
-                        ReviewManager.submitReview(paperID, LoggedUser.getInstance()
-                                                                      .getUser()
-                                                                      .getID(), file);
+                        ReviewManager.submitReview(paperID, LoggedUser.getInstance().getUser()
+                                .getID(), file);
                         
                         setSuccess(true);
                     }
                     catch (Exception e) {
-                        new MessageDialog(sceneCallback.getPrimaryStage()).showDialog(e.getMessage(), false);
+                        new MessageDialog(sceneCallback.getPrimaryStage()).showDialog(
+                                e.getMessage(), false);
                     }
                     return null;
                 }

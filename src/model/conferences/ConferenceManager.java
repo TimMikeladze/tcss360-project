@@ -12,16 +12,16 @@ import model.permissions.PermissionLevel;
 
 /**
  * The Class ConferenceManager.
- * 
+ *
  * @author Tim Mikeladze
  * @author Mohammad Juma
  * @version 11-03-2013
  */
 public class ConferenceManager {
-    
+
     /**
      * Create a conference.
-     * 
+     *
      * @param name the name of the conference
      * @param location the location of the conference
      * @param date the date the conference is to take place
@@ -45,10 +45,10 @@ public class ConferenceManager {
                 .executeUpdate();
         return id;
     }
-    
+
     /**
      * Removes a conference from the database.
-     * 
+     *
      * @param conferenceID The id of the conference to remove.
      */
     @Permission(level = 400)
@@ -58,14 +58,14 @@ public class ConferenceManager {
                 .addParameter("conferenceID", conferenceID)
                 .executeUpdate();
         Database.getInstance()
-                .createQuery("DELETE FROM conference_users WHERE ID = :conferenceID")
+                .createQuery("DELETE FROM conference_users WHERE ConferenceID = :conferenceID")
                 .addParameter("conferenceID", conferenceID)
                 .executeUpdate();
     }
-    
+
     /**
      * Adds a user to the conference.
-     * 
+     *
      * @param conferenceID The id of the conference to add the user to
      * @param userID The id of the user being added
      * @param permission the permission
@@ -90,10 +90,10 @@ public class ConferenceManager {
             throw new DatabaseException(Errors.CONFERENCE_DOES_NOT_EXIST);
         }
     }
-    
+
     /**
      * Adds the reviewer to conference.
-     * 
+     *
      * @param conferenceID the conference id
      * @param userID the user id
      * @throws DatabaseException the database exception
@@ -102,10 +102,10 @@ public class ConferenceManager {
     public static void addReviewerToConference(final int conferenceID, final int userID) throws DatabaseException {
         addUserToConference(conferenceID, userID, PermissionLevel.REVIEWER);
     }
-    
+
     /**
      * Adds the sub program chair to conference.
-     * 
+     *
      * @param conferenceID the conference id
      * @param userID the user id
      * @throws DatabaseException the database exception
@@ -119,10 +119,10 @@ public class ConferenceManager {
             throw new DatabaseException(Errors.USER_NOT_REVIEWER);
         }
     }
-    
+
     /**
      * Check if user in conference.
-     * 
+     *
      * @param conferenceID the conference id
      * @param userID the user id
      * @param permission the permission
@@ -137,10 +137,10 @@ public class ConferenceManager {
                                            .addParameter("permissionID", permission.getPermission())
                                            .executeAndFetchTable());
     }
-    
+
     /**
      * Removes a user from the conference.
-     * 
+     *
      * @param conferenceID The id of the conference to remove the user from
      * @param userID The id of the user being removed
      */
@@ -152,10 +152,10 @@ public class ConferenceManager {
                 .addParameter("conferenceID", conferenceID)
                 .executeUpdate();
     }
-    
+
     /**
      * Checks if a given conference exists.
-     * 
+     *
      * @param conferenceID conference id to check
      * @return returns true if conference exists
      */
@@ -165,10 +165,10 @@ public class ConferenceManager {
                                            .addParameter("conferenceID", conferenceID)
                                            .executeAndFetchTable());
     }
-    
+
     /**
      * Gets a list of users in a conference represented as ConferenceUser objects.
-     * 
+     *
      * @param id The id of the conference get users for
      * @return the list of users
      */
@@ -180,7 +180,7 @@ public class ConferenceManager {
                        .addParameter("id", id)
                        .executeAndFetch(ConferenceUser.class);
     }
-    
+
     @Permission(level = 300)
     public static List<ConferenceUser> getUsersInConference(final int id, final PermissionLevel permissionLevel) {
         return Database.getInstance()
@@ -190,10 +190,10 @@ public class ConferenceManager {
                        .addParameter("permission", permissionLevel.getPermission())
                        .executeAndFetch(ConferenceUser.class);
     }
-    
+
     /**
      * Get a list of conferences represented by Conference objects.
-     * 
+     *
      * @return returns List<Conference>
      */
     public static List<Conference> getConferences() {
@@ -206,10 +206,10 @@ public class ConferenceManager {
                                        + "JOIN users AS u ON u.ID = cu.UserID ORDER BY c.Date DESC")
                        .executeAndFetch(Conference.class);
     }
-    
+
     /**
      * Get conferences in which a user is in.
-     * 
+     *
      * @param userID the user id
      * @return list of conferences
      */
