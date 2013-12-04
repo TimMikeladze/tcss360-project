@@ -86,12 +86,14 @@ public class Paper {
     
     private int recommended;
     
+    private String username;
+    
     public static Paper paperFromID(final int paperID) {
-        List<Paper> results = Database
-                .getInstance()
-                .createQuery(
-                        "SELECT ConferenceID, ID AS PaperID, Title, Description, AuthorID, SubmissionDate, Status, Revised, FileExtension, File, RevisionDate, Recommended FROM papers WHERE ID = :paperID")
-                .addParameter("paperID", paperID).executeAndFetch(Paper.class);
+        List<Paper> results = Database.getInstance()
+                                      .createQuery(
+                                              "SELECT p.ConferenceID, p.ID AS PaperID, p.Title, p.Description, p.AuthorID, p.SubmissionDate, p.Status, p.Revised, p.FileExtension, p.File, p.RevisionDate, p.Recommended, CONCAT(u.Firstname, ' ', u.Lastname) AS Username FROM papers AS p JOIN users AS u ON u.ID = p.AuthorID WHERE p.ID = :paperID")
+                                      .addParameter("paperID", paperID)
+                                      .executeAndFetch(Paper.class);
         return Database.hasResults(results) ? results.get(0) : null;
         
     }
@@ -138,7 +140,8 @@ public class Paper {
      * @return the papers submission date
      */
     public String getSubmissionDate() {
-        return submissionDate.toString().split("\\s+")[0].toString();
+        return submissionDate.toString()
+                             .split("\\s+")[0].toString();
     }
     
     /**
@@ -203,7 +206,8 @@ public class Paper {
      * @return the papers revision date
      */
     public String getRevisionDate() {
-        return revisionDate.toString().split("\\s+")[0].toString();
+        return revisionDate.toString()
+                           .split("\\s+")[0].toString();
     }
     
     /**
@@ -213,8 +217,7 @@ public class Paper {
      * @throws IOException Signals that an I/O exception has occurred.
      */
     public File getPaper() throws IOException {
-        return paper == null ? (paper = FileHandler.convertBytesToFile(file, fileExtension))
-                : paper;
+        return paper == null ? (paper = FileHandler.convertBytesToFile(file, fileExtension)) : paper;
         
     }
     
@@ -248,6 +251,10 @@ public class Paper {
             isAccepted = "No";
         }
         return isAccepted;
+    }
+    
+    public String getUsername() {
+        return username;
     }
     
 }
