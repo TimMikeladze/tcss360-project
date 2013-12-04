@@ -56,7 +56,7 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
     /**
      * The Database variables used to populate the conference papers TableView.
      */
-    private static final String[] conferencePapersVariableNames = { "paperName", "subprogramChair", "date", "isRecommended", "isAccepted" };
+    private static final String[] conferencePapersVariableNames = { "paperName", "subprogramChair", "date", "recommended", "accepted" };
     
     /**
      * Column names of conference users TableView.
@@ -240,6 +240,7 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
             for (Paper paper : listOfPapers) {
                 conferencePapersTable.add(new PaperRow(paper.getPaperID(), paper.getTitle(), paper.getSubprogramChair(), paper.getSubmissionDate(),
                         paper.isRecommendedString(), paper.isAccepted()));
+                
             }
             conferencePapersTable.updateItems();
         }

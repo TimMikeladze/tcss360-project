@@ -42,12 +42,12 @@ public class PaperRow {
     /**
      * Whether the paper has been recommended.
      */
-    private String isRecommended;
+    private String recommended;
     
     /**
      * Whether the paper has been accepted.
      */
-    private String isAccepted;
+    private String accepted;
     
     /**
      * The papers Subprogram Chair.
@@ -64,8 +64,7 @@ public class PaperRow {
      * @param revised The revised state of the paper
      * @param date The date of submission of the paper
      */
-    public PaperRow(final int id, final String paperName, final String conferenceName, final String reviewed,
-            final int revised, final String date) {
+    public PaperRow(final int id, final String paperName, final String conferenceName, final String reviewed, final int revised, final String date) {
         this.id = id;
         this.paperName = paperName;
         this.conferenceName = conferenceName;
@@ -80,7 +79,8 @@ public class PaperRow {
     }
     
     /**
-     * Creates a Paper Row that displays all fields available to be displaying in the ConferencePane.
+     * Creates a Paper Row that displays all fields available to be displaying in the
+     * ConferencePane.
      * 
      * @param id The id of the paper
      * @param paperName The papers name
@@ -89,18 +89,19 @@ public class PaperRow {
      * @param isRecommendedString The is recommended state of the paper
      * @param isAccepted The accepted state of the paper
      */
-    public PaperRow(final int id, final String paperName, final String subprogramChair, final String date,
-            final String isRecommendedString, final String isAccepted) {
+    public PaperRow(final int id, final String paperName, final String subprogramChair, final String date, final String isRecommendedString,
+            final String isAccepted) {
         this.id = id;
         this.paperName = paperName;
         this.subprogramChair = subprogramChair;
         this.date = date;
-        this.isRecommended = isRecommendedString;
-        this.isAccepted = isAccepted;
+        this.recommended = isRecommendedString;
+        this.accepted = isAccepted;
     }
     
     /**
-     * Creates a Paper Row that displays all fields available to be displaying in the pane for selecting a reviewer or Subprogram Chair..
+     * Creates a Paper Row that displays all fields available to be displaying in the pane for
+     * selecting a reviewer or Subprogram Chair..
      * 
      * @param id The id of the paper
      * @param paperName The papers name
@@ -130,7 +131,7 @@ public class PaperRow {
     
     /**
      * The Subprogram Chair.
-     *
+     * 
      * @return subprogramChair
      */
     public String getSubprogramChair() {
@@ -179,7 +180,7 @@ public class PaperRow {
      * @return isRecommended
      */
     public String isRecommended() {
-        return isRecommended;
+        return recommended;
     }
     
     /**
@@ -188,7 +189,7 @@ public class PaperRow {
      * @return isAccepted
      */
     public String isAccepted() {
-        return isAccepted;
+        return accepted;
     }
     
 }
