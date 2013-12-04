@@ -48,7 +48,14 @@ public class PaperManager {
     @Permission(level = 100)
     public static void submitPaper(final int conferenceID, final int authorID, final String title, final String description, final File file)
             throws DatabaseException, IOException {
-        if (MAX_PAPER_SUBMISSIONS > getNumberOfSubmittedPapers(conferenceID, authorID)) {
+        if (Database.hasResults(Database.getInstance()
+                                        .createQuery("SELECT 1 FROM conferences WHERE NOW() > Date WHERE ID = :id")
+                                        .addParameter("id", conferenceID)
+                                        .executeAndFetchTable())) {
+            throw new DatabaseException(Errors.PAST_CONFERENCE_DATE);
+        }
+        
+        else if (MAX_PAPER_SUBMISSIONS > getNumberOfSubmittedPapers(conferenceID, authorID)) {
             Database.getInstance()
                     .createQuery(
                             "INSERT INTO papers (ConferenceID, AuthorID, Title, Description, SubmissionDate, File, FileExtension) VALUES (:conferenceID, :authorID, :title, :description, NOW(), :file, :fileExtension)")
