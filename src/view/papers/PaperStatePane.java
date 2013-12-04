@@ -19,8 +19,17 @@ import model.papers.PaperStatus;
 import view.util.ProgressSpinnerCallbacks;
 import view.util.ProgressSpinnerService;
 
+/**
+ * Pane for changing the state of the paper to accepted or rejected.
+ * 
+ * @author Mohammad Juma
+ * @11-29-2013
+ */
 public class PaperStatePane extends Stage implements EventHandler {
     
+    /**
+     * Number of clicks for a double click.
+     */
     private static final int DOUBLE_CLICK = 2;
     
     /**
@@ -34,6 +43,11 @@ public class PaperStatePane extends Stage implements EventHandler {
     private static final int DEFAULT_HEIGHT = 90;
     
     /**
+     * The papers id.
+     */
+    private final int paperId;
+    
+    /**
      * The root pane.
      */
     private GridPane root;
@@ -43,17 +57,30 @@ public class PaperStatePane extends Stage implements EventHandler {
      */
     private Scene scene;
     
-    private ProgressSpinnerCallbacks progressSpinnerCallbacks;
+    /**
+     * The progress spinner.
+     */
+    private ProgressSpinnerCallbacks progressSpinnerCallback;
     
+    /**
+     * The approve button.
+     */
     private Button approveButton;
     
+    /**
+     * The reject button.
+     */
     private Button rejectButton;
     
-    private int paperId;
-    
-    public PaperStatePane(final Stage owner,
-            final ProgressSpinnerCallbacks progressSpinnerCallbacks, final int paperId) {
-        this.progressSpinnerCallbacks = progressSpinnerCallbacks;
+    /**
+     * Creates a new window for choosing the state of the paper.
+     * 
+     * @param owner The window calling this class.
+     * @param progressSpinnerCallback The progress spinner.
+     * @param paperId The papers id.
+     */
+    public PaperStatePane(final Stage owner, final ProgressSpinnerCallbacks progressSpinnerCallback, final int paperId) {
+        this.progressSpinnerCallback = progressSpinnerCallback;
         this.paperId = paperId;
         root = new GridPane();
         root.setStyle("padding: 10px;");
@@ -63,21 +90,22 @@ public class PaperStatePane extends Stage implements EventHandler {
         initOwner(owner);
     }
     
+    /**
+     * Displays the dialog for the user to make a choice.
+     */
     public void showDialog() {
-        Text approveRejectText = new Text("Would you like to approve or reject?");
+        final Text approveRejectText = new Text("Would you like to approve or reject?");
         approveRejectText.setStyle("-fx-fill:black; -fx-font-size:13px; -fx-font-weight:bold;");
         approveRejectText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         
         approveButton = new Button("Approve");
-        approveButton
-                .setStyle("-fx-text-fill: bisque; -fx-background-color: linear-gradient(crimson, darkred);");
+        approveButton.setStyle("-fx-text-fill: bisque; -fx-background-color: linear-gradient(crimson, darkred);");
         approveButton.setOnMouseClicked(this);
         rejectButton = new Button("Reject");
-        rejectButton
-                .setStyle("-fx-text-fill: bisque; -fx-background-color: linear-gradient(crimson, darkred);");
+        rejectButton.setStyle("-fx-text-fill: bisque; -fx-background-color: linear-gradient(crimson, darkred);");
         rejectButton.setOnMouseClicked(this);
         
-        HBox buttonsBox = new HBox(4);
+        final HBox buttonsBox = new HBox(4);
         buttonsBox.getChildren().add(approveButton);
         buttonsBox.getChildren().add(rejectButton);
         
@@ -86,46 +114,66 @@ public class PaperStatePane extends Stage implements EventHandler {
         
         setScene(scene);
         show();
-        
     }
     
+    /**
+     * Event handler for handling table and button click events.
+     */
     @Override
     public void handle(final Event event) {
-        Object source = event.getSource();
+        final Object source = event.getSource();
         if (source == approveButton) {
-            MouseEvent mouseEvent = (MouseEvent) event;
+            final MouseEvent mouseEvent = (MouseEvent) event;
             if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
                 close();
-                new ChangePaperStateService(progressSpinnerCallbacks, paperId,
-                        PaperStatus.ACCEPTED);
+                new ChangePaperStateService(progressSpinnerCallback, paperId, PaperStatus.ACCEPTED);
             }
         }
         if (source == rejectButton) {
-            MouseEvent mouseEvent = (MouseEvent) event;
+            final MouseEvent mouseEvent = (MouseEvent) event;
             if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
                 close();
-                new ChangePaperStateService(progressSpinnerCallbacks, paperId,
-                        PaperStatus.REJECTED);
+                new ChangePaperStateService(progressSpinnerCallback, paperId, PaperStatus.REJECTED);
             }
         }
     }
     
     /**
-     * Changes the papers state. 
+     * Creates a service that changes the papers state. 
+     * 
+     * @author Mohammad Juma
+     * @version 11-29-2013
      */
     private class ChangePaperStateService extends ProgressSpinnerService {
         
+        /**
+         * The papers id.
+         */
         private int paperID;
+        
+        /**
+         * The papers status.
+         */
         private PaperStatus paperStatus;
         
-        public ChangePaperStateService(final ProgressSpinnerCallbacks progressSpinnerCallbacks,
-                final int paperID, final PaperStatus paperStatus) {
-            super(progressSpinnerCallbacks);
+        /**
+         * Creates the service.
+         * 
+         * @param progressSpinnerCallback The progress spinner
+         * @param paperID The papers id
+         * @param paperStatus The papers status
+         */
+        public ChangePaperStateService(final ProgressSpinnerCallbacks progressSpinnerCallback, final int paperID,
+                final PaperStatus paperStatus) {
+            super(progressSpinnerCallback);
             
             this.paperID = paperID;
             this.paperStatus = paperStatus;
         }
         
+        /**
+         * Creates a new task.
+         */
         @Override
         protected Task<String> createTask() {
             return new Task<String>() {
@@ -157,6 +205,9 @@ public class PaperStatePane extends Stage implements EventHandler {
             };
         }
         
+        /**
+         * Called when finished.
+         */
         @Override
         protected void succeeded() {
             if (getSuccess()) {
@@ -164,10 +215,4 @@ public class PaperStatePane extends Stage implements EventHandler {
             super.succeeded();
         }
     }
-    
 }
-
-/*
-
-
-*/

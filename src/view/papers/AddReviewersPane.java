@@ -23,8 +23,17 @@ import view.util.CustomTable;
 import view.util.ProgressSpinnerCallbacks;
 import view.util.ProgressSpinnerService;
 
+/**
+ * Constructs a new window that allows the user to choose a reviewer.
+ * 
+ * @author Tim Mikeladze
+ * @version 11-24-2013
+ */
 public class AddReviewersPane extends Stage implements EventHandler {
     
+    /**
+     * Number of clicks for a double click.
+     */
     private static final int DOUBLE_CLICK = 2;
     
     /**
@@ -38,6 +47,16 @@ public class AddReviewersPane extends Stage implements EventHandler {
     private static final int DEFAULT_HEIGHT = 400;
     
     /**
+     * Column names of conference users TableView.
+     */
+    private static final String[] usersColumnNames = { "Name", "Role" };
+    
+    /**
+     * The Database variables used to populate the conference users TableView.
+     */
+    private static final String[] usersVariableNames = { "name", "role" };
+    
+    /**
      * The root pane.
      */
     private BorderPane root;
@@ -48,33 +67,42 @@ public class AddReviewersPane extends Stage implements EventHandler {
     private Scene scene;
     
     /**
+     * The table of users to choose from.
+     */
+    private CustomTable<ConferenceUserRow> usersTable;
+    
+    /**
      * The list of users.
      */
     private List<ConferenceUser> listOfUser;
     
     /**
-     * Column names of conference users TableView.
+     * The progress spinner.
      */
-    private final String[] usersColumnNames = { "Name", "Role" };
+    private ProgressSpinnerCallbacks progressSpinnerCallback;
     
     /**
-     * The Database variables used to populate the conference users TableView.
+     * TODO is this needed?
      */
-    private final String[] usersVariableNames = { "name", "role" };
-    
-    private CustomTable<ConferenceUserRow> usersTable;
-    
-    private ProgressSpinnerCallbacks progressSpinnerCallbacks;
-    
     private AddUserCallback addUserCallback;
     
+    /**
+     * The conference id.
+     */
     private int conferenceID;
     
+    /**
+     * Creates a new pane for choosing a new reviewer.
+     * 
+     * @param conferenceID The conference id.
+     * @param ownerThe window that created this class.
+     * @param progressSpinnerCallback A callback to the progress spinner
+     * @param addUserCallback TODO hmm
+     */
     public AddReviewersPane(final int conferenceID, final Stage owner,
-            final ProgressSpinnerCallbacks progressSpinnerCallbacks,
-            final AddUserCallback addUserCallback) {
+            final ProgressSpinnerCallbacks progressSpinnerCallback, final AddUserCallback addUserCallback) {
         this.conferenceID = conferenceID;
-        this.progressSpinnerCallbacks = progressSpinnerCallbacks;
+        this.progressSpinnerCallback = progressSpinnerCallback;
         this.addUserCallback = addUserCallback;
         
         root = new BorderPane();
@@ -87,21 +115,22 @@ public class AddReviewersPane extends Stage implements EventHandler {
         
         initModality(Modality.WINDOW_MODAL);
         initOwner(owner);
-        
     }
     
+    /**
+     * Displays the choose dialog.
+     */
     public void showDialog() {
-        Text conferenceUsersText = new Text("Conference Users");
+        final Text conferenceUsersText = new Text("Conference Users");
         conferenceUsersText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         
         usersTable.setOnMouseClicked(this);
-        
         root.setCenter(usersTable);
         
         setScene(scene);
         show();
         
-        new LoadUsers(progressSpinnerCallbacks).start();
+        new LoadUsers(progressSpinnerCallback).start();
     }
     
     /**
@@ -110,13 +139,17 @@ public class AddReviewersPane extends Stage implements EventHandler {
     private void populateTable() {
         if (listOfUser != null) {
             for (ConferenceUser u : listOfUser) {
-                usersTable.add(new ConferenceUserRow(u.getUserID(), u.getUsername(), u
-                        .getRole()));
+                usersTable.add(new ConferenceUserRow(u.getUserID(), u.getUsername(), u.getRole()));
             }
             usersTable.updateItems();
         }
     }
     
+    /**
+     * Event handler for handling user input.
+     * 
+     * @param event The event that occurred
+     */
     @Override
     public void handle(final Event event) {
         Object source = event.getSource();
@@ -124,12 +157,17 @@ public class AddReviewersPane extends Stage implements EventHandler {
             MouseEvent mouseEvent = (MouseEvent) event;
             if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
                 close();
-                addUserCallback.addReviewer(usersTable.getSelectionModel().getSelectedItem()
-                        .getID());
+                addUserCallback.addReviewer(usersTable.getSelectionModel().getSelectedItem().getID());
             }
         }
     }
     
+    /**
+     * Loads the users for choosing a reviewer.
+     * 
+     * @author Tim Mikeladze
+     * @version 11-24-2013
+     */
     private class LoadUsers extends ProgressSpinnerService {
         
         /**
@@ -154,8 +192,7 @@ public class AddReviewersPane extends Stage implements EventHandler {
                 @Override
                 protected String call() {
                     try {
-                        listOfUser = ConferenceManager.getUsersInConference(conferenceID,
-                                PermissionLevel.REVIEWER);
+                        listOfUser = ConferenceManager.getUsersInConference(conferenceID, PermissionLevel.REVIEWER);
                         setSuccess(true);
                     }
                     catch (Exception e) {
