@@ -11,7 +11,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
  * This is a generic table.
  * 
  * @author Tim Mikeladze
- * 
+ * @version 12-04-2013
  * @param <T>
  */
 public class CustomTable<T> extends TableView<T> {
@@ -49,8 +49,7 @@ public class CustomTable<T> extends TableView<T> {
         for (int i = 0; i < columnNames.length; i++) {
             column = new TableColumn<T, String>(columnNames[i]);
             // column.setMinWidth(columnWidths[i]);
-            column.prefWidthProperty()
-                  .bind(widthProperty().divide(100 / columnWidths[i]));
+            column.prefWidthProperty().bind(widthProperty().divide(100 / columnWidths[i]));
             
             column.setCellValueFactory(new PropertyValueFactory<T, String>(variableNames[i]));
             
@@ -74,10 +73,18 @@ public class CustomTable<T> extends TableView<T> {
         setItems(data);
     }
     
+    /**
+     * Clears the table.
+     */
     public void clear() {
         data.removeAll(data);
     }
     
+    /**
+     * Checks to see if the table is empty.
+     * 
+     * @return isEmpty
+     */
     public boolean isEmpty() {
         return data.isEmpty();
     }

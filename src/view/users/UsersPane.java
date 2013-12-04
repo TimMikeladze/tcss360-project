@@ -179,7 +179,7 @@ public class UsersPane extends Stage implements EventHandler {
     private void populatePapersTable() {
         if (listOfPapers != null) {
             if (listOfPapers.size() > 0) {
-                listOfPapers.clear();
+                papersTable.clear();
             }
             for (Paper paper : listOfPapers) {
                 papersTable.add(new PaperRow(paper.getPaperID(), paper.getTitle()));
@@ -194,7 +194,7 @@ public class UsersPane extends Stage implements EventHandler {
     private void populateUsersTable() {
         if (listOfUsers != null) {
             if (listOfUsers.size() > 0) {
-                listOfUsers.clear();
+                usersTable.clear();
             }
             for (ConferenceUser user : listOfUsers) {
                 usersTable.add(new UserRow(user.getUserID(), user.getFirstname(), user.getLastname()));
@@ -211,11 +211,11 @@ public class UsersPane extends Stage implements EventHandler {
     @Override
     public void handle(final Event event) {
         final Object source = event.getSource();
-        if (source == papersTable) {
+        if (source == papersTable && !papersTable.isEmpty()) {
             paperId = papersTable.getSelectionModel().getSelectedItem().getId();
             new LoadUsers(progressSpinnerCallbacks, conferenceId, paperId, permissionLevel).start();
         }
-        else if (source == usersTable) {
+        else if (source == usersTable && !usersTable.isEmpty()) {
             final MouseEvent mouseEvent = (MouseEvent) event;
             if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
                 close();
@@ -262,6 +262,9 @@ public class UsersPane extends Stage implements EventHandler {
                 @Override
                 protected String call() {
                     try {
+                        if (listOfPapers != null) {
+                            listOfPapers.clear();
+                        }
                         listOfPapers = PaperManager.getPapers(conferenceId);
                         setSuccess(true);
                     }
@@ -351,6 +354,9 @@ public class UsersPane extends Stage implements EventHandler {
          * Populate the users list with users from the database while removing ineligible users.
          */
         private void populateUsers() {
+            if (listOfUsers != null) {
+                listOfUsers.clear();
+            }
             listOfUsers = ConferenceManager.getUsersInConference(conferenceId);
             if (permission == PermissionLevel.REVIEWER) {
                 for (int i = 0; i < listOfUsers.size(); i++) {
