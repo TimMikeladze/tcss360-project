@@ -60,7 +60,6 @@ public class PaperManager {
                     .addParameter("fileExtension", FileHandler.getFileExtension(file))
                     .executeUpdate()
                     .getKey(Integer.class);
-            //    ConferenceManager.addUserToConference(conferenceID, authorID, PermissionLevel.AUTHOR);
             Database.getInstance()
                     .createQuery(
                             "INSERT IGNORE INTO conference_users (ConferenceID, UserID, PermissionID) VALUES (:conferenceID, :userID, :permissionID)")

@@ -39,7 +39,9 @@ public enum Errors {
     
     CANT_ASSIGN_PAPER("A user can't be assigned to a paper that they authored"),
     
-    CANT_REVIEW_PAPER("A user can't review a paper that they authored");
+    CANT_REVIEW_PAPER("A user can't review a paper that they authored"),
+    
+    PAST_CONFERENCE_DATE("You cannot submit a paper to a conference after conference date.");
     
     /**
      * The error.
