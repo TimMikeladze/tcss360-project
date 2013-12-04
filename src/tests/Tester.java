@@ -4,7 +4,7 @@ package tests;
 import java.io.IOException;
 
 import model.database.DatabaseException;
-import model.papers.PaperManager;
+import model.reviews.ReviewManager;
 
 //TODO delete class when project is finished
 
@@ -17,9 +17,7 @@ public class Tester {
     
     public static void main(final String[] args) throws DatabaseException, InterruptedException, IOException {
         
-        System.out.println(PaperManager.getPapers(165)
-                                       .get(0)
-                                       .getUsername());
+        System.out.println(ReviewManager.getReviews(135));
         
         //System.out.println(Login.registerUser("Barack", "Obama", "BObama@email.us"));
         //System.out.println(User.userFromEmail("bobama@email.us").getID()); // 138

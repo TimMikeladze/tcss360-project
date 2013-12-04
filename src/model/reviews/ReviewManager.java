@@ -61,7 +61,7 @@ public class ReviewManager {
         return Database.getInstance()
                        .createQuery("SELECT ID, PaperID, ReviewerID, File, FileExtension FROM reviews WHERE PaperID = :paperID")
                        .addParameter("paperID", paperID)
-                       .executeAndFetchFirst(Review.class);
+                       .executeAndFetch(Review.class);
     }
     
     /**
@@ -86,7 +86,6 @@ public class ReviewManager {
                                            .createQuery("SELECT 1 FROM reviews WHERE PaperID = :paperID AND reviewerID = :userID")
                                            .addParameter("paperID", paperID)
                                            .addParameter("userID", userID)
-                                           .executeAndFetchTable());
+                                           .executeAndFetch(Review.class));
     }
-    
 }
