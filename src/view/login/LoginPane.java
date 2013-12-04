@@ -105,8 +105,10 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
         
         final HBox buttonHBox = new HBox(10);
         buttonHBox.setAlignment(Pos.BOTTOM_RIGHT);
-        buttonHBox.getChildren().add(signInButton);
-        buttonHBox.getChildren().add(registerButton);
+        buttonHBox.getChildren()
+                  .add(signInButton);
+        buttonHBox.getChildren()
+                  .add(registerButton);
         pane.add(buttonHBox, 1, 4);
         
         signInText = new StatusText();
@@ -116,8 +118,8 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
         pane.add(progressIndicator, 1, 1);
         
         //TODO remove this when done
-        //emailTextField.setText("srdjan@email.com");
-        //login();
+        emailTextField.setText("srdjan@email.com");
+        login();
         // End here
     }
     
@@ -163,7 +165,8 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
      * Validates fields and logs in.
      */
     private void login() {
-        final String email = emailTextField.getText().trim();
+        final String email = emailTextField.getText()
+                                           .trim();
         if (email.isEmpty()) {
             signInText.setErrorText("Forgot to enter an email");
         }
@@ -203,8 +206,10 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
                 @Override
                 protected String call() {
                     try {
-                        User user = Login.loginUser(emailTextField.getText().trim());
-                        LoggedUser.getInstance().setUser(user);
+                        User user = Login.loginUser(emailTextField.getText()
+                                                                  .trim());
+                        LoggedUser.getInstance()
+                                  .setUser(user);
                         success = true;
                     }
                     catch (DatabaseException e) {
@@ -229,7 +234,8 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
          */
         @Override
         protected void executeTask(final Task<String> task) {
-            progressIndicator.progressProperty().bind(task.progressProperty());
+            progressIndicator.progressProperty()
+                             .bind(task.progressProperty());
             progressIndicator.setStyle(" -fx-progress-color: gold;");
             setProgressIndicatorVisible(true);
             super.executeTask(task);

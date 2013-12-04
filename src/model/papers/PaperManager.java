@@ -137,6 +137,14 @@ public class PaperManager {
                        .executeAndFetch(Paper.class);
     }
     
+    public static List<Paper> getAssignedPapersForUser(final int userID) {
+        return Database.getInstance()
+                       .createQuery(
+                               "SELECT p.ConferenceID, p.ID AS PaperID, p.Title, p.Description, p.AuthorID, p.SubmissionDate, p.Status, p.Revised, p.FileExtension, p.File, p.RevisionDate, Recommended, CONCAT(u.Firstname, ' ', u.Lastname) AS Username FROM papers AS p JOIN assigned_papers AS a ON a.PaperID = p.ID JOIN users AS u ON u.ID = p.AuthorID WHERE a.UserID = :userID")
+                       .addParameter("userID", userID)
+                       .executeAndFetch(Paper.class);
+    }
+    
     /**
      * Assign paper to a user.
      * 
@@ -285,4 +293,5 @@ public class PaperManager {
                 .addParameter("fileExtension", FileHandler.getFileExtension(file))
                 .executeUpdate();
     }
+    
 }
