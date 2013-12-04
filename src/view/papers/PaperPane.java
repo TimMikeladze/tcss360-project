@@ -218,68 +218,67 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
         reviewersTable.setOnMouseClicked(this);
         pane.add(reviewersTable, 0, 6);
         
-        if (paper.getAuthorID() == LoggedUser.getInstance()
-                                             .getUser()
-                                             .getID()) {
-            removePaperButton = new Button("Remove Paper");
-            removePaperButton.setOnAction(this);
-        }
+        removePaperButton = new Button("Remove Paper");
+        removePaperButton.setOnAction(this);
         
-        if (Permissions.hasPermission(PaperManager.class, "recommendPaper", LoggedUser.getInstance()
-                                                                                      .getPermissions())) {
-            recommendPaperButton = new Button("Recommend Paper");
-            recommendPaperButton.setOnAction(this);
-        }
+        recommendPaperButton = new Button("Recommend Paper");
+        recommendPaperButton.setOnAction(this);
+
+        reuploadPaperButton = new Button("Reupload Paper");
+        reuploadPaperButton.setOnAction(this);
+ 
+        submitReviewButton = new Button("Submit Review");
+        submitReviewButton.setOnAction(this);
+
+        assignReviewer = new Button("Add Reviewer");
+        assignReviewer.setOnAction(this);
         
-        if (paper.getAuthorID() == LoggedUser.getInstance()
-                                             .getUser()
-                                             .getID()) {
-            reuploadPaperButton = new Button("Reupload Paper");
-            reuploadPaperButton.setOnAction(this);
-        }
-        
-        if (Permissions.hasPermission(ReviewManager.class, "submitReview", LoggedUser.getInstance()
-                                                                                     .getPermissions())) {
-            submitReviewButton = new Button("Submit Review");
-            submitReviewButton.setOnAction(this);
-        }
-        
-        if (Permissions.hasPermission(ReviewManager.class, "assignPaper", LoggedUser.getInstance()
-                                                                                    .getPermissions())) {
-            assignReviewer = new Button("Add Reviewer");
-            assignReviewer.setOnAction(this);
-        }
-        
-        if (paper.getAuthorID() == LoggedUser.getInstance()
-                                             .getUser()
-                                             .getID() || Permissions.hasPermission(ReviewManager.class, "submitReview", LoggedUser.getInstance()
-                                                                                                                                  .getPermissions())) {
-            downloadPaperButton = new Button("Download Paper");
-            downloadPaperButton.setOnAction(this);
-        }
-        
-        if (Permissions.hasPermission(ReviewManager.class, "acceptPaper", LoggedUser.getInstance()
-                                                                                    .getPermissions())) {
-            acceptRejectPaperButton = new Button("Accept / Reject Paper");
-            acceptRejectPaperButton.setOnAction(this);
-        }
+        downloadPaperButton = new Button("Download Paper");
+        downloadPaperButton.setOnAction(this);
+          
+        acceptRejectPaperButton = new Button("Accept / Reject Paper");
+        acceptRejectPaperButton.setOnAction(this);
         
         final HBox bottomBox = new HBox(12);
         
-        bottomBox.getChildren()
-                 .add(removePaperButton);
-        bottomBox.getChildren()
-                 .add(recommendPaperButton);
-        bottomBox.getChildren()
-                 .add(reuploadPaperButton);
-        bottomBox.getChildren()
-                 .add(downloadPaperButton);
-        bottomBox.getChildren()
-                 .add(acceptRejectPaperButton);
-        bottomBox.getChildren()
-                 .add(submitReviewButton);
-        bottomBox.getChildren()
-                 .add(assignReviewer);
+        if (paper.getAuthorID() == LoggedUser.getInstance()
+                .getUser()
+                .getID()) {
+	        bottomBox.getChildren().add(removePaperButton);
+        }
+        
+        if (Permissions.hasPermission(PaperManager.class, "recommendPaper", LoggedUser.getInstance()
+                .getPermissions())) {
+	        bottomBox.getChildren().add(recommendPaperButton);
+        }    
+        
+        if (paper.getAuthorID() == LoggedUser.getInstance()
+                .getUser()
+                .getID()) {
+	        bottomBox.getChildren().add(reuploadPaperButton);
+        } 
+        
+        if (paper.getAuthorID() == LoggedUser.getInstance()
+                .getUser()
+                .getID() || Permissions.hasPermission(ReviewManager.class, "submitReview", LoggedUser.getInstance()
+                                                                                                     .getPermissions())) {
+	        bottomBox.getChildren().add(downloadPaperButton);
+        } 
+        
+        if (Permissions.hasPermission(ReviewManager.class, "acceptPaper", LoggedUser.getInstance()
+                .getPermissions())) {
+	        bottomBox.getChildren().add(acceptRejectPaperButton);
+        }    
+        
+        if (Permissions.hasPermission(ReviewManager.class, "submitReview", LoggedUser.getInstance()
+                .getPermissions())) {
+	        bottomBox.getChildren().add(submitReviewButton);
+        }
+        
+        if (Permissions.hasPermission(ReviewManager.class, "assignPaper", LoggedUser.getInstance()
+                .getPermissions())) {
+	        bottomBox.getChildren().add(assignReviewer);
+        }    
         
         pane.add(bottomBox, 0, 7);
     }
