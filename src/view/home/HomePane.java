@@ -24,6 +24,7 @@ import view.conferences.ConferencePane;
 import view.conferences.ConferenceRow;
 import view.papers.PaperPane;
 import view.papers.PaperRow;
+import view.reviews.ReviewPane;
 import view.reviews.ReviewRow;
 import view.util.CenterPaneCallbacks;
 import view.util.CustomReviewRow;
@@ -37,8 +38,9 @@ import controller.user.LoggedUser;
 
 /**
  * JavaFX pane responsible for displaying the users home interface.
- *
+ * 
  * @author Mohammad Juma
+ * @author Cathryn Castillo
  * @version 11-11-2013
  */
 public class HomePane extends GenericPane<GridPane> implements EventHandler {
