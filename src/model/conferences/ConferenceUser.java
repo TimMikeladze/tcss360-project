@@ -32,7 +32,10 @@ public class ConferenceUser {
     /**
      * The users permission id.
      */
-    public int permissionID;
+    private int permissionID;
+    
+    private String firstName;
+    private String lastName;
     
     /**
      * Create a conference user object given the conference id and user id.
@@ -45,7 +48,7 @@ public class ConferenceUser {
         ConferenceUser user = null;
         List<ConferenceUser> results = Database.getInstance()
                                                .createQuery(
-                                                       "SELECT cu.ConferenceID, cu.UserID, CONCAT(u.Firstname, ' ', u.Lastname) AS Username, cu.PermissionID FROM conference_users AS cu JOIN users AS u ON u.ID = cu.UserID WHERE cu.ConferenceID = :conferenceID AND cu.UserID = :userID ORDER BY cu.PermissionID DESC LIMIT 1")
+                                                       "SELECT cu.ConferenceID, cu.UserID, CONCAT(u.Firstname, ' ', u.Lastname) AS Username, u.Firstname, u.Lastname, cu.PermissionID FROM conference_users AS cu JOIN users AS u ON u.ID = cu.UserID WHERE cu.ConferenceID = :conferenceID AND cu.UserID = :userID ORDER BY cu.PermissionID DESC LIMIT 1")
                                                .addParameter("conferenceID", conferenceID)
                                                .addParameter("userID", userID)
                                                .executeAndFetch(ConferenceUser.class);
@@ -86,5 +89,13 @@ public class ConferenceUser {
     
     public String getUsername() {
         return username;
+    }
+    
+    public String getFirstname() {
+        return firstName;
+    }
+    
+    public String getLastname() {
+        return lastName;
     }
 }
