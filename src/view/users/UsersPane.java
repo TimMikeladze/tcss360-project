@@ -56,7 +56,7 @@ public class UsersPane extends Stage implements EventHandler {
     /**
      * The Database variables used to populate the papers TableView.
      */
-    private static final String[] papersVariableNames = { "name" };
+    private static final String[] papersVariableNames = { "paperName" };
     
     /**
      * Column names of conference users TableView.
@@ -174,16 +174,28 @@ public class UsersPane extends Stage implements EventHandler {
     }
     
     /**
-     * Populates the users table.
+     * Populates the papers table.
      */
-    private void populateTable() {
+    private void populatePapersTable() {
         if (listOfPapers != null) {
+            if (listOfPapers.size() > 0) {
+                listOfPapers.clear();
+            }
             for (Paper paper : listOfPapers) {
                 papersTable.add(new PaperRow(paper.getPaperID(), paper.getTitle()));
             }
             papersTable.updateItems();
         }
+    }
+    
+    /**
+     * Populates the users table.
+     */
+    private void populateUsersTable() {
         if (listOfUsers != null) {
+            if (listOfUsers.size() > 0) {
+                listOfUsers.clear();
+            }
             for (ConferenceUser user : listOfUsers) {
                 usersTable.add(new UserRow(user.getUserID(), user.getFirstname(), user.getLastname()));
             }
@@ -203,7 +215,7 @@ public class UsersPane extends Stage implements EventHandler {
             paperId = papersTable.getSelectionModel().getSelectedItem().getId();
             new LoadUsers(progressSpinnerCallbacks, conferenceId, paperId, permissionLevel).start();
         }
-        if (source == usersTable) {
+        else if (source == usersTable) {
             final MouseEvent mouseEvent = (MouseEvent) event;
             if (mouseEvent.getClickCount() == DOUBLE_CLICK) {
                 close();
@@ -267,7 +279,7 @@ public class UsersPane extends Stage implements EventHandler {
         @Override
         protected void succeeded() {
             if (getSuccess()) {
-                populateTable();
+                populatePapersTable();
             }
             super.succeeded();
         }
@@ -368,7 +380,7 @@ public class UsersPane extends Stage implements EventHandler {
         @Override
         protected void succeeded() {
             if (getSuccess()) {
-                populateTable();
+                populateUsersTable();
             }
             super.succeeded();
         }
