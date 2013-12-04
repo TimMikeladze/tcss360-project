@@ -30,7 +30,7 @@ import view.util.ProgressSpinnerService;
  * 
  * @version 11-23-2013
  */
-public class UsersPane extends Stage implements EventHandler {
+public class AssignUserPane extends Stage implements EventHandler {
     
     /**
      * Number of clicks for a double click.
@@ -126,8 +126,8 @@ public class UsersPane extends Stage implements EventHandler {
      * @param conferenceId The conference id
      * @param permission The permission
      */
-    public UsersPane(final Stage owner, final ProgressSpinnerCallbacks progressSpinnerCallback, final int conferenceId,
-            final PermissionLevel permission) {
+    public AssignUserPane(final Stage owner, final ProgressSpinnerCallbacks progressSpinnerCallback,
+            final int conferenceId, final PermissionLevel permission) {
         this.progressSpinnerCallbacks = progressSpinnerCallback;
         this.conferenceId = conferenceId;
         this.permissionLevel = permission;
@@ -177,12 +177,23 @@ public class UsersPane extends Stage implements EventHandler {
      * Populates the papers table.
      */
     private void populatePapersTable() {
+        boolean isInTable = true;
         if (listOfPapers != null) {
             if (listOfPapers.size() > 0) {
                 papersTable.clear();
             }
             for (Paper paper : listOfPapers) {
-                papersTable.add(new PaperRow(paper.getPaperID(), paper.getTitle()));
+                for (PaperRow row : papersTable.getItems()) {
+                    if (paper.getPaperID() == row.getId()) {
+                        isInTable = false;
+                    }
+                }
+                if (isInTable) {
+                    papersTable.add(new PaperRow(paper.getPaperID(), paper.getTitle()));
+                }
+                else {
+                    isInTable = true;
+                }
             }
             papersTable.updateItems();
         }
@@ -192,12 +203,23 @@ public class UsersPane extends Stage implements EventHandler {
      * Populates the users table.
      */
     private void populateUsersTable() {
+        boolean isInTable = true;
         if (listOfUsers != null) {
             if (listOfUsers.size() > 0) {
                 usersTable.clear();
             }
             for (ConferenceUser user : listOfUsers) {
-                usersTable.add(new UserRow(user.getUserID(), user.getFirstname(), user.getLastname()));
+                for (UserRow row : usersTable.getItems()) {
+                    if (user.getUserID() == row.getID()) {
+                        isInTable = false;
+                    }
+                }
+                if (isInTable) {
+                    usersTable.add(new UserRow(user.getUserID(), user.getFirstname(), user.getLastname()));
+                }
+                else {
+                    isInTable = true;
+                }
             }
             usersTable.updateItems();
         }
@@ -442,7 +464,7 @@ public class UsersPane extends Stage implements EventHandler {
                 @Override
                 protected String call() {
                     try {
-                        ConferenceManager.addUserToConference(conferenceID, userID, permission);
+                        PaperManager.assignPaper(paperId, userID, permissionLevel);
                         setSuccess(true);
                         System.out.println("adding " + userID);
                     }

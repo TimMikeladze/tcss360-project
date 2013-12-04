@@ -23,8 +23,9 @@ import model.permissions.Permissions;
 import view.papers.PaperPane;
 import view.papers.PaperRow;
 import view.papers.UploadPaperPane;
+import view.users.AddUserPane;
+import view.users.AssignUserPane;
 import view.users.UserPane;
-import view.users.UsersPane;
 import view.util.CenterPaneCallbacks;
 import view.util.CustomTable;
 import view.util.GenericPane;
@@ -275,16 +276,16 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
             }
         }
         else if (source == assignReviewerButton) {
-            new UsersPane(sceneCallback.getPrimaryStage(), progressSpinnerCallback, conferenceID,
+            new AssignUserPane(sceneCallback.getPrimaryStage(), progressSpinnerCallback, conferenceID,
                     PermissionLevel.REVIEWER).showDialog();
         }
         else if (source == assignSubprogramChairButton) {
-            new UsersPane(sceneCallback.getPrimaryStage(), progressSpinnerCallback, conferenceID,
+            new AssignUserPane(sceneCallback.getPrimaryStage(), progressSpinnerCallback, conferenceID,
                     PermissionLevel.SUBPROGRAM_CHAIR).showDialog();
         }
         else if (source == addUserToConferenceButton) {
-            new UsersPane(sceneCallback.getPrimaryStage(), progressSpinnerCallback, conferenceID,
-                    PermissionLevel.SUBPROGRAM_CHAIR).showDialog();
+            new AddUserPane(sceneCallback.getPrimaryStage(), progressSpinnerCallback, conferenceID,
+                    PermissionLevel.REVIEWER).showDialog();
         }
         else if (source == uploadPaperButton) {
             centerPaneCallback.pushPane(new UploadPaperPane(conferenceID, sceneCallback, centerPaneCallback,
