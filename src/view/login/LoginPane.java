@@ -116,8 +116,8 @@ public class LoginPane extends GenericPane<GridPane> implements EventHandler {
         pane.add(progressIndicator, 1, 1);
         
         //TODO remove this when done
-        emailTextField.setText("srdjan@email.com");
-        login();
+        //emailTextField.setText("srdjan@email.com");
+        //login();
         // End here
     }
     
