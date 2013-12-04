@@ -100,6 +100,17 @@ public class PaperRow {
     }
     
     /**
+     * Creates a Paper Row that displays all fields available to be displaying in the pane for selecting a reviewer or Subprogram Chair..
+     * 
+     * @param id The id of the paper
+     * @param paperName The papers name
+     */
+    public PaperRow(final int id, final String paperName) {
+        this.id = id;
+        this.paperName = paperName;
+    }
+    
+    /**
      * The id.
      * 
      * @return the id
