@@ -23,8 +23,8 @@ public class UserRow {
      * @param email
      * @param role
      */
-    public UserRow(final int userID, final String firstName, final String lastName, 
-            final String email, final String role) {
+    public UserRow(final int userID, final String firstName, final String lastName, final String email,
+            final String role) {
         this.userID = userID;
         this.firstName = firstName;
         this.lastName = lastName;;
@@ -38,8 +38,7 @@ public class UserRow {
      * @param lastName
      * @param role
      */
-    public UserRow(final int userID, final String firstName, final String lastName,
-            final String role) {
+    public UserRow(final int userID, final String firstName, final String lastName) {
         this.userID = userID;
         this.firstName = firstName;
         this.lastName = lastName;
