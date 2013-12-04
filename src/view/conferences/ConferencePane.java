@@ -194,20 +194,26 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
         conferenceUsersTable.setOnMouseClicked(this);
         pane.add(conferenceUsersTable, 0, 6);
         
-        removeConferenceButton = new Button("Remove Conference");
-        removeConferenceButton.setOnAction(this);
-        
         uploadPaperButton = new Button("Upload Paper");
         uploadPaperButton.setOnAction(this);
         
-        assignSubprogramChairButton = new Button("Assign Subprogram Chair");
-        assignSubprogramChairButton.setOnAction(this);
+        if (Permissions.hasPermission(ConferenceManager.class, "addSubProgramChairToConference", LoggedUser.getInstance()
+                                                                                                           .getPermissions())) {
+            assignSubprogramChairButton = new Button("Assign Subprogram Chair");
+            assignSubprogramChairButton.setOnAction(this);
+        }
         
-        assignReviewerButton = new Button("Assign Reviewer");
-        assignReviewerButton.setOnAction(this);
+        if (Permissions.hasPermission(ConferenceManager.class, "assignPaper", LoggedUser.getInstance()
+                                                                                        .getPermissions())) {
+            assignReviewerButton = new Button("Assign Reviewer");
+            assignReviewerButton.setOnAction(this);
+        }
         
-        addUserToConferenceButton = new Button("Add User");
-        addUserToConferenceButton.setOnAction(this);
+        if (Permissions.hasPermission(ConferenceManager.class, "addReviewerToConference", LoggedUser.getInstance()
+                                                                                                    .getPermissions())) {
+            addUserToConferenceButton = new Button("Add User");
+            addUserToConferenceButton.setOnAction(this);
+        }
         
         /* TODO
          * Add permissions to these buttons:
@@ -218,8 +224,6 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
          */
         
         final HBox bottomBox = new HBox(12);
-        bottomBox.getChildren()
-                 .add(removeConferenceButton);
         bottomBox.getChildren()
                  .add(assignSubprogramChairButton);
         bottomBox.getChildren()
@@ -320,6 +324,8 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
                 @Override
                 protected String call() {
                     try {
+                        LoggedUser.getInstance()
+                                  .clearPermissions();
                         LoggedUser.getInstance()
                                   .setPermissions(Permissions.getPermissionsForConference(conferenceID, LoggedUser.getInstance()
                                                                                                                   .getUser()

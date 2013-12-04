@@ -20,6 +20,7 @@ import model.conferences.ConferenceUser;
 import model.papers.Paper;
 import model.papers.PaperManager;
 import model.permissions.PermissionLevel;
+import model.permissions.Permissions;
 import model.reviews.Review;
 import model.reviews.ReviewManager;
 import view.conferences.AddUserCallback;
@@ -217,26 +218,51 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
         reviewersTable.setOnMouseClicked(this);
         pane.add(reviewersTable, 0, 6);
         
-        removePaperButton = new Button("Remove Paper");
-        removePaperButton.setOnAction(this);
+        if (paper.getAuthorID() == LoggedUser.getInstance()
+                                             .getUser()
+                                             .getID()) {
+            removePaperButton = new Button("Remove Paper");
+            removePaperButton.setOnAction(this);
+        }
         
-        recommendPaperButton = new Button("Recommend Paper");
-        recommendPaperButton.setOnAction(this);
+        if (Permissions.hasPermission(PaperManager.class, "recommendPaper", LoggedUser.getInstance()
+                                                                                      .getPermissions())) {
+            recommendPaperButton = new Button("Recommend Paper");
+            recommendPaperButton.setOnAction(this);
+        }
         
-        reuploadPaperButton = new Button("Reupload Paper");
-        reuploadPaperButton.setOnAction(this);
+        if (paper.getAuthorID() == LoggedUser.getInstance()
+                                             .getUser()
+                                             .getID()) {
+            reuploadPaperButton = new Button("Reupload Paper");
+            reuploadPaperButton.setOnAction(this);
+        }
         
-        submitReviewButton = new Button("Submit Review");
-        submitReviewButton.setOnAction(this);
+        if (Permissions.hasPermission(ReviewManager.class, "submitReview", LoggedUser.getInstance()
+                                                                                     .getPermissions())) {
+            submitReviewButton = new Button("Submit Review");
+            submitReviewButton.setOnAction(this);
+        }
         
-        assignReviewer = new Button("Add Reviewer");
-        assignReviewer.setOnAction(this);
+        if (Permissions.hasPermission(ReviewManager.class, "assignPaper", LoggedUser.getInstance()
+                                                                                    .getPermissions())) {
+            assignReviewer = new Button("Add Reviewer");
+            assignReviewer.setOnAction(this);
+        }
         
-        downloadPaperButton = new Button("Download Paper");
-        downloadPaperButton.setOnAction(this);
+        if (paper.getAuthorID() == LoggedUser.getInstance()
+                                             .getUser()
+                                             .getID() || Permissions.hasPermission(ReviewManager.class, "submitReview", LoggedUser.getInstance()
+                                                                                                                                  .getPermissions())) {
+            downloadPaperButton = new Button("Download Paper");
+            downloadPaperButton.setOnAction(this);
+        }
         
-        acceptRejectPaperButton = new Button("Accept / Reject Paper");
-        acceptRejectPaperButton.setOnAction(this);
+        if (Permissions.hasPermission(ReviewManager.class, "acceptPaper", LoggedUser.getInstance()
+                                                                                    .getPermissions())) {
+            acceptRejectPaperButton = new Button("Accept / Reject Paper");
+            acceptRejectPaperButton.setOnAction(this);
+        }
         
         final HBox bottomBox = new HBox(12);
         
