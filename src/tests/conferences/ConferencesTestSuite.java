@@ -9,13 +9,11 @@ import org.junit.runners.Suite;
    ConferenceTest.class,
    ConferenceUserTest.class
 })
+/**
+ * Suite of Tests for the model.Conferences Package
+ * 
+ * @author Jordan Matthews
+ * @version December 4, 2013
+ */
 public class ConferencesTestSuite {
 }
-
-
-   
-  
- 
-   
- 
-
