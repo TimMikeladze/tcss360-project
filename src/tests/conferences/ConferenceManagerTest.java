@@ -41,15 +41,42 @@ public class ConferenceManagerTest {
      * User's email for testing.
      */
     private String email;
+    /**
+     * The first user ID
+     */
+    private int userID;
+    /**
+     * The second user ID
+     */
     private int userID2;
+    /**
+     * The third user ID
+     */
     private int userID3;
+    /**
+     * The fourth user ID
+     */
     private int userID4;
+    /**
+     * The fifth user ID
+     */
     private int userID5;
-    private static int id;
+    /**
+     * The conference ID
+     */
+    private int id;
+    /**
+     * The conference name
+     */
     private static String name;
+    /**
+     * The conference location
+     */
     private static String location;
+    /**
+     * The conference date
+     */
     private static Timestamp date;
-    private static int userID;
     
     /**
      * Setup the class for testing
@@ -126,6 +153,9 @@ public class ConferenceManagerTest {
         id = ConferenceManager.createConference(name, location, date, userID);
     }
     
+    /**
+     * Tests the createConference method
+     */
     @Test
     public void testCreateConference() {
         Table t = Database.getInstance()
@@ -135,6 +165,9 @@ public class ConferenceManagerTest {
         assertTrue("Conference created", Database.hasResults(t));
     }
     
+    /**
+     * Tests the removeConference method
+     */
     @Test
     public void testRemoveConference() {
         int id2 = ConferenceManager.createConference(name, location, date, userID2);
@@ -147,6 +180,10 @@ public class ConferenceManagerTest {
         
     }
     
+    
+   /**
+    * Tests the addUserToConference method
+    */
     @Test
     public void testAddUserToConference() {
         try {
@@ -157,6 +194,9 @@ public class ConferenceManagerTest {
         }
     }
     
+    /**
+     * Tests the addUserToConference if there is no conference method
+     */
     @Test
     public void testAddUserToConferenceNoConference() {
         try {
@@ -166,6 +206,9 @@ public class ConferenceManagerTest {
         }
     }
     
+    /**
+     * Tests the addUserToConference method if the user already exists
+     */
     @Test
     public void testAddUserToConferenceUserAlreadyThere() {
         try {
@@ -176,6 +219,9 @@ public class ConferenceManagerTest {
         }
     }
     
+    /**
+     * Tests the addReviewerToConference method
+     */
     @Test
     public void testAddReviewerToConference() {
         try {
@@ -186,6 +232,9 @@ public class ConferenceManagerTest {
         }
     }
     
+    /**
+     * Tests the addSubProgramChairToConference method
+     */
     @Test
     public void testAddSubProgramChairToConference() {
         try {
@@ -197,6 +246,9 @@ public class ConferenceManagerTest {
         }
     }
     
+    /**
+     * Tests the addSubProgramChairToConference method if the person has incorrect permissions
+     */
     @Test
     public void testAddSubProgramChairToConferenceNotReviewer() {
         try {
@@ -206,6 +258,9 @@ public class ConferenceManagerTest {
         }
     }
     
+    /**
+     * Tests the removeUserFromConference method
+     */
     @Test
     public void testRemoveUserFromConference() {
         try {
@@ -217,6 +272,9 @@ public class ConferenceManagerTest {
         }
     }
     
+    /**
+     * Tests the getUsersInConference method
+     */
     @Test
     public void testGetUsersInConference() {
         try {
@@ -234,6 +292,9 @@ public class ConferenceManagerTest {
         }
     }
     
+    /**
+     * Tests the getConferences method
+     */
     @Test
     public void testGetConferences() {
         List<Conference> list = ConferenceManager.getConferences();
@@ -253,12 +314,18 @@ public class ConferenceManagerTest {
         }
     }
     
+    /**
+     * Tests the getConferencesForUser method
+     */
     @Test
     public void testGetConferencesForUser() {
         List<Conference> list = ConferenceManager.getConferencesForUser(userID);
         assertEquals("The conference is in the list", list.get(0).getID(), id);
     }
-
+    
+    /**
+     * Cleanups the database after all testing
+     */
     @After
     public void cleanup() {
         Database.getInstance()
