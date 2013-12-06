@@ -1,4 +1,3 @@
-
 package model.papers;
 
 import java.io.File;
