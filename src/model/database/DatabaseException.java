@@ -19,9 +19,11 @@ public class DatabaseException extends SQLException {
     /**
      * Creates a new Database Exception.
      * 
+     * <dt><b>Precondition:</b><dd> requires errors != null;
+     * <dt><b>Postcondition:</b><dd> ensures The proper error is returned.
      * @param error the error
      */
-    public DatabaseException(final Errors error) {
+    public DatabaseException(final DatabaseErrors error) {
         super(error.getError());
     }
 }

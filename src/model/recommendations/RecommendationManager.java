@@ -7,7 +7,7 @@ import java.util.List;
 
 import model.database.Database;
 import model.database.DatabaseException;
-import model.database.Errors;
+import model.database.DatabaseErrors;
 import model.permissions.Permission;
 import model.util.FileHandler;
 
@@ -56,7 +56,7 @@ public class RecommendationManager {
             return list.get(0);
         }
         else {
-            throw new DatabaseException(Errors.RECOMMENDATION_DOES_NOT_EXIST);
+            throw new DatabaseException(DatabaseErrors.RECOMMENDATION_DOES_NOT_EXIST);
         }
         
     }

@@ -12,17 +12,17 @@ import org.sql2o.Sql2o;
 import org.sql2o.data.Table;
 
 /**
+ * TODO Tim: Can you suppress all logging please?
  * This is a singleton class which provides static access to an instance of the database
  * connection.
  * 
  * @author Tim Mikeladze
  * @version 11-18-2013
  */
-//TODO suppress logging
 public class Database {
     
     /**
-     * The path of the config file.
+     * The path of the databases configuration file.
      */
     private static final String CONFIG_PATH = "config.properties";
     
@@ -37,76 +37,55 @@ public class Database {
     private static Sql2o sql;
     
     /**
-     * Starts the connection to the database.
-     */
-    private Database() {
-        connect();
-    }
-    
-    /**
-     * Connects to database using information from properties file.
-     */
-    private void connect() {
-        // Properties is a simple key value store
-        Properties p = new Properties();
-        try {
-            // Loads properties file
-            p.load(new FileInputStream(CONFIG_PATH));
-            sql = new Sql2o("jdbc:mysql://" + p.getProperty("host") + ":" + p.getProperty("port") + "/" + p.getProperty("database")
-                    + "?zeroDateTimeBehavior=convertToNull", p.getProperty("username"), p.getProperty("password"));
-        }
-        catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    /**
-     * Checks if connected to database.
+     * Checks if connected to the database.
      * 
+     * <dt><b>Precondition:</b><dd> none
+     * <dt><b>Postcondition:</b><dd> ensures The status of the connection to the database is returned.
      * @return returns whether the database connection has been established
      */
     public static synchronized boolean isConnected() {
         boolean isConnected = false;
         try {
-            getInstance().getDataSource()
-                         .getConnection();
+            getInstance().getDataSource().getConnection();
             isConnected = true;
         }
-        catch (SQLException e) {
-            e.printStackTrace();
+        catch (SQLException exception) {
+            exception.printStackTrace();
         }
         return isConnected;
     }
     
     /**
-     * Gets the single instance of Database.
+     * Gets the single instance of the database.
      * 
-     * @return single instance of Database
+     * <dt><b>Precondition:</b><dd> none
+     * <dt><b>Postcondition:</b><dd> ensures The instance of the database.
+     * @return the single instance of the database
      */
     public static synchronized Sql2o getInstance() {
         if (database == null) {
             database = new Database();
             return Database.sql;
         }
-        // Rather than returning an instance of this class like in typical
-        // singleton design we instead return a reference to the Sql2o object
+        /* Rather than returning an instance of this class like in typical
+           singleton design we instead return a reference to the Sql2o object */
         return sql;
     }
     
     /**
      * Wrapper method to see if there are results.
      * 
+     * 
+     * <dt><b>Precondition:</b><dd> requires (TODO Tim: What is this a list of?)
+     * <dt><b>Postcondition:</b><dd> ensures True if there are results, otherwise false.
      * @param list the list to check
      * @return true if there are results
      */
-    // TODO This is a dirty way of determining results. Ideally a
-    // ConcurrentHashMap is needed keyed by thread id and the corresponding
-    // value being a Stack of query results which is flushed every so often to
-    // keep memory free. Having this we'll be able to store and access previous
-    // query results in a thread safe manner.
+    /* TODO Tim: This is a dirty way of determining results. Ideally a
+        ConcurrentHashMap is needed keyed by thread id and the corresponding
+        value being a Stack of query results which is flushed every so often to
+        keep memory free. Having this we'll be able to store and access previous
+        query results in a thread safe manner. */
     public static synchronized boolean hasResults(final List<?> list) {
         return list != null && !list.isEmpty();
     }
@@ -114,10 +93,46 @@ public class Database {
     /**
      * Checks a table for results.
      * 
+     * <dt><b>Precondition:</b><dd> requires (TODO Tim: Table of what? The database table?)
+     * <dt><b>Postcondition:</b><dd> ensures True if there are results, otherwise false.
      * @param table the table to check
      * @return true if there are results
      */
     public static synchronized boolean hasResults(final Table table) {
         return table != null && hasResults(table.rows());
+    }
+    
+    /**
+     * Starts the connection to the database.
+     * 
+     * <dt><b>Precondition:</b><dd> none
+     * <dt><b>Postcondition:</b><dd> ensures A Connection to the database is made.
+     */
+    private Database() {
+        connect();
+    }
+    
+    /**
+     * Connects to database using information from properties file.
+     * 
+     * <dt><b>Precondition:</b><dd> none
+     * <dt><b>Postcondition:</b><dd> ensures A connection to the database is made using the properties file.
+     */
+    private void connect() {
+        // Properties is a simple key value store
+        Properties properties = new Properties();
+        try {
+            // Loads properties file
+            properties.load(new FileInputStream(CONFIG_PATH));
+            sql = new Sql2o("jdbc:mysql://" + properties.getProperty("host") + ":" + properties.getProperty("port") + "/"
+                    + properties.getProperty("database") + "?zeroDateTimeBehavior=convertToNull", properties.getProperty("username"),
+                    properties.getProperty("password"));
+        }
+        catch (FileNotFoundException exception) {
+            exception.printStackTrace();
+        }
+        catch (IOException exception) {
+            exception.printStackTrace();
+        }
     }
 }

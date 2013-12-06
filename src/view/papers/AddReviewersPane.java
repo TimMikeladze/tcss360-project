@@ -139,7 +139,7 @@ public class AddReviewersPane extends Stage implements EventHandler {
     private void populateTable() {
         if (listOfUser != null) {
             for (ConferenceUser u : listOfUser) {
-                usersTable.add(new ConferenceUserRow(u.getUserID(), u.getUsername(), u.getRole()));
+                usersTable.add(new ConferenceUserRow(u.getUserID(), u.getFullName(), u.getRole()));
             }
             usersTable.updateItems();
         }

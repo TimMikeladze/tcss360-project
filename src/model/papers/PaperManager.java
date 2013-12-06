@@ -8,7 +8,7 @@ import java.util.List;
 import model.conferences.ConferenceUser;
 import model.database.Database;
 import model.database.DatabaseException;
-import model.database.Errors;
+import model.database.DatabaseErrors;
 import model.permissions.Permission;
 import model.permissions.PermissionLevel;
 import model.util.FileHandler;
@@ -52,7 +52,7 @@ public class PaperManager {
         if (Database.hasResults(Database.getInstance()
                 .createQuery("SELECT 1 FROM conferences WHERE NOW() > Date AND ID = :id")
                 .addParameter("id", conferenceID).executeAndFetchTable())) {
-            throw new DatabaseException(Errors.PAST_CONFERENCE_DATE);
+            throw new DatabaseException(DatabaseErrors.PAST_CONFERENCE_DATE);
         }
         
         else if (MAX_PAPER_SUBMISSIONS > getNumberOfSubmittedPapers(conferenceID, authorID)) {
@@ -74,7 +74,7 @@ public class PaperManager {
                     .executeUpdate();
         }
         else {
-            throw new DatabaseException(Errors.MAX_PAPER_SUBMISSIONS_EXCEEDED);
+            throw new DatabaseException(DatabaseErrors.MAX_PAPER_SUBMISSIONS_EXCEEDED);
         }
     }
     
@@ -174,7 +174,7 @@ public class PaperManager {
                     .addParameter("permissionID", permission.getPermission()).executeUpdate();
         }
         else {
-            throw new DatabaseException(Errors.CANT_ASSIGN_PAPER);
+            throw new DatabaseException(DatabaseErrors.CANT_ASSIGN_PAPER);
         }
     }
     
@@ -193,7 +193,7 @@ public class PaperManager {
             return t.rows().get(0).getInteger(0);
         }
         else {
-            throw new DatabaseException(Errors.PAPER_DOES_NOT_EXIST);
+            throw new DatabaseException(DatabaseErrors.PAPER_DOES_NOT_EXIST);
         }
     }
     
@@ -317,7 +317,7 @@ public class PaperManager {
                         "SELECT CONCAT(u.Firstname, ' ', u.Lastname) AS Username FROM assigned_papers AS a JOIN users AS u ON a.UserID = u.ID WHERE a.PermissionID = 300 AND a.PaperID = :paperID")
                 .addParameter("paperID", paperID).executeAndFetch(ConferenceUser.class);
         if (result != null && result.size() > 0) {
-            return result.get(0).getUsername();
+            return result.get(0).getFullName();
         }
         return "";
         

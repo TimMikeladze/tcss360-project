@@ -118,9 +118,9 @@ public class ConferencesPane extends GenericPane<GridPane> implements EventHandl
     private void populate() {
         if (listOfConferences != null) {
             for (Conference conference : listOfConferences) {
-                conferencesTable.add(new ConferenceRow(conference.getID(), conference.getName(), conference
-                        .getLocation(), conference.getDate(), conference.getProgramChair(), conference.getAuthors(),
-                        conference.getReviewers()));
+                conferencesTable.add(new ConferenceRow(conference.getId(), conference.getName(), conference
+                        .getLocation(), conference.getDate(), conference.getProgramChair(), conference.getNumberOfAuthors(),
+                        conference.getNumberOfReviewers()));
             }
             conferencesTable.updateItems();
         }

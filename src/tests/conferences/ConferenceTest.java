@@ -105,7 +105,7 @@ public class ConferenceTest {
      */
     @Test
     public void testConferenceFromID() {
-        assertEquals("Conference has been created successfully", Conference.conferenceFromID(conferenceID).getID(), conferenceID);
+        assertEquals("Conference has been created successfully", Conference.conferenceFromID(conferenceID).getId(), conferenceID);
     }
     
     /**
@@ -129,7 +129,7 @@ public class ConferenceTest {
      */
     @Test
     public void testProgramChairID() {
-        assertEquals("Conference program chair ID is correct", Conference.conferenceFromID(conferenceID).getProgramChairID(), userID);
+        assertEquals("Conference program chair ID is correct", Conference.conferenceFromID(conferenceID).getProgramChairId(), userID);
     }
     
     /**
@@ -163,7 +163,7 @@ public class ConferenceTest {
      */
     @Test
     public void testConferenceNumberOfAuthors() {
-        assertEquals("Conference number of authors is correct", Conference.conferenceFromID(conferenceID).getAuthors(), 0);
+        assertEquals("Conference number of authors is correct", Conference.conferenceFromID(conferenceID).getNumberOfAuthors(), 0);
     }
     
     /**
@@ -171,7 +171,7 @@ public class ConferenceTest {
      */
     @Test
     public void testConferenceNumberOfReviewers() {
-        assertEquals("Conference number of reviewers is correct", Conference.conferenceFromID(conferenceID).getReviewers(), 0);
+        assertEquals("Conference number of reviewers is correct", Conference.conferenceFromID(conferenceID).getNumberOfReviewers(), 0);
     }
     
     /**
