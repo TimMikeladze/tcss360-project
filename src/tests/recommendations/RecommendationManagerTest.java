@@ -57,12 +57,11 @@ public class RecommendationManagerTest {
 	@Test
 	public void testGetRecommendation() {
 	    try {
-            assertTrue("Get Recommendation is there", RecommendationManager.getRecommendation(25000) != null);
+            RecommendationManager.getRecommendation(25000);
         } catch (DatabaseException e) {
-            fail("Not there");
+            assertEquals("Get Recommendation is not there", e.getLocalizedMessage(), "Recommendation does not exist");
         }
 	}
-	
 	/**
 	 * Cleans up the tests.
 	 */
