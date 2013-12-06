@@ -1,9 +1,9 @@
+
 package tests.database;
 
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertTrue;
+import model.database.DatabaseErrors;
 import model.database.DatabaseException;
-import model.database.Errors;
 
 import org.junit.Test;
 
@@ -21,7 +21,7 @@ public class DatabaseExceptionTest {
      */
     @Test
     public void testDataException() {
-        DatabaseException temp = new DatabaseException(Errors.CANT_ASSIGN_PAPER);
+        DatabaseException temp = new DatabaseException(DatabaseErrors.CANT_ASSIGN_PAPER);
         assertTrue("Exception created", temp != null);
     }
 }

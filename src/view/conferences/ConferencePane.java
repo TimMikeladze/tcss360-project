@@ -187,10 +187,10 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
         final Text conferenceProgramChairText = new Text("Program Chair: " + conference.getProgramChair());
         conferenceProgramChairText.setId("conf-text");
         pane.add(conferenceProgramChairText, 1, 1);
-        final Text authorsText = new Text("Authors: " + Integer.toString(conference.getAuthors()));
+        final Text authorsText = new Text("Authors: " + Integer.toString(conference.getNumberOfAuthors()));
         authorsText.setId("conf-text");
         pane.add(authorsText, 0, 2);
-        final Text reviewersText = new Text("Reviewers: " + Integer.toString(conference.getReviewers()));
+        final Text reviewersText = new Text("Reviewers: " + Integer.toString(conference.getNumberOfReviewers()));
         reviewersText.setId("conf-text");
         pane.add(reviewersText, 1, 2);
         final Text conferencePapersText = new Text("Conference Papers");
@@ -385,7 +385,7 @@ public class ConferencePane extends GenericPane<GridPane> implements EventHandle
                     }
                     for (ConferenceUser user : listOfUsers) {
                         if (!conferenceUsersIdNamesMap.containsKey(user.getUserID())) {
-                            conferenceUsersIdNamesMap.put(user.getUserID(), user.getUsername());
+                            conferenceUsersIdNamesMap.put(user.getUserID(), user.getFullName());
                         }
                     }
                 }

@@ -168,7 +168,12 @@ public class AddUserPane extends Stage implements EventHandler {
                 @Override
                 protected String call() {
                     try {
-                        ConferenceManager.addUserToConference(conferenceID, userID, permission);
+                        if (permission == PermissionLevel.REVIEWER) {
+                            ConferenceManager.addReviewerToConference(conferenceID, userID);
+                        }
+                        else if (permission == PermissionLevel.SUBPROGRAM_CHAIR) {
+                            ConferenceManager.addSubprogramChairToConference(conferenceID, userID);
+                        }
                         setSuccess(true);
                     }
                     catch (Exception e) {

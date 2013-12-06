@@ -1,6 +1,8 @@
+
 package tests.conferences;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 
@@ -20,6 +22,7 @@ import org.junit.Test;
  *
  */
 public class ConferenceUserTest {
+    
     /**
      * User's first name for testing.
      */
@@ -66,31 +69,24 @@ public class ConferenceUserTest {
         firstName = "Jon";
         lastName = "Snow";
         email = "youknownothingjonsnow@gmail.com";
-
+        
         // Add the user 'Jon Snow' to the database
         userID = Database.getInstance()
                 .createQuery("INSERT INTO users (Firstname, Lastname, Email) VALUES (:firstName, :lastName, :email)")
-                .addParameter("firstName", firstName)
-                .addParameter("lastName", lastName)
-                .addParameter("email", email)
-                .executeUpdate()
-                .getKey(Integer.class);
+                .addParameter("firstName", firstName).addParameter("lastName", lastName).addParameter("email", email)
+                .executeUpdate().getKey(Integer.class);
         
         name = "Conference1";
         location = "Seattle";
         conferenceID = Database.getInstance()
                 .createQuery("INSERT INTO conferences (Name, Location, Date) VALUES (:name, :location, :date)")
-                .addParameter("name", name)
-                .addParameter("location", location)
-                .addParameter("date", new Date())
-                .executeUpdate()
-                .getKey(Integer.class);
+                .addParameter("name", name).addParameter("location", location).addParameter("date", new Date())
+                .executeUpdate().getKey(Integer.class);
         Database.getInstance()
-                .createQuery("INSERT INTO conference_users (ConferenceID, UserID, PermissionID) VALUES (:id, :userID, :permissionID)")
-                .addParameter("id", conferenceID)
-                .addParameter("userID", userID)
-                .addParameter("permissionID", PermissionLevel.PROGRAM_CHAIR.getPermission())
-                .executeUpdate();
+                .createQuery(
+                        "INSERT INTO conference_users (ConferenceID, UserID, PermissionID) VALUES (:id, :userID, :permissionID)")
+                .addParameter("id", conferenceID).addParameter("userID", userID)
+                .addParameter("permissionID", PermissionLevel.PROGRAM_CHAIR.getPermission()).executeUpdate();
         user = ConferenceUser.userFromID(conferenceID, userID);
     }
     
@@ -140,7 +136,7 @@ public class ConferenceUserTest {
      */
     @Test
     public void testGetUserName() {
-        assertEquals("Not the same user", user.getUsername(), "Jon Snow");
+        assertEquals("Not the same user", user.getFullName(), "Jon Snow");
     }
     
     /**
@@ -150,23 +146,18 @@ public class ConferenceUserTest {
     public void testGetAssignedAsSubProgramChair() {
         assertTrue("SubProgram Chair not assigned", user.getAssignedAsSubProgramChair() == 0);
     }
+    
     /**
      * Cleans up the database for when the tests are done
      */
     @After
     public void takeDown() {
+        Database.getInstance().createQuery("DELETE FROM conferences WHERE ID = :conferenceID")
+                .addParameter("conferenceID", conferenceID).executeUpdate();
         Database.getInstance()
-            .createQuery("DELETE FROM conferences WHERE ID = :conferenceID")
-            .addParameter("conferenceID", conferenceID)
-            .executeUpdate();
-        Database.getInstance()
-            .createQuery("DELETE FROM conference_users WHERE ConferenceID = :conferenceID AND UserID = :userID")
-            .addParameter("conferenceID", conferenceID)
-            .addParameter("userID", userID)
-            .executeUpdate();
-        Database.getInstance()
-            .createQuery("DELETE FROM users WHERE ID = :userID")
-            .addParameter("userID", userID)
-            .executeUpdate();
+                .createQuery("DELETE FROM conference_users WHERE ConferenceID = :conferenceID AND UserID = :userID")
+                .addParameter("conferenceID", conferenceID).addParameter("userID", userID).executeUpdate();
+        Database.getInstance().createQuery("DELETE FROM users WHERE ID = :userID").addParameter("userID", userID)
+                .executeUpdate();
     }
 }

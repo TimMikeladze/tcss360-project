@@ -7,7 +7,7 @@ import java.util.List;
 
 import model.database.Database;
 import model.database.DatabaseException;
-import model.database.Errors;
+import model.database.DatabaseErrors;
 import model.papers.PaperManager;
 import model.permissions.Permission;
 import model.util.FileHandler;
@@ -46,7 +46,7 @@ public class ReviewManager {
                            .getKey(Integer.class);
         }
         else {
-            throw new DatabaseException(Errors.CANT_REVIEW_PAPER);
+            throw new DatabaseException(DatabaseErrors.CANT_REVIEW_PAPER);
         }
     }
     
