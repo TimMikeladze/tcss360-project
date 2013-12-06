@@ -6,17 +6,20 @@ import org.junit.runners.Suite;
 import tests.conferences.ConferencesTestSuite;
 import tests.database.DatabaseTestSuite;
 import tests.login.LoginTestSuite;
+import tests.papers.PapersTestSuite;
+import tests.recommendations.RecommendationsTestSuite;
 import tests.reviews.ReviewsTestSuite;
 import tests.users.UsersTestSuite;
+import tests.util.UtilTestSuite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
    ReviewsTestSuite.class,
    UsersTestSuite.class,
-   //UtilTestSuite.class,
-   //RecommendationsTestSuite.class,
+   UtilTestSuite.class,
+   RecommendationsTestSuite.class,
    //PermissionsTestSuite.class,
-   //PapersTestSuite.class,
+   PapersTestSuite.class,
    LoginTestSuite.class,
    DatabaseTestSuite.class,
    ConferencesTestSuite.class

@@ -59,7 +59,7 @@ public class RecommendationManagerTest {
 	    try {
             RecommendationManager.getRecommendation(25000);
         } catch (DatabaseException e) {
-            assertEquals("Get Recommendation is not there", e.getLocalizedMessage(), "Recommendation does not exist");
+            assertEquals("Get Recommendation is not there", e.getLocalizedMessage(), "A recommendation hasn't been submitted for this paper");
         }
 	}
 	/**

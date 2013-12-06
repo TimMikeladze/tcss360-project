@@ -259,8 +259,7 @@ public class ConferenceManagerTest {
         try {
             ConferenceManager.addSubprogramChairToConference(id, userID5);
             ConferenceManager.removeUserFromConference(id, userID5);
-            assertTrue("The user is gone",
-                    !ConferenceManager.userInConference(id, userID5, PermissionLevel.SUBPROGRAM_CHAIR));
+            assertTrue("The user is gone", !ConferenceManager.userInConference(id, userID5, PermissionLevel.SUBPROGRAM_CHAIR));
         }
         catch (DatabaseException e) {
             fail("Does not work");

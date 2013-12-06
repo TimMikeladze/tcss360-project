@@ -145,6 +145,8 @@ public class PaperManagerTest {
                 .addParameter("fileExtension", "/path.txt")
                 .executeUpdate()
                 .getKey(Integer.class);
+        PaperManager temp = new PaperManager();
+        temp.hashCode();
     }
 
     /**
@@ -165,7 +167,7 @@ public class PaperManagerTest {
         // get the list of papers
         paperList = PaperManager.getPapers(conferenceID);
         paperList.get(0);
-        assertEquals("The paper is in the list", "The Description1", paperList.get(0)
+        assertEquals("The paper is in the list", "the description", paperList.get(0)
                                                                               .getDescription()
                                                                               .toString());
     }
