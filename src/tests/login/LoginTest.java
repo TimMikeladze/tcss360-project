@@ -1,4 +1,3 @@
-
 package tests.login;
 
 import static org.junit.Assert.assertEquals;
@@ -20,7 +19,8 @@ import org.junit.Test;
 /**
  * Tests the Login class.
  * 
- * @author Srdjan Stojcic	
+ * @author Srdjan Stojcic
+ * @author Jordan Matthews	
  * @version 11.23.13
  */
 
@@ -55,12 +55,17 @@ public class LoginTest {
      * Second user's email for testing.
      */
     private static String email2;
-    
+    /**
+     * The userID
+     */
+    private static int userID1;
     /**
      * Initializes the tests.
      */
     @BeforeClass
     public static void testSetup() {
+        Login temp = new Login();
+        temp.hashCode();
         firstName1 = "Jon";
         lastName1 = "Snow";
         email1 = "youknownothingjonsnow@gmail.com";
@@ -70,11 +75,13 @@ public class LoginTest {
         email2 = "kingofthenorth@gmail.com";
         
         // Add the user 'Jon Snow' to the database
-        Database.getInstance()
-                .createQuery(
-                        "INSERT c users (Firstname, Lastname, Email) VALUES (:firstName, :lastName, :email)")
-                .addParameter("firstName", firstName1).addParameter("lastName", lastName1)
-                .addParameter("email", email1).executeUpdate();
+        userID1 = Database.getInstance()
+                .createQuery("INSERT INTO users (Firstname, Lastname, Email) VALUES (:firstName, :lastName, :email)")
+                .addParameter("firstName", firstName1)
+                .addParameter("lastName", lastName1)
+                .addParameter("email", email1)
+                .executeUpdate()
+                .getKey(Integer.class);  
     }
     
     /*
@@ -115,16 +122,16 @@ public class LoginTest {
     public void testRegisterUser() {
         try {
             Login.registerUser(firstName2, lastName2, email2);
+            assertTrue(Database.hasResults(Database.getInstance()
+                    .createQuery("SELECT 1 FROM users WHERE email = :email")
+                    .addParameter("email", email2).executeAndFetchTable()));
+        } catch (DatabaseException e) {
+            fail("There was an error");
         }
-        catch (DatabaseException e) {
-            fail("registerUser threw an exception when it shouldn't have");
-            e.printStackTrace();
-        }
-        
-        assertTrue(Database.hasResults(Database.getInstance()
-                .createQuery("SELECT 1 FROM users WHERE email = :email")
-                .addParameter("email", email2).executeAndFetchTable()));
-        
+        Database.getInstance()
+            .createQuery("DELETE FROM users WHERE Email = :email")
+            .addParameter("email", email2)
+            .executeUpdate();
     }
     
     /**
@@ -148,15 +155,26 @@ public class LoginTest {
     }
     
     /**
+     * Tests the loginUser() method of Login class.
+     */
+    @Test
+    public void testLoginUserBranch() {
+        try {
+            Login.loginUser(email2);
+        }
+        catch (DatabaseException e) {
+            assertTrue("Caught error", e.toString() != null);
+        }
+    }
+    /**
      * Cleans up temporary data that was used in the tests.
      */
     @AfterClass
     public static void testCleanup() {
         // Remove Jon Snow from database
-        Database.getInstance().createQuery("DELETE FROM users WHERE Email = :email")
-                .addParameter("email", email1).executeUpdate();
-        // Remove King North from database
-        Database.getInstance().createQuery("DELETE FROM users WHERE Email = :email")
-                .addParameter("email", email2).executeUpdate();
+        Database.getInstance()
+            .createQuery("DELETE FROM users WHERE ID = :userID")
+            .addParameter("userID", userID1)
+            .executeUpdate();
     }
 }

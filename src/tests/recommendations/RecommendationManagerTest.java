@@ -4,118 +4,83 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
+
 
 import model.database.Database;
 import model.database.DatabaseException;
-import model.recommendations.Recommendation;
 import model.recommendations.RecommendationManager;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests the RecommendationManager class.
+ * Tests the RecommendationManager class from model.recommendations
  * 
  * @author Srdjan Stojcic
+ * @author Jordan Matthews
  * @version 11.26.2013
  *
  */
-
 public class RecommendationManagerTest {
-	
 	/**
-	 * The paper ID.
+	 * The recommendation ID
 	 */
-	private int paperID;
-	
-	/**
-	 * The reviewer ID.
-	 */
-	private int reviewerID;
-	
-	/**
-	 * The review file.
-	 */
-	private File file;
-	
-	/**
-	 * Sets up the tests.
-	 */
-	@BeforeClass
-	public void setup() {
-		paperID = 100;
-		reviewerID = 10;
-		try {
-			file = File.createTempFile("review", ".docx");
-		} catch (IOException e) {
-			System.out.println("Failed to create temp file");
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * Cleans up the tests.
-	 */
-	@AfterClass
-	public void cleanUp() {
-		// Remove recommendation from database.
-        Database.getInstance().createQuery("DELETE FROM paper_recommendations WHERE paperID = :paperID AND reviewerID = :reviewerID")
-                .addParameter("paperID", paperID)
-                .addParameter("reviewerID", reviewerID).executeUpdate();
-	}
+	private int recID;
 
+	/**
+	 * Sets up the tests
+	 */
+	@Before
+	public void setUp() {
+	    recID = 0;
+	    RecommendationManager temp = new RecommendationManager();
+	    temp.hashCode();
+	}
 	
 	/**
-	 * Tests the submitRecommendation method.
+	 * Tests the submitRecommendation method
 	 */
 	@Test
 	public void testSubmitRecommendation() {
-		try {
-			RecommendationManager.submitRecommendation(paperID, reviewerID, file);
-		} catch (IOException e) {
-			System.out.println("Failed to submit a recommendation during testSubmitRecommendation");
-			e.printStackTrace();
-		}
-		
-		List<Recommendation> list = Database.getInstance()
-                .createQuery(
-                        "SELECT ID, PaperID, ReviewerID, File, FileExtension FROM paper_recommendations WHERE PaperID = :paperID")
-                .addParameter("paperID", paperID)
-                .executeAndFetch(Recommendation.class);
-		
-		assertTrue(Database.hasResults(list));
-		
-	}
-
-	/**
-	 * Tests the getRecommendation method.
-	 */
-	@Test
-	public void testGetRecommendation() {
-		List<Recommendation> list = RecommendationManager.getRecommendations(paperID);
-		if (Database.hasResults(list)) {
-			assertTrue(true);
-		} else {
-			fail("Did not successfully get the recommendation");
-		}
-		
+	    try {
+            recID = RecommendationManager.submitRecommendation(25000, 35000, new File("tests/paper.txt"));
+        } catch (IOException e) {
+            fail("Did not work");
+        }
+	    assertTrue("Recommendation submitted", recID > 0);
 	}
 	
 	/**
-	 * Tests the getRecommendation method in the case where it should throw an exception (no recommendation exists).
+	 * Tests the getRecommendation method
 	 */
 	@Test
-	public void testGetRecommendationException() {
-		try {
-            // This recommendation does not exist, so it should throw an exception.
-            RecommendationManager.getRecommendation(18341394);
-            fail("Should have thrown an SQLException");
-        }
-        catch (DatabaseException e) {
-            assertTrue(true);
+	public void testGetRecommendation() {
+	    try {
+            RecommendationManager.getRecommendation(25000);
+        } catch (DatabaseException e) {
+            assertEquals("Get Recommendation is not there", e.getLocalizedMessage(), "A recommendation hasn't been submitted for this paper");
         }
 	}
+	
+	/**
+     * Tests the getRecommendation method
+     */
+    @Test
+    public void testGetRecommendations() {
+            assertTrue("Is recommended", RecommendationManager.getRecommendations(0) != null);
 
+    }
+    
+	/**
+	 * Cleans up the tests.
+	 */
+	@After
+	public void cleanUp() {
+		// Remove recommendation from database.
+        Database.getInstance()
+                .createQuery("DELETE FROM paper_recommendations WHERE ID = :paperID")
+                .addParameter("paperID", recID)
+                .executeUpdate();
+	}
 }

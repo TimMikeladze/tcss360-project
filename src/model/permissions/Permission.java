@@ -9,7 +9,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Permissions interface.
+ * Permissions interface used for annotations.
  * 
  * @author Tim Mikeladze
  * @version 11-16-2013

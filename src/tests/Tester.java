@@ -3,8 +3,8 @@ package tests;
 
 import java.io.IOException;
 
+import model.conferences.ConferenceManager;
 import model.database.DatabaseException;
-import model.papers.PaperManager;
 
 //TODO delete class when project is finished
 
@@ -15,10 +15,9 @@ import model.papers.PaperManager;
  */
 public class Tester {
     
-    public static void main(final String[] args) throws DatabaseException,
-            InterruptedException, IOException {
+    public static void main(final String[] args) throws DatabaseException, InterruptedException, IOException {
         
-        System.out.println(PaperManager.getSubProgramChair(146));
+        System.out.println(ConferenceManager.getUsersInConference(577));
         
         //System.out.println(Login.registerUser("Barack", "Obama", "BObama@email.us"));
         //System.out.println(User.userFromEmail("bobama@email.us").getID()); // 138

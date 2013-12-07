@@ -15,7 +15,7 @@ import model.database.Database;
 public class Conference implements Comparable<Conference> {
     
     /**
-     * The id of the conference.
+     * The id of the Conference.
      */
     private int id;
     
@@ -40,7 +40,7 @@ public class Conference implements Comparable<Conference> {
     private int programChairID;
     
     /**
-     * The conferences Program Chair.
+     * The name of the conferences Program Chair.
      */
     private String programChair;
     
@@ -55,10 +55,13 @@ public class Conference implements Comparable<Conference> {
     private int reviewers;
     
     /**
-     * Create a conference object given and ID.
+     * Create a conference object given an id.
      * 
+     * <dt><b>Precondition:</b><dd> requires id > 0;
+     * <dt><b>Postcondition:</b><dd> ensures A Conference if the Conference exists. <br>
+     *                               ensures Null if the Conference does not exist.
      * @param id the id of the conference
-     * @return conference or null if not exists
+     * @return the conference or null if not exists
      */
     public static Conference conferenceFromID(final int id) {
         Conference conference = null;
@@ -78,77 +81,100 @@ public class Conference implements Comparable<Conference> {
     }
     
     /**
-     * The program chair
+     * Gets the Program Chairs name.
      * 
-     * @return the conference's program chair
+     * <dt><b>Precondition:</b><dd> none
+     * <dt><b>Postcondition:</b><dd> ensures The name of the Program Chair is returned.
+     * @return the Program Chairs name
      */
     public String getProgramChair() {
         return programChair;
     }
     
     /**
-     * Gets the id.
+     * Gets the Conferences Id.
      * 
-     * @return the id
+     * <dt><b>Precondition:</b><dd> none
+     * <dt><b>Postcondition:</b><dd> ensures The id of the Conference is returned.
+     * @return the Conferences Id
      */
     public int getID() {
         return id;
     }
     
     /**
-     * Gets the name.
+     * Gets the Conferences name.
      * 
-     * @return the name
+     * <dt><b>Precondition:</b><dd> none
+     * <dt><b>Postcondition:</b><dd> ensures The name of the Conference is returned.
+     * @return the Conferences name
      */
     public String getName() {
         return name;
     }
     
     /**
-     * Gets the location.
+     * Gets the Conferences location.
      * 
-     * @return the location
+     * <dt><b>Precondition:</b><dd> none
+     * <dt><b>Postcondition:</b><dd> ensures The location of the Conference is returned.
+     * @return the Conferences location
      */
     public String getLocation() {
         return location;
     }
     
     /**
-     * Gets the date.
+     * Gets the Conferences date.
      * 
-     * @return the date
+     * <dt><b>Precondition:</b><dd> none
+     * <dt><b>Postcondition:</b><dd> ensures The date of the Conference is returned.
+     * @return the Conferences date
      */
     public String getDate() {
         return date.toString().split("\\s+")[0].toString();
     }
     
     /**
-     * Gets the program chair id.
+     * Gets the Conferences Program Chair's Id.
      * 
-     * @return the program chair id
+     * <dt><b>Precondition:</b><dd> none
+     * <dt><b>Postcondition:</b><dd> ensures The id of the Program Chair of the Conference is returned.
+     * @return the Conferences Program Chair's Id
      */
-    public int getProgramChairID() {
+    public int getProgramChairId() {
         return programChairID;
     }
     
     /**
-     * Gets the number of authors.
+     * Gets the number of authors in the Conference.
      * 
-     * @return the number of authors
+     * <dt><b>Precondition:</b><dd> none
+     * <dt><b>Postcondition:</b><dd> ensures The number of authors of the Conference is returned.
+     * @return the number of authors in the Conference
      */
     public int getAuthors() {
         return authors;
     }
     
     /**
-     * Gets the number of reviewers.
+     * Gets the number of reviewers in the Conference.
      * 
-     * @return the number of reviewers
+     * <dt><b>Precondition:</b><dd> none
+     * <dt><b>Postcondition:</b><dd> ensures The number of reviewers of the Conference is returned.
+     * @return the number of reviewers in the Conference
      */
     public int getReviewers() {
         return reviewers;
     }
     
+    /**
+     * Returns the hashCode of this object.
+     * 
+     * <dt><b>Precondition:</b><dd> none
+     * <dt><b>Postcondition:</b><dd> ensures The hash code of this object is returned.
+     * @return the hashCode of this object
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -157,26 +183,42 @@ public class Conference implements Comparable<Conference> {
         return result;
     }
     
+    /**
+     * Checks this objects contents with another object of the same type.
+     * 
+     * <dt><b>Precondition:</b><dd> requires object == instanceOF Conference;
+     * <dt><b>Postcondition:</b><dd> ensures The date of the Conference is returned.
+     * @param object The object to test.
+     * @return true if both objects are equal.
+     */
     @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
+    public boolean equals(final Object object) {
+        if (this == object) {
             return true;
         }
-        if (obj == null) {
+        if (object == null) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+        if (getClass() != object.getClass()) {
             return false;
         }
-        Conference other = (Conference) obj;
+        Conference other = (Conference) object;
         if (id != other.id) {
             return false;
         }
         return true;
     }
     
+    /**
+     * Compares this Conferences id with another.
+     * 
+     * <dt><b>Precondition:</b><dd> requires conference != null;
+     * <dt><b>Postcondition:</b><dd> ensures 0 if the two conferences are the same.
+     * @param conference The Conference to compare to
+     * @return 0 if the same Conference
+     */
     @Override
-    public int compareTo(final Conference c) {
-        return id - c.id;
+    public int compareTo(final Conference conference) {
+        return id - conference.id;
     }
 }

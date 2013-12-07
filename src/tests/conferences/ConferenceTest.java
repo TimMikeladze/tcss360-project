@@ -129,7 +129,7 @@ public class ConferenceTest {
      */
     @Test
     public void testProgramChairID() {
-        assertEquals("Conference program chair ID is correct", Conference.conferenceFromID(conferenceID).getProgramChairID(), userID);
+        assertEquals("Conference program chair ID is correct", Conference.conferenceFromID(conferenceID).getProgramChairId(), userID);
     }
     
     /**

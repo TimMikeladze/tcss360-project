@@ -2,11 +2,9 @@
 package model.papers;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import model.database.Database;
-import model.util.FileHandler;
 
 /**
  * This class holds all the information for a paper.
@@ -91,7 +89,7 @@ public class Paper {
     public static Paper paperFromID(final int paperID) {
         List<Paper> results = Database.getInstance()
                                       .createQuery(
-                                              "SELECT p.ConferenceID, p.ID AS PaperID, p.Title, p.Description, p.AuthorID, p.SubmissionDate, p.Status, p.Revised, p.FileExtension, p.File, p.RevisionDate, p.Recommended, CONCAT(u.Firstname, ' ', u.Lastname) AS Username FROM papers AS p JOIN users AS u ON u.ID = p.AuthorID WHERE p.ID = :paperID")
+                                              "SELECT p.ConferenceID, p.ID AS PaperID, p.Title, p.Description, p.AuthorID, p.SubmissionDate, p.Status, p.Revised, p.FileExtension, CONVERT(p.File USING utf8) AS File, p.RevisionDate, p.Recommended, CONCAT(u.Firstname, ' ', u.Lastname) AS Username FROM papers AS p JOIN users AS u ON u.ID = p.AuthorID WHERE p.ID = :paperID")
                                       .addParameter("paperID", paperID)
                                       .executeAndFetch(Paper.class);
         return Database.hasResults(results) ? results.get(0) : null;
@@ -192,9 +190,9 @@ public class Paper {
     }
     
     /**
-     * Returns the papers file location.
+     * Returns the content of the file.
      * 
-     * @return the papers file location
+     * @return the content of the file.
      */
     public String getFile() {
         return file;
@@ -208,17 +206,6 @@ public class Paper {
     public String getRevisionDate() {
         return revisionDate.toString()
                            .split("\\s+")[0].toString();
-    }
-    
-    /**
-     * Gets the paper.
-     * 
-     * @return the paper
-     * @throws IOException Signals that an I/O exception has occurred.
-     */
-    public File getPaper() throws IOException {
-        return paper == null ? (paper = FileHandler.convertBytesToFile(file, fileExtension)) : paper;
-        
     }
     
     /**

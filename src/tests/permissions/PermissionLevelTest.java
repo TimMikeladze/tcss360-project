@@ -69,6 +69,11 @@ public class PermissionLevelTest {
         assertEquals("Permission Subprogram chair is correct", SUBPROGRAM, permissionID3.getPermission());
         assertEquals("Permission Program chair is correct", PROGRAM, permissionID4.getPermission());
         assertEquals("Permission Admin is correct", ADMIN, permissionID5.getPermission());
+        PermissionLevel.getRole(PermissionLevel.ADMIN);
+        PermissionLevel.getRole(PermissionLevel.AUTHOR);
+        PermissionLevel.getRole(PermissionLevel.PROGRAM_CHAIR);
+        PermissionLevel.getRole(PermissionLevel.REVIEWER);
+        PermissionLevel.getRole(PermissionLevel.SUBPROGRAM_CHAIR);
     }
 
 }
