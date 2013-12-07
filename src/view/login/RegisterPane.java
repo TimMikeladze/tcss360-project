@@ -23,8 +23,7 @@ import view.util.Validator;
 /**
  * JavaFX pane for displaying the registration window.
  * 
- * @author Mohammad Juma
- * @author Tim Mikeladze
+ * @author Cathryn Castillo
  * @version 11-11-2013
  */
 public class RegisterPane extends GenericPane<GridPane> implements EventHandler<ActionEvent> {

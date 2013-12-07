@@ -25,8 +25,7 @@ import controller.user.LoggedUser;
  * Creates a pane that runs horizontal along the windows north border and displays the users
  * name along with the logout button.
  * 
- * @author Mohammad Juma
- * @author Tim Mikeladze
+ * @author Cathryn Castillo
  * @version 11-11-2013
  */
 public class TopPane extends GenericPane<StackPane> implements EventHandler<ActionEvent>, ProgressSpinnerCallbacks {

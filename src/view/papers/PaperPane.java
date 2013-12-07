@@ -44,8 +44,7 @@ import controller.user.LoggedUser;
  * JavaFX pane responsible for displaying information about a selected paper. TODO there are too
  * many inner classes this is horrible design and can be fixed at some point.
  *
- * @author Mohammad Juma
- * @author Tim Mikeladze
+ * @author Srdjan S
  * @version 11-23-2013
  */
 public class PaperPane extends GenericPane<GridPane> implements EventHandler, AddUserCallback {

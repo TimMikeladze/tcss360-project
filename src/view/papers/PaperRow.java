@@ -4,7 +4,7 @@ package view.papers;
 /**
  * Wrapper class around paper data in a conference
  * 
- * @author Tim Mikeladze
+ * @author Srdjan S
  * @version 11-25-2013
  */
 public class PaperRow {

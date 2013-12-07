@@ -4,7 +4,7 @@ package view.conferences;
 /**
  * Wrapper for conference row data in the table.
  *
- * @author Tim Mikeladze
+ * @author Mohammad
  * @version 11-16-2013
  */
 public class ConferenceRow {

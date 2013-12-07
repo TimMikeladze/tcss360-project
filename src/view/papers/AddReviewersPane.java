@@ -26,7 +26,7 @@ import view.util.ProgressSpinnerService;
 /**
  * Constructs a new window that allows the user to choose a reviewer.
  * 
- * @author Tim Mikeladze
+ * @author Mohammad
  * @version 11-24-2013
  */
 public class AddReviewersPane extends Stage implements EventHandler {

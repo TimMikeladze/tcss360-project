@@ -12,7 +12,7 @@ import view.util.SceneCallbacks;
 /**
  * Main JavaFX pane for holding the applications UI upon successful login.
  * 
- * @author Mohammad Juma
+ * @author Cathryn
  * @version 11-11-2013
  */
 public class MainPane extends GenericPane<BorderPane> implements CenterPaneCallbacks {

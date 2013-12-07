@@ -35,7 +35,6 @@ import controller.user.LoggedUser;
  * JavaFX pane responsible for displaying the pane that allows a user to create a new
  * conference.
  * 
- * @author Tim Mikeladze
  * @author Mohammad Juma
  * @version 11-23-2013
  */

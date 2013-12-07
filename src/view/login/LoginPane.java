@@ -30,7 +30,7 @@ import controller.user.LoggedUser;
 /**
  * JavaFX pane for displaying the login window.
  * 
- * @author Mohammad Juma
+ * @author Cathryn Castillo
  * @version 11-11-2013
  */
 public class LoginPane extends GenericPane<GridPane> implements EventHandler {

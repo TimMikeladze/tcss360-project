@@ -22,8 +22,8 @@ import view.util.ProgressSpinnerService;
 /**
  * Pane for changing the state of the paper to accepted or rejected.
  * 
- * @author Mohammad Juma
- * @11-29-2013
+ * @author Srdjan
+ * @version 11-29-2013
  */
 public class PaperStatePane extends Stage implements EventHandler {
     

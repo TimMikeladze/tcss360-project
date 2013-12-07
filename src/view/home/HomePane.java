@@ -32,9 +32,8 @@ import controller.user.LoggedUser;
 /**
  * JavaFX pane responsible for displaying the users home interface.
  * 
- * @author Mohammad Juma
  * @author Cathryn Castillo
- * @version 11-11-2013
+ * @version 11-30-2013
  */
 public class HomePane extends GenericPane<GridPane> implements EventHandler {
     

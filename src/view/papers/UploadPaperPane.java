@@ -24,7 +24,11 @@ import view.util.SceneCallbacks;
 import view.util.StatusText;
 import view.util.Validator;
 import controller.user.LoggedUser;
-
+/**
+ * Pane for a user to upload a paper into a conference.
+ * @author Srdjan S.
+ * @version 11-20-13
+ */
 public class UploadPaperPane extends GenericPane<GridPane> implements EventHandler<ActionEvent> {
     
     private Text scenetitle;
