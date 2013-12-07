@@ -108,13 +108,6 @@ public class ConferenceTest {
         assertEquals("Conference has been created successfully", Conference.conferenceFromID(conferenceID).getID(), conferenceID);
     }
     
-    /**
-     * Tests that the conference will be null if the incorrect ID is passed
-     */
-    @Test
-    public void testConferenceFromIDNullID() {
-        assertEquals("The conference was not found", Conference.conferenceFromID(conferenceID2 + 1), null);
-    }
     
     /**
      * Tests that the correct Program chair name is used

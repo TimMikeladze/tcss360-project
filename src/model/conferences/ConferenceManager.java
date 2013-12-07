@@ -147,6 +147,7 @@ public class ConferenceManager {
      * @param conferenceID The id of the conference to remove the user from
      * @param userID The id of the user being removed
      */
+    
     @Permission(level = 400)
     public static void removeUserFromConference(final int conferenceID, final int userID) {
         Database.getInstance()
