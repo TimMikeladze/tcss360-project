@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.util.List;
 
 import model.database.Database;
-import model.database.DatabaseException;
 import model.database.DatabaseErrors;
+import model.database.DatabaseException;
 import model.papers.PaperManager;
 import model.permissions.Permission;
 import model.util.FileHandler;
@@ -59,7 +59,8 @@ public class ReviewManager {
     @Permission(level = 100, strict = true)
     public static List<Review> getReviews(final int paperID) {
         return Database.getInstance()
-                       .createQuery("SELECT ID, PaperID, ReviewerID, File, FileExtension FROM reviews WHERE PaperID = :paperID")
+                       .createQuery(
+                               "SELECT ID, PaperID, ReviewerID, CONVERT(File USING utf8) AS File, FileExtension FROM reviews WHERE PaperID = :paperID")
                        .addParameter("paperID", paperID)
                        .executeAndFetch(Review.class);
     }
@@ -75,7 +76,7 @@ public class ReviewManager {
     public static Review getSubmittedReview(final int paperID, final int userID) {
         return Database.getInstance()
                        .createQuery(
-                               "SELECT ID, PaperID, ReviewerID, File, FileExtension FROM reviews WHERE PaperID = :paperID AND reviewerID = :userID")
+                               "SELECT ID, PaperID, ReviewerID, CONVERT(File USING utf8) AS File, FileExtension FROM reviews WHERE PaperID = :paperID AND reviewerID = :userID")
                        .addParameter("paperID", paperID)
                        .addParameter("userID", userID)
                        .executeAndFetchFirst(Review.class);

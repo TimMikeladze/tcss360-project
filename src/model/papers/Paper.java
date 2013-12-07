@@ -1,11 +1,10 @@
+
 package model.papers;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import model.database.Database;
-import model.util.FileHandler;
 
 /**
  * This class holds all the information for a paper.
@@ -90,7 +89,7 @@ public class Paper {
     public static Paper paperFromID(final int paperID) {
         List<Paper> results = Database.getInstance()
                                       .createQuery(
-                                              "SELECT p.ConferenceID, p.ID AS PaperID, p.Title, p.Description, p.AuthorID, p.SubmissionDate, p.Status, p.Revised, p.FileExtension, p.File, p.RevisionDate, p.Recommended, CONCAT(u.Firstname, ' ', u.Lastname) AS Username FROM papers AS p JOIN users AS u ON u.ID = p.AuthorID WHERE p.ID = :paperID")
+                                              "SELECT p.ConferenceID, p.ID AS PaperID, p.Title, p.Description, p.AuthorID, p.SubmissionDate, p.Status, p.Revised, p.FileExtension, CONVERT(p.File USING utf8) AS File, p.RevisionDate, p.Recommended, CONCAT(u.Firstname, ' ', u.Lastname) AS Username FROM papers AS p JOIN users AS u ON u.ID = p.AuthorID WHERE p.ID = :paperID")
                                       .addParameter("paperID", paperID)
                                       .executeAndFetch(Paper.class);
         System.out.println("hehhehe" + results.get(0).authorID);
@@ -209,8 +208,6 @@ public class Paper {
         return revisionDate.toString()
                            .split("\\s+")[0].toString();
     }
-    
-    
     
     /**
      * Gets the conference name
