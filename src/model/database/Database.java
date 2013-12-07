@@ -1,30 +1,30 @@
 
 package model.database;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Properties;
 
 import org.sql2o.Sql2o;
 import org.sql2o.data.Table;
 
 /**
- * TODO Tim: Can you suppress all logging please?
- * This is a singleton class which provides static access to an instance of the database
- * connection.
+ * TODO Tim: Can you suppress all logging please? This is a singleton class which provides
+ * static access to an instance of the database connection.
  * 
  * @author Tim Mikeladze
  * @version 11-18-2013
  */
 public class Database {
     
-    /**
-     * The path of the databases configuration file.
-     */
-    private static final String CONFIG_PATH = "config.properties";
+    private static final String DATABASE = "conferences";
+    
+    private static final String PORT = "3306";
+    
+    private static final String USERNAME = "tcss360";
+    
+    private static final String HOST = "71.19.151.5";
+    
+    private static final String PASSWORD = "123456";
     
     /**
      * The database.
@@ -39,14 +39,18 @@ public class Database {
     /**
      * Checks if connected to the database.
      * 
-     * <dt><b>Precondition:</b><dd> none
-     * <dt><b>Postcondition:</b><dd> ensures The status of the connection to the database is returned.
+     * <dt><b>Precondition:</b>
+     * <dd>none
+     * <dt><b>Postcondition:</b>
+     * <dd>ensures The status of the connection to the database is returned.
+     * 
      * @return returns whether the database connection has been established
      */
     public static synchronized boolean isConnected() {
         boolean isConnected = false;
         try {
-            getInstance().getDataSource().getConnection();
+            getInstance().getDataSource()
+                         .getConnection();
             isConnected = true;
         }
         catch (SQLException exception) {
@@ -58,8 +62,11 @@ public class Database {
     /**
      * Gets the single instance of the database.
      * 
-     * <dt><b>Precondition:</b><dd> none
-     * <dt><b>Postcondition:</b><dd> ensures The instance of the database.
+     * <dt><b>Precondition:</b>
+     * <dd>none
+     * <dt><b>Postcondition:</b>
+     * <dd>ensures The instance of the database.
+     * 
      * @return the single instance of the database
      */
     public static synchronized Sql2o getInstance() {
@@ -76,8 +83,11 @@ public class Database {
      * Wrapper method to see if there are results.
      * 
      * 
-     * <dt><b>Precondition:</b><dd> requires (TODO Tim: What is this a list of?)
-     * <dt><b>Postcondition:</b><dd> ensures True if there are results, otherwise false.
+     * <dt><b>Precondition:</b>
+     * <dd>requires (TODO Tim: What is this a list of?)
+     * <dt><b>Postcondition:</b>
+     * <dd>ensures True if there are results, otherwise false.
+     * 
      * @param list the list to check
      * @return true if there are results
      */
@@ -93,8 +103,11 @@ public class Database {
     /**
      * Checks a table for results.
      * 
-     * <dt><b>Precondition:</b><dd> requires (TODO Tim: Table of what? The database table?)
-     * <dt><b>Postcondition:</b><dd> ensures True if there are results, otherwise false.
+     * <dt><b>Precondition:</b>
+     * <dd>requires (TODO Tim: Table of what? The database table?)
+     * <dt><b>Postcondition:</b>
+     * <dd>ensures True if there are results, otherwise false.
+     * 
      * @param table the table to check
      * @return true if there are results
      */
@@ -105,8 +118,10 @@ public class Database {
     /**
      * Starts the connection to the database.
      * 
-     * <dt><b>Precondition:</b><dd> none
-     * <dt><b>Postcondition:</b><dd> ensures A Connection to the database is made.
+     * <dt><b>Precondition:</b>
+     * <dd>none
+     * <dt><b>Postcondition:</b>
+     * <dd>ensures A Connection to the database is made.
      */
     private Database() {
         connect();
@@ -115,24 +130,12 @@ public class Database {
     /**
      * Connects to database using information from properties file.
      * 
-     * <dt><b>Precondition:</b><dd> none
-     * <dt><b>Postcondition:</b><dd> ensures A connection to the database is made using the properties file.
+     * <dt><b>Precondition:</b>
+     * <dd>none
+     * <dt><b>Postcondition:</b>
+     * <dd>ensures A connection to the database is made using the properties file.
      */
     private void connect() {
-        // Properties is a simple key value store
-        Properties properties = new Properties();
-        try {
-            // Loads properties file
-            properties.load(new FileInputStream(CONFIG_PATH));
-            sql = new Sql2o("jdbc:mysql://" + properties.getProperty("host") + ":" + properties.getProperty("port") + "/"
-                    + properties.getProperty("database") + "?zeroDateTimeBehavior=convertToNull", properties.getProperty("username"),
-                    properties.getProperty("password"));
-        }
-        catch (FileNotFoundException exception) {
-            exception.printStackTrace();
-        }
-        catch (IOException exception) {
-            exception.printStackTrace();
-        }
+        sql = new Sql2o("jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE + "?zeroDateTimeBehavior=convertToNull", USERNAME, PASSWORD);
     }
 }
