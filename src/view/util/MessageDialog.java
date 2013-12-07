@@ -5,7 +5,11 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
+/**
+ * Dialog that pops up with a message
+ * @author Srdjan
+ *
+ */
 public class MessageDialog extends Stage {
     
     private static final int DEFAULT_WIDTH = 100;

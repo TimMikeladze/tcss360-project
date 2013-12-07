@@ -4,7 +4,7 @@ package view.util;
 /**
  * Interface responsible for changing the center pane in the MainPane pane.
  *
- * @author Tim Mikeladze
+ * @author Srdjan S
  * @version 11-25-2013
  */
 public interface CenterPaneCallbacks {

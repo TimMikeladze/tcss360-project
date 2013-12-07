@@ -10,9 +10,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 /**
  * This is a generic table.
  * 
- * @author Tim Mikeladze
+ * @author Srdjan
  * @version 12-04-2013
- * @param <T>
+ * @param <T> the row in the table
  */
 public class CustomTable<T> extends TableView<T> {
     

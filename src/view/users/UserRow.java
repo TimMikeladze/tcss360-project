@@ -1,6 +1,11 @@
 
 package view.users;
-
+/**
+ * Wrapper class around user row data in the the table
+ * 
+ * @author Srdjan 
+ * @version 11-30-13
+ */
 public class UserRow {
     
     private int userID;

@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 /**
  * A utility class used to validating fields.
  * 
- * @author Tim Mikeladze
+ * @author Cathryn
  * @version 11-17-2013
  */
 public class Validator {

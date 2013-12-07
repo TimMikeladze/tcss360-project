@@ -5,7 +5,7 @@ package view.reviews;
 /**
  * Wrapper class around review row data in the the table
  * 
- * @author Tim Mikeladze
+ * @author Mohammad
  * @version 11-25-2013
  */
 public class ReviewRow {

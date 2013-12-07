@@ -24,7 +24,7 @@ import view.util.ProgressSpinnerService;
 
 /**
  * JavaFX pane responsible for displaying the users registered in the database.
- * 
+ * @author Srdjan
  * @version 11-23-2013
  */
 public class AddUserPane extends Stage implements EventHandler {

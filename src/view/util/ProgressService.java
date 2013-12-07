@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 /**
  * This abstract class is a service that shows a progress dialog while running.
  * 
- * @author Tim Mikeladze
+ * @author Srdjan
  * @version 11-17-2013
  */
 public abstract class ProgressService extends Service<String> {

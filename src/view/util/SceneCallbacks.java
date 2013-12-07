@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 /**
  * Handles JavaFX GUI scene Callbacks for changing the entire scene of the window.
  * 
- * @author Tim Mikeladze
+ * @author Mohammad
  * @version 11-16-2013
  */
 public interface SceneCallbacks {

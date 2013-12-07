@@ -44,7 +44,6 @@ import controller.user.LoggedUser;
  * TODO there are too many inner classes this is horrible design and can be fixed at some point.
  * 
  * @author Mohammad Juma
- * @author Tim Mikeladze
  * @version 11-23-2013
  */
 public class ReviewPane extends GenericPane<GridPane> implements EventHandler {

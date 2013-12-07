@@ -14,9 +14,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
- * This is a progress dialog, it shows a progress dialog which is updated via a service
+ * Dialog that pops up when progress is being made
  * 
- * @author Tim Mikeladze
+ * @author Srdjan
  * @version 11-17-2013
  */
 public class ProgressDialog extends Stage {

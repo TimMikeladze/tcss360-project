@@ -4,7 +4,10 @@ package view.util;
 import javafx.concurrent.Task;
 
 /**
- * The Interface ProgressSpinnerCallbacks.
+ * Call back on the progress spinner.
+ * 
+ * @author Srdjan
+ * @version 11-14-13
  */
 public interface ProgressSpinnerCallbacks {
     

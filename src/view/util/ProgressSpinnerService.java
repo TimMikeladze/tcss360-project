@@ -6,6 +6,8 @@ import javafx.concurrent.Task;
 
 /**
  * The ProgressSpinnerService class, manages a service and a progress spinner.
+ * @author Srdjan
+ * @version 11-14-13
  */
 public abstract class ProgressSpinnerService extends Service<String> {
     

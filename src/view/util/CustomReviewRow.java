@@ -1,5 +1,10 @@
 package view.util;
 
+/**
+ * Wrapper class around custom review row data (less data than review row) in the the table
+ * @author Cathryn C
+ * @version 11-29-13
+ */
 public class CustomReviewRow {
 	
 	private int id;

@@ -6,6 +6,9 @@ import javafx.scene.text.Text;
 
 /**
  * Custom Text element, used to display statuses.
+ * 
+ * @author Mohammad
+ * @version 11-20-13
  */
 public class StatusText extends Text {
     

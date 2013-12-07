@@ -6,7 +6,7 @@ import javafx.scene.layout.Pane;
 /**
  * A GenericPane for handling callbacks.
  * 
- * @author Tim Mikeladze
+ * @author Mohammad
  * @version 11-16-2013
  */
 public abstract class GenericPane<T extends Pane> {

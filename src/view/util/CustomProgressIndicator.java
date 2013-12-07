@@ -5,6 +5,8 @@ import javafx.scene.control.ProgressIndicator;
 
 /**
  * A custom progress indicator used throughout the program.
+ * @author Cathryn
+ * @version 12-01-13
  */
 public class CustomProgressIndicator extends ProgressIndicator {
     

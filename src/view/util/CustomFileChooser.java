@@ -14,6 +14,7 @@ import javafx.stage.Window;
 /**
  * File chooser that only allows specified file extensions.
  * @author Cathryn Castillo
+ * @version 12-01-13
  */
 public class CustomFileChooser {
     
