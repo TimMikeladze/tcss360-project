@@ -41,6 +41,13 @@ public class UploadPaperPane extends GenericPane<GridPane> implements EventHandl
     private CustomFileChooser fileChooser;
     private int conferenceID;
     
+    /**
+     * Constructs a paper to upload papers
+     * @param conferenceID 
+     * @param callbacks
+     * @param mainPaneCallbacks
+     * @param progressSpinnerCallbacks
+     */
     public UploadPaperPane(final int conferenceID, final SceneCallbacks callbacks, final CenterPaneCallbacks mainPaneCallbacks,
             final ProgressSpinnerCallbacks progressSpinnerCallbacks) {
         super(new GridPane());
@@ -59,11 +66,17 @@ public class UploadPaperPane extends GenericPane<GridPane> implements EventHandl
         create();
     }
     
+    /**
+     * Refreshes the pane
+     */
     @Override
     public GenericPane<GridPane> refresh() {
         return new UploadPaperPane(conferenceID, sceneCallback, centerPaneCallback, progressSpinnerCallback);
     }
     
+    /**
+     * Creates the pane with the necessary content
+     */
     private void create() {
         scenetitle = new Text("Upload paper");
         scenetitle.setId("header1");
@@ -97,6 +110,9 @@ public class UploadPaperPane extends GenericPane<GridPane> implements EventHandl
         uploadPaperButton.setOnAction(this);
     }
     
+    /**
+     * Event handler.
+     */
     @Override
     public void handle(final ActionEvent event) {
         if (event.getSource() == uploadPaperButton) {
@@ -104,6 +120,9 @@ public class UploadPaperPane extends GenericPane<GridPane> implements EventHandl
         }
     }
     
+    /**
+     * Uploads the paper provided by user
+     */
     private void uploadPaper() {
         String name = paperNameTextField.getText();
         String description = paperDescriptionTextField.getText();
@@ -111,7 +130,7 @@ public class UploadPaperPane extends GenericPane<GridPane> implements EventHandl
         File file = fileChooser.showOpenDialog(sceneCallback.getPrimaryStage());
         
         if (!Validator.isEmpty(name, description) && file != null) {
-            new CreatepaperService(progressSpinnerCallback, name, description, file).start();
+            new CreatePaperService(progressSpinnerCallback, name, description, file).start();
         }
         else if (file == null) {
             statusText.setErrorText("Missing file");
@@ -121,13 +140,16 @@ public class UploadPaperPane extends GenericPane<GridPane> implements EventHandl
         }
     }
     
-    private class CreatepaperService extends ProgressSpinnerService {
+    /**
+     * Service for creating the paper.
+     */
+    private class CreatePaperService extends ProgressSpinnerService {
         
         private String name;
         private String description;
         private File file;
         
-        public CreatepaperService(final ProgressSpinnerCallbacks progressSpinnerCallbacks, final String name, final String description,
+        public CreatePaperService(final ProgressSpinnerCallbacks progressSpinnerCallbacks, final String name, final String description,
                 final File file) {
             super(progressSpinnerCallbacks);
             this.name = name;

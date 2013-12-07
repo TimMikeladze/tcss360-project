@@ -38,6 +38,11 @@ public class ReviewRow {
         this.author = author;
     }
     
+    /**
+     * Constructs a row
+     * @param id of the review
+     * @param reviewName name of the review
+     */
     public ReviewRow(final int id, final String reviewName) {
         this.id = id;
         this.reviewName = reviewName;
@@ -78,6 +83,10 @@ public class ReviewRow {
         return author;
     }
     
+    /** 
+     * 
+     * @return the review name
+     */
     public String getReviewName() {
         return reviewName;
     }
