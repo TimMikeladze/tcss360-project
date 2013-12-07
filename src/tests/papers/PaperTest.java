@@ -152,17 +152,13 @@ public class PaperTest {
     @Test
     public void testIsRecommended() {
         assertEquals("Is recommended", paper.isRecommended(), false);
-        /* Branch is not working
+
         Database.getInstance()
             .createQuery("UPDATE papers SET Recommended = 1 WHERE ID = :paperID")
             .addParameter("paperID", paperID)
             .executeUpdate();
+        paper = Paper.paperFromID(paperID);
         assertEquals("Is recommended", paper.isRecommended(), true);
-        Database.getInstance()
-            .createQuery("UPDATE papers SET Recommended = 0 WHERE ID = :paperID")
-            .addParameter("paperID", paperID)
-            .executeUpdate();
-        */
     }
     
     /**
@@ -171,17 +167,12 @@ public class PaperTest {
     @Test
     public void testIsRecommendedString() {
         assertEquals("Is recommended", paper.isRecommendedString(), "No");
-        /* Branch not working
         Database.getInstance()
             .createQuery("UPDATE papers SET Recommended = 1 WHERE ID = :paperID")
             .addParameter("paperID", paperID)
             .executeUpdate();
-        assertEquals("Is recommended", paper.isRecommendedString(), Yes);
-        Database.getInstance()
-            .createQuery("UPDATE papers SET Recommended = 0 WHERE ID = :paperID")
-            .addParameter("paperID", paperID)
-            .executeUpdate();
-        */
+        paper = Paper.paperFromID(paperID);
+        assertEquals("Is recommended", paper.isRecommendedString(), "Yes");
     }
     
     /**
@@ -190,14 +181,18 @@ public class PaperTest {
     @Test
     public void testGetStatus() {
         assertEquals("Paper undecided", paper.getStatus(), PaperStatus.UNDECIDED);
-        // won't catch status
-        /*
         Database.getInstance()
             .createQuery("UPDATE papers SET Status = :paperStatus WHERE ID = :id")
             .addParameter("paperStatus", 1).addParameter("id", paperID)
             .executeUpdate();
+        paper = Paper.paperFromID(paperID);
+        assertEquals("Paper accepted", paper.getStatus(), PaperStatus.REJECTED);
+        Database.getInstance()
+            .createQuery("UPDATE papers SET Status = :paperStatus WHERE ID = :id")
+            .addParameter("paperStatus", 2).addParameter("id", paperID)
+            .executeUpdate();
+        paper = Paper.paperFromID(paperID);
         assertEquals("Paper accepted", paper.getStatus(), PaperStatus.ACCEPTED);
-        */
     }
     
     /**
@@ -206,13 +201,18 @@ public class PaperTest {
     @Test
     public void testIsAccepted() {
         assertEquals("Undecided", paper.isAccepted(), "Undecided");
-        /* branch not working
         Database.getInstance()
             .createQuery("UPDATE papers SET Status = 2 WHERE ID = :id")
             .addParameter("id", paperID)
             .executeUpdate();
+        paper = Paper.paperFromID(paperID);
         assertEquals("Undecided", paper.isAccepted(), "Yes");
-        */
+        Database.getInstance()
+            .createQuery("UPDATE papers SET Status = 1 WHERE ID = :id")
+            .addParameter("id", paperID)
+            .executeUpdate();
+        paper = Paper.paperFromID(paperID);
+        assertEquals("Undecided", paper.isAccepted(), "No");
     }
     
     /**

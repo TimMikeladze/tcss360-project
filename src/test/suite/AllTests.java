@@ -7,6 +7,7 @@ import tests.conferences.ConferencesTestSuite;
 import tests.database.DatabaseTestSuite;
 import tests.login.LoginTestSuite;
 import tests.papers.PapersTestSuite;
+import tests.permissions.PermissionsTestSuite;
 import tests.recommendations.RecommendationsTestSuite;
 import tests.reviews.ReviewsTestSuite;
 import tests.users.UsersTestSuite;
@@ -18,7 +19,7 @@ import tests.util.UtilTestSuite;
    UsersTestSuite.class,
    UtilTestSuite.class,
    RecommendationsTestSuite.class,
-   //PermissionsTestSuite.class,
+   PermissionsTestSuite.class,
    PapersTestSuite.class,
    LoginTestSuite.class,
    DatabaseTestSuite.class,

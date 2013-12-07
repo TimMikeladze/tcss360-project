@@ -209,16 +209,6 @@ public class Paper {
                            .split("\\s+")[0].toString();
     }
     
-    /**
-     * Gets the paper.
-     * 
-     * @return the paper
-     * @throws IOException Signals that an I/O exception has occurred.
-     */
-    public File getPaper() throws IOException {
-        return paper == null ? (paper = FileHandler.convertBytesToFile(file, fileExtension)) : paper;
-        
-    }
     
     /**
      * Gets the conference name
