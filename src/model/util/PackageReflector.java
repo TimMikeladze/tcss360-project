@@ -43,6 +43,14 @@ public class PackageReflector {
         return classes.toArray(new Class[classes.size()]);
     }
     
+    /**
+     * TODO Tim
+     * @param directory
+     * @param packageName
+     * @param ignore
+     * @return
+     * @throws ClassNotFoundException
+     */
     private static List<Class<?>> findClasses(final File directory, final String packageName,
             final String[] ignore) throws ClassNotFoundException {
         List<Class<?>> classes = new ArrayList<Class<?>>();

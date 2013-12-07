@@ -20,40 +20,43 @@ public class Permissions {
     
     /**
      * A map of the permissions.
+     * 
+     * <dt><b>Precondition:</b><dd> requires HashMap != null
+     * <dt><b>Postcondition:</b><dd> ensures A HashMap is returend
      */
     private static final HashMap<Class<?>, HashMap<String, PermissionMethod>> classMap = loadClassMap();
     
-    public static List<ConferencePermission> getPermissionsForConference(final int id, final int userID) {
-        return Database.getInstance()
-                       .createQuery("SELECT ConferenceID, UserID, PermissionID FROM conference_users WHERE ConferenceID = :id AND UserID = :userID")
-                       .addParameter("id", id)
-                       .addParameter("userID", userID)
-                       .executeAndFetch(ConferencePermission.class);
+    public static List<ConferencePermission> getPermissionsForConference(final int id,
+            final int userID) {
+        return Database
+                .getInstance()
+                .createQuery(
+                        "SELECT ConferenceID, UserID, PermissionID FROM conference_users WHERE ConferenceID = :id AND UserID = :userID")
+                .addParameter("id", id).addParameter("userID", userID)
+                .executeAndFetch(ConferencePermission.class);
     }
     
     /**
      * Does a permission check.
      * 
+     * <dt><b>Precondition:</b><dd> requires HashMap != null
+     * <dt><b>Postcondition:</b><dd> ensures A boolean is returned
      * @param className the class where the method is
      * @param method method trying to access
      * @param permission the permission required to access method
      * @return returns true if can access
      */
-    public static boolean hasPermission(final Class<?> className, final String method, final TreeSet<PermissionLevel> permissions) {
+    public static boolean hasPermission(final Class<?> className, final String method,
+            final TreeSet<PermissionLevel> permissions) {
         boolean hasPermission = false;
         
         HashMap<String, PermissionMethod> methods = classMap.get(className);
         if (methods != null && methods.containsKey(method)) {
-            int methodPermission = methods.get(method)
-                                          .getPermission()
-                                          .level();
-            boolean strict = methods.get(method)
-                                    .getPermission()
-                                    .strict();
+            int methodPermission = methods.get(method).getPermission().level();
+            boolean strict = methods.get(method).getPermission().strict();
             System.out.println("method permission " + methodPermission);
             if ((strict && permissions.contains(methodPermission))
-                    || (!permissions.isEmpty() && !strict && permissions.last()
-                                                                        .getPermission() >= methodPermission)) {
+                    || (!permissions.isEmpty() && !strict && permissions.last().getPermission() >= methodPermission)) {
                 hasPermission = true;
             }
         }
@@ -63,6 +66,8 @@ public class Permissions {
     /**
      * Loads all a map of classes and methods which contain the the Permission annotation.
      * 
+     * <dt><b>Precondition:</b><dd> requires HashMap !=null;
+     * <dt><b>Postcondition:</b><dd> ensures A HashMap is returned
      * @return A map of all the classes and methods which contain Permission annotation
      */
     private static HashMap<Class<?>, HashMap<String, PermissionMethod>> loadClassMap() {

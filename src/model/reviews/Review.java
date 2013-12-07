@@ -44,6 +44,14 @@ public class Review {
      */
     private File review;
     
+    /**
+     * review from id
+     * 
+     * <dt><b>Precondition:</b><dd> requires id > 0;
+     * <dt><b>Postcondition:</b><dd> ensures A review is returned
+     * @param id the id
+     * @return the review
+     */
     public static Review reviewFromID(final int id) {
         List<Review> results = Database
                 .getInstance()
@@ -56,6 +64,8 @@ public class Review {
     /**
      * Gets the paper id.
      * 
+     * <dt><b>Precondition:</b><dd> none
+     * <dt><b>Postcondition:</b><dd> ensures A paper id is returned
      * @return the paper id
      */
     public int getPaperID() {
@@ -65,6 +75,8 @@ public class Review {
     /**
      * Gets the id of the review.
      * 
+     * <dt><b>Precondition:</b><dd> none
+     * <dt><b>Postcondition:</b><dd> ensures An id is returned
      * @return the id of the review
      */
     public int getID() {
@@ -74,6 +86,8 @@ public class Review {
     /**
      * Gets the reviewers id.
      * 
+     * <dt><b>Precondition:</b><dd> none
+     * <dt><b>Postcondition:</b><dd> ensures A reviwers id is returned
      * @return the reviewers id
      */
     public int getReviewerID() {
@@ -83,6 +97,8 @@ public class Review {
     /**
      * Gets the file extension of the review.
      * 
+     * <dt><b>Precondition:</b><dd> none
+     * <dt><b>Postcondition:</b><dd> ensures A review is returned
      * @return the file extension of the review
      */
     public String getFileExtension() {
@@ -92,6 +108,8 @@ public class Review {
     /**
      * Gets the location of the review file.
      * 
+     * <dt><b>Precondition:</b><dd> none
+     * <dt><b>Postcondition:</b><dd> ensures A file is returned
      * @return the location of the review file
      */
     public String getFile() {

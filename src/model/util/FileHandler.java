@@ -14,6 +14,8 @@ public class FileHandler {
     /**
      * Converts a file to a String.
      * 
+     * <dt><b>Precondition:</b><dd> requires file != null;
+     * <dt><b>Postcondition:</b><dd> ensures A string is returned
      * @param f The file to convert
      * @return A String representation of the given file.
      * @throws IOException 
@@ -35,6 +37,8 @@ public class FileHandler {
     /**
      * Converts a String to a file.
      * 
+     * <dt><b>Precondition:</b><dd> requires bArray != null;
+     * <dt><b>Postcondition:</b><dd> ensures A file is returned
      * @param bArray The String to convert.
      * @param extension The file extension.
      * @return A file created from the given String.
@@ -56,6 +60,8 @@ public class FileHandler {
     /**
      * Finds and returns the file extension of the given file.
      * 
+     * <dt><b>Precondition:</b><dd> requires file != null
+     * <dt><b>Postcondition:</b><dd> ensures A string is returned
      * @param f The file to find the extension for.
      * @return The file extension of the given file.
      */

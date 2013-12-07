@@ -23,6 +23,8 @@ public @interface Permission {
     /**
      * Sets the permission level required to access a method
      * 
+     * <dt><b>Precondition:</b><dd> none
+     * <dt><b>Postcondition:</b><dd> ensures level is enforced
      * @return the permission level
      */
     int level() default 0;
@@ -31,6 +33,8 @@ public @interface Permission {
      * Sets whether the given permission level must be equal to the method's permission level or
      * be equal and greater than
      * 
+     * <dt><b>Precondition:</b><dd> none
+     * <dt><b>Postcondition:</b><dd> ensures strict is enfored
      * @return true, if successful
      */
     boolean strict() default false;

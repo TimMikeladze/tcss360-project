@@ -12,6 +12,10 @@ import model.database.Database;
  */
 public class UserManager {
     
+    /**
+     * TODO tim
+     * @return
+     */
     public static List<User> getUsers() {
         return Database
                 .getInstance()

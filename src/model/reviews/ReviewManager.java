@@ -25,6 +25,8 @@ public class ReviewManager {
     /**
      * Submits a review for a paper.
      * 
+     * <dt><b>Precondition:</b><dd> requires paperID > 0;
+     * <dt><b>Postcondition:</b><dd> ensures A review is submitted
      * @param paperID the paper id to submit to
      * @param reviewerID the reviewer's id
      * @param file the paper's file
@@ -53,6 +55,8 @@ public class ReviewManager {
     /**
      * Gets all reviews for a paper.
      * 
+     * <dt><b>Precondition:</b><dd> requires paperID > 0;
+     * <dt><b>Postcondition:</b><dd> ensures A list is returned
      * @param paperID the paper id
      * @return the reviews
      */
@@ -68,6 +72,8 @@ public class ReviewManager {
     /**
      * Gets the submitted reviews submitted by the reviewer for a paper
      * 
+     * <dt><b>Precondition:</b><dd> requires paperID > 0;
+     * <dt><b>Postcondition:</b><dd> ensures A review is returned
      * @param paperID the paper's id
      * @param userID the reviewer's id
      * @return the submitted reviews
@@ -85,6 +91,8 @@ public class ReviewManager {
     /**
      * is reviewed 
      * 
+     * <dt><b>Precondition:</b><dd> requires paperId > 0;
+     * <dt><b>Postcondition:</b><dd> ensures A boolean is returned
      * @param paperID paper id
      * @param userID user id
      * @return boolean

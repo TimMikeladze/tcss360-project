@@ -24,10 +24,12 @@ public class PermissionMethod {
     /**
      * Creates a new permission method with a method and a permission.
      * 
+     * <dt><b>Precondition:</b><dd> requires method != null
+     * <dt><b>Postcondition:</b><dd> ensures A PermissionMethod is created
      * @param method the method
      * @param permission the permission
      */
-    public PermissionMethod(Method method, Permission permission) {
+    public PermissionMethod(final Method method, final Permission permission) {
         this.method = method;
         this.permission = permission;
     }
@@ -35,6 +37,8 @@ public class PermissionMethod {
     /**
      * Gets the permission.
      * 
+     * <dt><b>Precondition:</b><dd> none
+     * <dt><b>Postcondition:</b><dd> ensures A permission is returned
      * @return the permission
      */
     public Permission getPermission() {
@@ -44,6 +48,8 @@ public class PermissionMethod {
     /**
      * Gets the method.
      * 
+     * <dt><b>Precondition:</b><dd> none
+     * <dt><b>Postcondition:</b><dd> ensures A method is returned
      * @return the method
      */
     public Method getMethod() {
@@ -53,6 +59,8 @@ public class PermissionMethod {
     /**
      * The PermissionMethods hashCode
      * 
+     * <dt><b>Precondition:</b><dd> none
+     * <dt><b>Postcondition:</b><dd> ensures A hashcode is returned
      * @return the hashCode
      */
     @Override
@@ -66,10 +74,12 @@ public class PermissionMethod {
     /**
      * Checks two PermissionMethods to see if they are equal
      * 
+     * <dt><b>Precondition:</b><dd> requires obj != null
+     * <dt><b>Postcondition:</b><dd> ensures A boolean is returned
      * @return true if equal otherwise false
      */
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj)
             return true;
         if (obj == null)
@@ -88,9 +98,12 @@ public class PermissionMethod {
     
     /**
      * The PermissionMethods toString
-     * 
+      * 
+     * <dt><b>Precondition:</b><dd> none
+     * <dt><b>Postcondition:</b><dd> ensures A tostring is returned
      * @return all relevant information about the PermissionMethod
      */
+    @Override
     public String toString() {
         return method.getName() + ", " + permission;
     }
