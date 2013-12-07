@@ -93,7 +93,6 @@ public class Paper {
                                               "SELECT p.ConferenceID, p.ID AS PaperID, p.Title, p.Description, p.AuthorID, p.SubmissionDate, p.Status, p.Revised, p.FileExtension, p.File, p.RevisionDate, p.Recommended, CONCAT(u.Firstname, ' ', u.Lastname) AS Username FROM papers AS p JOIN users AS u ON u.ID = p.AuthorID WHERE p.ID = :paperID")
                                       .addParameter("paperID", paperID)
                                       .executeAndFetch(Paper.class);
-        System.out.println("hehhehe" + results.get(0).authorID);
         return Database.hasResults(results) ? results.get(0) : null;
         
     }

@@ -45,15 +45,8 @@ public class FileHandler {
      */
    
     public static File convertBytesToFile(String bArray, String extension) throws IOException {
-    	
     	File f = File.createTempFile("temp", "." + extension);
 		byte[] bytes = bArray.getBytes();
-		
-		/*
-		System.out.println("LOLTEST:" + bArray);
-		String testing = new String(bytes);
-		System.out.println("LOLTEST:" + testing);
-		*/
 		
 		FileOutputStream fos = new FileOutputStream(f);
 		fos.write(bytes);
