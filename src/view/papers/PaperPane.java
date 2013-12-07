@@ -3,6 +3,7 @@ package view.papers;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
@@ -23,6 +24,7 @@ import model.permissions.PermissionLevel;
 import model.permissions.Permissions;
 import model.reviews.Review;
 import model.reviews.ReviewManager;
+import model.util.FileHandler;
 import view.conferences.AddUserCallback;
 import view.conferences.ConferenceUserRow;
 import view.reviews.ReviewRow;
@@ -361,8 +363,20 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
             File file = new File(saveLocation.getAbsoluteFile() + "."
                     + paper.getFileExtension());
             
+            
             try {
                 if (!file.exists()) {
+                	
+                	String content = paper.getFile();
+                	
+                	System.out.println(content);
+                	
+                    FileWriter fileWriter = new FileWriter(file);
+                    fileWriter.write(content);
+                    fileWriter.close();
+                	
+                	
+                	/*
                     file.createNewFile();
                     FileOutputStream fop = new FileOutputStream(file);
                     
@@ -372,6 +386,7 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
                     fop.write(contentInBytes);
                     fop.flush();
                     fop.close();
+                    */
                 }
             }
             catch (IOException e) {

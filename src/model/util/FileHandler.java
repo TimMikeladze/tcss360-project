@@ -18,6 +18,8 @@ public class FileHandler {
      * @return A String representation of the given file.
      * @throws IOException 
      */
+	
+	
     public static String convertFileToBytes(File f) throws IOException {
         FileInputStream fis = null;
         byte[] byteArray = new byte[(int) f.length()];
@@ -41,10 +43,17 @@ public class FileHandler {
      * @return A file created from the given String.
      * @throws IOException 
      */
+   
     public static File convertBytesToFile(String bArray, String extension) throws IOException {
     	
-    	File f = File.createTempFile("output", "." + extension);
+    	File f = File.createTempFile("temp", "." + extension);
 		byte[] bytes = bArray.getBytes();
+		
+		/*
+		System.out.println("LOLTEST:" + bArray);
+		String testing = new String(bytes);
+		System.out.println("LOLTEST:" + testing);
+		*/
 		
 		FileOutputStream fos = new FileOutputStream(f);
 		fos.write(bytes);
