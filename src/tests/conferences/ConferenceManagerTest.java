@@ -296,14 +296,14 @@ public class ConferenceManagerTest {
         boolean test = false;
         int x = 0;
         for (int i = list.size() - 1; i >= 0; i--) {
-            if (list.get(i).getId() == id) {
+            if (list.get(i).getID() == id) {
                 x = i;
                 test = true;
                 break;
             }
         }
         if (test) {
-            assertEquals("The conference is in the list", list.get(x).getId(), id);
+            assertEquals("The conference is in the list", list.get(x).getID(), id);
         }
         else {
             fail("The id was not found");
@@ -316,7 +316,7 @@ public class ConferenceManagerTest {
     @Test
     public void testGetConferencesForUser() {
         List<Conference> list = ConferenceManager.getConferencesForUser(userID);
-        assertEquals("The conference is in the list", list.get(0).getId(), id);
+        assertEquals("The conference is in the list", list.get(0).getID(), id);
     }
     
     /**

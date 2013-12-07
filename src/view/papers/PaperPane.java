@@ -305,7 +305,7 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
         }
         if (listOfReviewers != null) {
             for (ConferenceUser user : listOfReviewers) {
-                reviewersTable.add(new ConferenceUserRow(user.getUserID(), user.getFullName(),
+                reviewersTable.add(new ConferenceUserRow(user.getUserID(), user.getUsername(),
                         user.getRole()));
             }
             reviewersTable.updateItems();

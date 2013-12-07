@@ -136,7 +136,7 @@ public class ConferenceUserTest {
      */
     @Test
     public void testGetUserName() {
-        assertEquals("Not the same user", user.getFullName(), "Jon Snow");
+        assertEquals("Not the same user", user.getUsername(), "Jon Snow");
     }
     
     /**

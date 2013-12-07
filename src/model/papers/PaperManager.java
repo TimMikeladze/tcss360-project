@@ -317,7 +317,7 @@ public class PaperManager {
                         "SELECT CONCAT(u.Firstname, ' ', u.Lastname) AS Username FROM assigned_papers AS a JOIN users AS u ON a.UserID = u.ID WHERE a.PermissionID = 300 AND a.PaperID = :paperID")
                 .addParameter("paperID", paperID).executeAndFetch(ConferenceUser.class);
         if (result != null && result.size() > 0) {
-            return result.get(0).getFullName();
+            return result.get(0).getUsername();
         }
         return "";
         

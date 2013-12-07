@@ -17,7 +17,7 @@ public class ConferenceUser {
     /**
      * The id of the Conference.
      */
-    private int conferenceID;
+    private int id;
     
     /**
      * The Conference Users id.
@@ -27,7 +27,7 @@ public class ConferenceUser {
     /**
      * The Conference Users full name.
      */
-    private String fullName;
+    private String username;
     
     /**
      * The Conference Users permission id.
@@ -47,7 +47,7 @@ public class ConferenceUser {
     /**
      * The number of Papers the Conference User is a Subprogram Chair of.
      */
-    private int assignedAsSubProgramChairCount;
+    private int assignedAsSubProgramChair;
     
     /**
      * Create a Conference User object given the Conference id and user id.
@@ -81,7 +81,7 @@ public class ConferenceUser {
      * @return he Conferences id
      */
     public int getConferenceID() {
-        return conferenceID;
+        return id;
     }
     
     /**
@@ -120,8 +120,8 @@ public class ConferenceUser {
      * <dt><b>Postcondition:</b><dd> ensures The Conferences Users full name is returned.
      * @return the Conference Users full name.
      */
-    public String getFullName() {
-        return fullName;
+    public String getUsername() {
+        return username;
     }
     
     /**
@@ -154,6 +154,6 @@ public class ConferenceUser {
      * @return the number of Papers the Conference User is assigned to as a Subprogram Chair
      */
     public int getAssignedAsSubProgramChair() {
-        return assignedAsSubProgramChairCount;
+        return assignedAsSubProgramChair;
     }
 }

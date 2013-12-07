@@ -17,22 +17,22 @@ public class Conference implements Comparable<Conference> {
     /**
      * The id of the Conference.
      */
-    private int conferenceId;
+    private int id;
     
     /**
      * The name of the conference.
      */
-    private String conferenceName;
+    private String name;
     
     /**
      * The location of the conference.
      */
-    private String conferenceLocation;
+    private String location;
     
     /**
      * The date of the conference.
      */
-    private Timestamp conferenceDate;
+    private Timestamp date;
     
     /**
      * The id of the conferences Program Chair.
@@ -42,17 +42,17 @@ public class Conference implements Comparable<Conference> {
     /**
      * The name of the conferences Program Chair.
      */
-    private String programChairName;
+    private String programChair;
     
     /**
      * The number of authors in the conference.
      */
-    private int numberOfAuthors;
+    private int authors;
     
     /**
      * The number of reviewers in the conference.
      */
-    private int numberOfReviewers;
+    private int reviewers;
     
     /**
      * Create a conference object given an id.
@@ -88,7 +88,7 @@ public class Conference implements Comparable<Conference> {
      * @return the Program Chairs name
      */
     public String getProgramChair() {
-        return programChairName;
+        return programChair;
     }
     
     /**
@@ -98,8 +98,8 @@ public class Conference implements Comparable<Conference> {
      * <dt><b>Postcondition:</b><dd> ensures The id of the Conference is returned.
      * @return the Conferences Id
      */
-    public int getId() {
-        return conferenceId;
+    public int getID() {
+        return id;
     }
     
     /**
@@ -110,7 +110,7 @@ public class Conference implements Comparable<Conference> {
      * @return the Conferences name
      */
     public String getName() {
-        return conferenceName;
+        return name;
     }
     
     /**
@@ -121,7 +121,7 @@ public class Conference implements Comparable<Conference> {
      * @return the Conferences location
      */
     public String getLocation() {
-        return conferenceLocation;
+        return location;
     }
     
     /**
@@ -132,7 +132,7 @@ public class Conference implements Comparable<Conference> {
      * @return the Conferences date
      */
     public String getDate() {
-        return conferenceDate.toString().split("\\s+")[0].toString();
+        return date.toString().split("\\s+")[0].toString();
     }
     
     /**
@@ -153,8 +153,8 @@ public class Conference implements Comparable<Conference> {
      * <dt><b>Postcondition:</b><dd> ensures The number of authors of the Conference is returned.
      * @return the number of authors in the Conference
      */
-    public int getNumberOfAuthors() {
-        return numberOfAuthors;
+    public int getAuthors() {
+        return authors;
     }
     
     /**
@@ -164,8 +164,8 @@ public class Conference implements Comparable<Conference> {
      * <dt><b>Postcondition:</b><dd> ensures The number of reviewers of the Conference is returned.
      * @return the number of reviewers in the Conference
      */
-    public int getNumberOfReviewers() {
-        return numberOfReviewers;
+    public int getReviewers() {
+        return reviewers;
     }
     
     /**
@@ -179,7 +179,7 @@ public class Conference implements Comparable<Conference> {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + conferenceId;
+        result = prime * result + id;
         return result;
     }
     
@@ -203,7 +203,7 @@ public class Conference implements Comparable<Conference> {
             return false;
         }
         Conference other = (Conference) object;
-        if (conferenceId != other.conferenceId) {
+        if (id != other.id) {
             return false;
         }
         return true;
@@ -219,6 +219,6 @@ public class Conference implements Comparable<Conference> {
      */
     @Override
     public int compareTo(final Conference conference) {
-        return conferenceId - conference.conferenceId;
+        return id - conference.id;
     }
 }
