@@ -162,8 +162,14 @@ public class PaperManager {
      * @param permission the user's permission level
      * @throws DatabaseException
      */
+<<<<<<< HEAD
+    @Permission(level = 100)
+    public static void assignPaper(final int paperID, final int userID,
+            final PermissionLevel permission) throws DatabaseException {
+=======
     @Permission(level = 300)
     public static void assignPaper(final int paperID, final int userID, final PermissionLevel permission) throws DatabaseException {
+>>>>>>> 401bbde1bb39d24cf38aaf703e7351a87b3490dc
         if (getPaperAuthorID(paperID) != userID) {
             Database.getInstance()
                     .createQuery("INSERT IGNORE INTO assigned_papers (PaperID, UserID, PermissionID) VALUES (:paperID, :userID, :permissionID)")

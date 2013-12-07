@@ -28,6 +28,7 @@ import model.util.FileHandler;
 import view.conferences.AddUserCallback;
 import view.conferences.ConferenceUserRow;
 import view.reviews.ReviewRow;
+import view.users.AssignUserPane;
 import view.users.UserPane;
 import view.util.CenterPaneCallbacks;
 import view.util.CustomFileChooser;
@@ -285,7 +286,8 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
             bottomBox.getChildren().add(submitReviewButton);
         }
         
-        if (Permissions.hasPermission(ReviewManager.class, "assignPaper", LoggedUser
+        System.out.println("permissions test " + LoggedUser.getInstance().getPermissions());
+        if (Permissions.hasPermission(PaperManager.class, "assignPaper", LoggedUser
                 .getInstance().getPermissions())) {
             bottomBox.getChildren().add(assignReviewer);
         }
@@ -337,7 +339,8 @@ public class PaperPane extends GenericPane<GridPane> implements EventHandler, Ad
         else if (source == assignReviewer) {
             new AddReviewersPane(paper.getConferenceID(), sceneCallback.getPrimaryStage(),
                     progressSpinnerCallback, this).showDialog();
-            // TODO new UsersPane(callbacks.getPrimaryStage(), progressSpinnerCallbacks, paper.getConferenceID(), PermissionLevel.REVIEWER).showDialog();
+            new AssignUserPane(sceneCallback.getPrimaryStage(), progressSpinnerCallback,
+                    paper.getConferenceID(), PermissionLevel.REVIEWER).showDialog();
         }
         else if (source == submitReviewButton) {
             final File file = fileChooser.showOpenDialog(sceneCallback.getPrimaryStage());

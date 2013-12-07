@@ -1,0 +1,211 @@
+/* contains JavaFX styling for all of GUI */
+/* @author: Cathryn Castillo */
+
+
+/* main class */
+.root {
+    -fx-background-image: url("pink.jpg"); 
+	-fx-color: #f0f8ff;
+}
+
+.button {
+	-fx-text-fill: black;
+    -fx-background-color: linear-gradient(#ffffff, #d3d3d3);
+}
+
+/* hover state of buttons */
+.button:hover {
+    -fx-background-color: linear-gradient(#d3d3d3, #ffffff);
+	-fx-text-fill: darkred;
+}
+
+/* regular text */
+.label, #dialogtext {
+	-fx-text-fill: bisque;
+	-fx-font-weight: bold;
+	-fx-font-size: 12px;
+}
+
+/* conference pane regular text */
+#conf-text {
+    -fx-fill: bisque; 
+}
+
+/* header text */
+#header1, #header2 {
+	-fx-fill: snow;
+	-fx-font-family: Tahoma;
+	-fx-font-weight: bold;
+	-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.6), 0, 1.0, -1.0, 1.0);  
+}
+
+/* h1 - bigger, should only be one in a pane */
+#header1 {
+	-fx-font-size: 24px;
+}
+
+/* h2 - second biggest, may be multiple in a pane */
+#header2 {
+	-fx-font-size: 20px;
+}
+
+
+/* --------------------------------- TABLES ------------------------------------ */
+.table-view, .table-view:empty { 
+    -fx-color: darkred;
+    -fx-cell-hover-color: gainsboro;
+    -fx-selection-bar-text: black;
+}
+
+/* attribute headers in table view */
+.table-view .column-header, .table-view:empty .column-header {
+	-fx-border-width: 0;
+    -fx-border-color: darkred; 
+}
+
+/* attribute text of headers */
+.table-view .column-header .label {
+	-fx-font-size: 13px;
+	-fx-font-weight: normal;
+	-fx-text-fill: white;
+}
+
+/* entire table */
+.table-view {
+	-fx-font-size: 13px;
+ 	-fx-base: darkred;
+ 	-fx-control-inner-background: white;
+ 	-fx-background-color: transparent;
+ 	-fx-focus-color: gold;
+}
+
+/* selected table + row */
+.table-view:focused .table-row-cell:filled:focused:selected {
+	-fx-background-color: khaki;
+	-fx-border-width: 1;
+    -fx-border-color: goldenrod; 
+}
+
+
+/* --------------------------------- CALENDAR ------------------------------------ */
+/* Calendar code based off of http://myjavafx.blogspot.com/2012/01/javafx-calendar-control.html */ 
+
+/* main calendar pane */
+.calendar {
+	-fx-base: white;
+	-fx-accent: gold;
+	-fx-text-fill: black;
+	-fx-tooltip-visible: false;
+}
+
+/* Will style text uncovered by this code */
+.calendar .label {
+	-fx-text-fill: white;
+}
+
+.calendar-header {
+    -fx-background-color: darkred;
+    -fx-text-fill: black;
+    -fx-padding: 0.5em;
+}
+
+.calendar-footer {
+    -fx-background-color: darkred;
+    -fx-text-fill: black;
+    -fx-padding: 0.2em;
+}
+
+/* main content area of month/year/decades. 
+	changed when you click top-center button of calendar */
+.calendar-month-view, .calendar-year-view, .calendar-decades-view {
+    -fx-background-color: white;
+    -fx-padding: 0;
+}
+
+/* top-center button, by default displays the day of the current month,
+	 or the month in the year view, or the year in the decades view */
+.calendar-cell-current-month, .calendar-year-button, .calendar-month-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0, 0, 0, 0;
+    -fx-cursor: hand;
+    -fx-padding: 0.7em;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+}
+
+/* hover state of the buttons in the calendar body */
+.calendar-cell-current-month:hover, .calendar-year-button:hover, .calendar-month-button:hover {
+    -fx-background-color: gainsboro;
+    -fx-text-fill: black;
+    -fx-fill: black;
+}
+
+/* day buttons for the previous and next month */
+.calendar-cell-other-month {
+    -fx-background-color: null;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0, 0, 0, 0;
+    -fx-opacity: 0.7;
+    -fx-cursor: hand;
+    -fx-padding: 0.7em;
+    -fx-background-radius: 8;
+}
+
+/* hover state of the day-buttons in the next/previous months */
+.calendar-cell-other-month:hover {
+    -fx-background-color: gainsboro;
+    -fx-text-fill: black;
+}
+
+/* today's day button */
+.calendar-cell-today {
+     -fx-background-color: khaki;
+}
+
+/* header, footer buttons */
+.calendar-navigation-button, .calendar-navigation-title, .calendar-today-button {
+    -fx-background-color: darkred;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+    -fx-text-fill: bisque;
+}
+
+/* hover state of header, footer buttons */
+.calendar-navigation-button:hover, .calendar-navigation-title:hover, .calendar-today-button:hover {
+    -fx-background-color: darkred;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-accent;
+}
+ 		
+/* don't make the title button transparent, when it is disabled in the decades view */
+.calendar-navigation-title:disabled {
+    -fx-opacity: 1;
+}
+
+/* arrow for navigation */
+.calendar-navigation-arrow {
+    /* padding determines the size of the arrow */
+    -fx-padding: 4 3.5 4 3.5;
+    -fx-padding: 0.333333em 0.333333em 0.333333em 0.333333em; /* 2 3.5 2 3.5 */
+    -fx-shape: "M 100 100 L 300 100 L 200 300 z";
+    -fx-background-color: bisque;
+}
+
+/* color of the navigation arrow */
+.calendar-navigation-arrow:hover {
+ 	-fx-background-color: -fx-accent;
+}
+ 
+/* below the header, contains the weekday column names */
+.calendar-weekdays {
+    -fx-background-color: indianred;
+    -fx-padding: 3px;
+}
+
+/* post-it displaying string date, appears when hovering on days */
+.tooltip .label {
+	-fx-text-fill: black;
+	-fx-fill: black;
+}
