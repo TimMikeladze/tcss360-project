@@ -190,9 +190,9 @@ public class Paper {
     }
     
     /**
-     * Returns the papers file location.
+     * Returns the content of the file.
      * 
-     * @return the papers file location
+     * @return the content of the file.
      */
     public String getFile() {
         return file;

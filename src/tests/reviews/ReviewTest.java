@@ -3,9 +3,11 @@ package tests.reviews;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.IOException;
 
 import model.database.Database;
 import model.reviews.Review;
+import model.util.FileHandler;
 
 import org.junit.After;
 import org.junit.Before;
@@ -25,16 +27,17 @@ public class ReviewTest {
     
     /**
      * Sets up the class for testing
+     * @throws IOException 
      */
     @Before
-    public void setUp() {
+    public void setUp() throws IOException {
         reviewID = Database.getInstance()
             .createQuery(
                     "INSERT INTO reviews (PaperID, ReviewerID, File, FileExtension) VALUES (:paperID, :reviewerID, :file, :fileExtension)")
             .addParameter("paperID", 15000)
             .addParameter("reviewerID", 25000)
-            .addParameter("file", new File("tests/paper.txt"))
-            .addParameter("fileExtension", "/path.txt")
+            .addParameter("file", FileHandler.convertFileToBytes(new File("tests/paper.txt")))
+            .addParameter("fileExtension", "txt")
             .executeUpdate()
             .getKey(Integer.class);
     }

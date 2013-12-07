@@ -3,12 +3,14 @@ package tests.papers;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 
 import model.database.Database;
 import model.papers.Paper;
 import model.papers.PaperStatus;
 import model.permissions.PermissionLevel;
+import model.util.FileHandler;
 
 import org.junit.After;
 import org.junit.Before;
@@ -59,9 +61,10 @@ public class PaperTest {
     
     /**
      * Sets up the class
+     * @throws IOException 
      */
     @Before
-    public void setUp() {
+    public void setUp() throws IOException {
         firstName = "Jon";
         lastName = "Snow";
         email = "youknownothingjonsnow@gmail.com";
@@ -97,8 +100,8 @@ public class PaperTest {
                 .addParameter("authorID", userID1)
                 .addParameter("title", "The title")
                 .addParameter("description", "the description")
-                .addParameter("file", new File("tests/paper.txt"))
-                .addParameter("fileExtension", "/path.txt")
+                .addParameter("file", FileHandler.convertFileToBytes(new File("tests/paper.txt")))
+                .addParameter("fileExtension", "txt")
                 .executeUpdate()
                 .getKey(Integer.class);
         paper = Paper.paperFromID(paperID);
@@ -125,7 +128,7 @@ public class PaperTest {
         assertEquals("Getter not correct", paper.getDescription(), "the description");
         assertTrue("Getter not correct", paper.getFile() != null);
         assertTrue("Getter not correct", paper.getUsername() != null);
-        assertEquals("Getter not correct", paper.getFileExtension(), "/path.txt");
+        assertEquals("Getter not correct", paper.getFileExtension(), "txt");
         assertEquals("Getter not correct", paper.getRevised(), 0);
         assertEquals("Submission Date", paper.getSubmissionDate(), paper.getRevisionDate());
         assertNull(paper.getSubprogramChair());
