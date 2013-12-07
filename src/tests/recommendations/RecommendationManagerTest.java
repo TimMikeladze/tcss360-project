@@ -62,6 +62,16 @@ public class RecommendationManagerTest {
             assertEquals("Get Recommendation is not there", e.getLocalizedMessage(), "A recommendation hasn't been submitted for this paper");
         }
 	}
+	
+	/**
+     * Tests the getRecommendation method
+     */
+    @Test
+    public void testGetRecommendations() {
+            assertTrue("Is recommended", RecommendationManager.getRecommendations(0) != null);
+
+    }
+    
 	/**
 	 * Cleans up the tests.
 	 */

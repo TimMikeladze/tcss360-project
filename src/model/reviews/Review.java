@@ -95,16 +95,4 @@ public class Review {
     public String getFile() {
         return file;
     }
-    
-    /**
-     * Gets the review.
-     * 
-     * @return the review
-     * @throws IOException Signals that an I/O exception has occurred.
-     */
-    
-    public File getReview() throws IOException {
-        return review == null ? (review = FileHandler.convertBytesToFile(file, fileExtension)) : review;
-    }
-    
 }
