@@ -19,8 +19,7 @@ import org.junit.Test;
 /**
  * Tests the Login class.
  * 
- * @author Srdjan Stojcic
- * @author Jordan Matthews	
+ * @author Srdjan Stojcic	
  * @version 11.23.13
  */
 

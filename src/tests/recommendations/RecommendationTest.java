@@ -9,7 +9,7 @@ import org.junit.Test;
 /**
  * Tests the Recommendation class from model.recommendations
  * 
- * @author Jordan Matthews
+ * @author Cathryn Castillo
  * @version December 6, 2013
  */
 public class RecommendationTest {

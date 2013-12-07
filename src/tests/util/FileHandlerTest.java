@@ -14,6 +14,7 @@ import org.junit.Test;
 /**
  * Tests the FileHandler class from model.util
  * 
+ * @author Mohammad Juma
  * @version December 5, 2013
  */
 public class FileHandlerTest {

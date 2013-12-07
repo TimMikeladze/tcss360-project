@@ -18,7 +18,7 @@ import org.junit.Test;
 /**
  * Tests the ReviewManager Class from model.reviews
  * 
- * @author Jordan Matthews
+ * @author Tim Mikeladze
  * @version December 5, 2013
  */
 public class ReviewManagerTest {

@@ -18,7 +18,7 @@ import org.junit.Test;
 /**
  * Tests the Paper class from model.papers
  * 
- * @author Jordan Matthews
+ * @author Mohammad Juma
  * @version December 5, 2013
  */
 public class PaperTest {

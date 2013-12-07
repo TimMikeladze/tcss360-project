@@ -11,7 +11,7 @@ import org.junit.runners.Suite;
 /**
  * Suite of Tests for the model.reviews Package
  * 
- * @author Jordan Matthews
+ * @author Tim Mikeladze
  * @version December 4, 2013
  */
 public class ReviewsTestSuite {

@@ -16,7 +16,7 @@ import org.junit.Test;
 /**
  * Tests for the Conference class in the model.conferences package
  * 
- * @author Jordan Matthews
+ * @author Tim Mikeladze
  * @version December 3, 2013
  */
 public class ConferenceTest {

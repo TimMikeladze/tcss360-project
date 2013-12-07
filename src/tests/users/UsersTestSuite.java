@@ -11,7 +11,7 @@ import org.junit.runners.Suite;
 /**
  * Suite of Tests for the model.users Package
  * 
- * @author Jordan Matthews
+ * @author Mohammad Juma
  * @version December 4, 2013
  */
 public class UsersTestSuite {

@@ -17,7 +17,7 @@ import org.junit.Test;
 /**
  * Tests the ConferenceUser class from model.conferences
  * 
- * @author Jordan Matthews
+ * @author Tim Mikeladze
  * @version December 4, 2013
  *
  */

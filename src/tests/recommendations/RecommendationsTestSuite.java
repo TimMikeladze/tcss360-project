@@ -11,7 +11,7 @@ import org.junit.runners.Suite;
 /**
  * Suite of Tests for the model.recommendations Package
  * 
- * @author Jordan Matthews
+ * @author Cathryn Castillo
  * @version December 4, 2013
  */
 public class RecommendationsTestSuite {

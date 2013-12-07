@@ -9,7 +9,7 @@ import org.junit.Test;
 /**
  * Tests the Errors class from models.database
  * 
- * @author Jordan Matthews
+ * @author Cathryn Castillo
  * @version December 5, 2013
  */
 public class ErrorsTest {

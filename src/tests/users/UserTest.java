@@ -12,7 +12,7 @@ import org.junit.Test;
 /**
  * Tests the Conference Manager Class from tests.conferences
  * 
- * @author Jordan Matthews
+ * @author Mohammad Juma
  * @version December 5, 2013
  */
 public class UserTest {

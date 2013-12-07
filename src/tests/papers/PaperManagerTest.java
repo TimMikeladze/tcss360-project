@@ -22,7 +22,6 @@ import org.junit.Test;
 /**
  * Tests the PaperManager Class from models.papers
  *
- * @author Jordan Matthews
  * @author Srdjan Stojcic
  */
 public class PaperManagerTest {

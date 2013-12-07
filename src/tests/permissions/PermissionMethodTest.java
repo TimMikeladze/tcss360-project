@@ -16,7 +16,7 @@ import org.junit.Test;
 /**
  * Tests the PermissionMethod class from model.permissions
  * 
- * @author Jordan Matthews
+ * @author Srdjan Stojcic
  * @version December 5, 2013
  */
 public class PermissionMethodTest {

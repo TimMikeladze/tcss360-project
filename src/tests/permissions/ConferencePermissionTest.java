@@ -9,7 +9,7 @@ import org.junit.Test;
 /**
  * Tests the ConferencePermissions class from model.permissions
  * 
- * @author Jordan Matthews
+ * @author Tim Mikeladze
  * @version December 5, 2013
  */
 public class ConferencePermissionTest {
