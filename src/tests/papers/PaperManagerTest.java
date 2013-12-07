@@ -22,7 +22,8 @@ import org.junit.Test;
 /**
  * Tests the PaperManager Class from models.papers
  *
- * @author Srdjan Stojcic
+ * @author Jordan Matthews
+ * @author Cathryn Castillo (did testGetAuthorID)
  */
 public class PaperManagerTest {
     /**
@@ -197,7 +198,6 @@ public class PaperManagerTest {
      * Test the method assignPaperToSubprogramChair() & getAssignedPapersForSubprogramChair()
      * from PaperManager
      */
-    /*
     @Test
     public void testAssignPaperToSubprogramChair() {
         try {
@@ -212,7 +212,7 @@ public class PaperManagerTest {
         }
 
     }
-    */
+    
     /**
      * Tests the getPaperAuthorID method.
      */

@@ -18,6 +18,8 @@ import org.junit.Test;
  * Tests the RecommendationManager class from model.recommendations
  * 
  * @author Cathryn Castillo
+ * @author Tim Mikeladze (did testSubmitRecommendation)
+ * @author Mohammad Jume (did testGetRecommendation)
  * @version 11.26.2013
  *
  */

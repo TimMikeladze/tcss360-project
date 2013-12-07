@@ -25,7 +25,10 @@ import org.sql2o.data.Table;
 /**
  * Tests the Conference Manager Class from tests.conferences
  * 
- * @author Jordan Matthews
+ * @author Cathryn Castillo
+ * @author Tim Mikeladze (did testCreateConference)
+ * @author Mohammad Juma (did testRemoveUserFromConference)
+ * 
  * @version November 29, 2013
  */
 
