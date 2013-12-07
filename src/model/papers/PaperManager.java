@@ -30,13 +30,21 @@ public class PaperManager {
      */
     private static final int MAX_PAPER_SUBMISSIONS = 4;
     
+    /**
+     * Max review assignments
+     */
     private static final int MAX_REVIEW_ASSIGNMENTS = 4;
     
+    /**
+     * Max subprogram chairs
+     */
     private static final int MAX_SUB_PROGRAM_CHAIR_ASSIGNMENTS = 4;
     
     /**
      * Submits a paper to the conference.
      * 
+     * <dt><b>Precondition:</b><dd> requires conference ID >0;
+     * <dt><b>Postcondition:</b><dd> ensures A paper is submitted
      * @param conferenceID the conference id to submit to
      * @param authorID the author's id
      * @param title the paper title
@@ -81,6 +89,8 @@ public class PaperManager {
     /**
      * Removes the paper.
      * 
+     * <dt><b>Precondition:</b><dd> requires paper id > 0;
+     * <dt><b>Postcondition:</b><dd> ensures A paper is removed
      * @param paperID the paper's id
      */
     @Permission(level = 100, strict = true)
@@ -94,6 +104,8 @@ public class PaperManager {
     /**
      * Gets all the papers that were assigned to a Subprogram Chair in a conference.
      * 
+     * <dt><b>Precondition:</b><dd> requires conference id > 0
+     * <dt><b>Postcondition:</b><dd> ensures A paper is returned
      * @param conferenceID the conference id
      * @param userID he user id of the Subprogram Chair
      * @return list of papers
@@ -107,6 +119,8 @@ public class PaperManager {
     /**
      * Gets all the papers that were assigned to a reviewer in a conference.
      * 
+     * <dt><b>Precondition:</b><dd> requires conference id > 0
+     * <dt><b>Postcondition:</b><dd> ensures A paper is returned
      * @param conferenceID the conference id
      * @param userID The user id of the reviewer
      * @param permission the permission
@@ -121,6 +135,8 @@ public class PaperManager {
     /**
      * Gets the assigned papers for a user
      * 
+     * <dt><b>Precondition:</b><dd> requires conference id > 0
+     * <dt><b>Postcondition:</b><dd> ensures A paper is returned
      * @param conferenceID the conference id
      * @param userID the user id
      * @param permission the permission
@@ -137,6 +153,14 @@ public class PaperManager {
                 .executeAndFetch(Paper.class);
     }
     
+    /**
+     * get assigned papers
+     * 
+     * <dt><b>Precondition:</b><dd> requires user id > 0
+     * <dt><b>Postcondition:</b><dd> ensures A paper is returned
+     * @param userID
+     * @return list
+     */
     public static List<Paper> getAssignedPapersForUser(final int userID) {
         return Database
                 .getInstance()
@@ -158,6 +182,8 @@ public class PaperManager {
     /**
      * Assign paper to a user.
      * 
+     * <dt><b>Precondition:</b><dd> requires paper id > 0
+     * <dt><b>Postcondition:</b><dd> ensures A paper is returned
      * @param paperID the paper id
      * @param userID the user id
      * @param permission the user's permission level
@@ -181,6 +207,8 @@ public class PaperManager {
     /**
      * Returns paper author ID.
      * 
+     * <dt><b>Precondition:</b><dd> requires paper id > 0
+     * <dt><b>Postcondition:</b><dd> ensures A paper is returned
      * @param paperID The paper's ID
      * @return Given paper's author ID
      * @throws DatabaseException
@@ -200,6 +228,8 @@ public class PaperManager {
     /**
      * Changes the status of a paper to accepted.
      * 
+     * <dt><b>Precondition:</b><dd> requires conference id > 0
+     * <dt><b>Postcondition:</b><dd> ensures A paper is returned
      * @param paperID the papers id
      */
     @Permission(level = 400)
@@ -210,6 +240,8 @@ public class PaperManager {
     /**
      * Changes the status of the paper to rejected.
      * 
+     * <dt><b>Precondition:</b><dd> requires paper id > 0
+     * <dt><b>Postcondition:</b><dd> ensures A paper is returned
      * @param paperID the papers id
      */
     @Permission(level = 400)
@@ -220,6 +252,8 @@ public class PaperManager {
     /**
      * Sets the papers status.
      * 
+     * <dt><b>Precondition:</b><dd> requires paper id > 0
+     * <dt><b>Postcondition:</b><dd> ensures A paper is returned
      * @param paperID the papers id
      * @param status the status of the paper
      */
@@ -235,6 +269,8 @@ public class PaperManager {
     /**
      * Gets all the papers in a conference.
      * 
+     * <dt><b>Precondition:</b><dd> requires conference id > 0
+     * <dt><b>Postcondition:</b><dd> ensures A paper is returned
      * @param conferenceID the conferences id
      * @return the list of papers
      */
@@ -247,6 +283,15 @@ public class PaperManager {
                 .addParameter("conferenceID", conferenceID).executeAndFetch(Paper.class);
     }
     
+    /**
+     * auther submitted papers.
+     * 
+     * <dt><b>Precondition:</b><dd> requires author id > 0
+     * <dt><b>Postcondition:</b><dd> ensures A paper is returned
+     * @param authorID author id
+     * @param conferenceID conference id
+     * @return list
+     */
     @Permission(level = 100)
     public static List<Paper> getAuthorsSubmittedPapers(final int authorID,
             final int conferenceID) {
@@ -259,6 +304,14 @@ public class PaperManager {
         
     }
     
+    /**
+     * author sumitted papers
+     * 
+     * <dt><b>Precondition:</b><dd> requires paper id > 0
+     * <dt><b>Postcondition:</b><dd> ensures A paper is returned
+     * @param authorID author id
+     * @return list
+     */
     @Permission(level = 100)
     public static List<Paper> getAuthorsSubmittedPapers(final int authorID) {
         return Database
@@ -272,6 +325,8 @@ public class PaperManager {
     /**
      * Gets the number of papers an author has submitted to a conference.
      * 
+     * <dt><b>Precondition:</b><dd> requires conference id > 0
+     * <dt><b>Postcondition:</b><dd> ensures A paper is returned
      * @param conferenceID the conference id
      * @param authorID the authors id
      * @return number of papers author has submitted
@@ -285,6 +340,14 @@ public class PaperManager {
                 .executeAndFetchTable().rows().get(0).getInteger(0);
     }
     
+    /**
+     * assigned users
+     * 
+     * <dt><b>Precondition:</b><dd> requires paper id > 0
+     * <dt><b>Postcondition:</b><dd> ensures A paper is returned
+     * @param paperID aper id
+     * @return list
+     */
     public static List<ConferenceUser> getAssignedUsers(final int paperID) {
         return Database
                 .getInstance()
@@ -293,6 +356,13 @@ public class PaperManager {
                 .addParameter("paperID", paperID).executeAndFetch(ConferenceUser.class);
     }
     
+    /**
+     * recommend paper
+     * 
+     * <dt><b>Precondition:</b><dd> requires paper id > 0
+     * <dt><b>Postcondition:</b><dd> ensures A paper is returned
+     * @param paperID paper id
+     */
     @Permission(level = 300)
     public static void recommendPaper(final int paperID) {
         Database.getInstance()
@@ -300,6 +370,15 @@ public class PaperManager {
                 .addParameter("paperID", paperID).executeUpdate();
     }
     
+    /**
+     * reupload paper
+     * 
+     * <dt><b>Precondition:</b><dd> requires paper id > 0
+     * <dt><b>Postcondition:</b><dd> ensures A paper is returned
+     * @param paperID paper id
+     * @param file file
+     * @throws IOException
+     */
     @Permission(level = 100, strict = true)
     public static void reuploadPaper(final int paperID, final File file) throws IOException {
         Database.getInstance()
@@ -310,6 +389,14 @@ public class PaperManager {
                 .executeUpdate();
     }
     
+    /**
+     * sub chair
+     * 
+     * <dt><b>Precondition:</b><dd> requires paper id > 0
+     * <dt><b>Postcondition:</b><dd> ensures A paper is returned
+     * @param paperID paper id
+     * @return
+     */
     public static String getSubProgramChair(final int paperID) {
         List<ConferenceUser> result = Database
                 .getInstance()
@@ -320,6 +407,5 @@ public class PaperManager {
             return result.get(0).getUsername();
         }
         return "";
-        
     }
 }

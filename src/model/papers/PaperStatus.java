@@ -47,6 +47,10 @@ public enum PaperStatus {
         return paperStatus;
     }
     
+    /**
+     * The string value
+     * @return string value.
+     */
     public String getStringValue() {
         String value = "Pending";
         if (paperStatus == 2) {

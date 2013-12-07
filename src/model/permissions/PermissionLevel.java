@@ -57,6 +57,11 @@ public enum PermissionLevel {
         return permission;
     }
     
+    /**
+     * the role
+     * @param permission permission
+     * @return the role
+     */
     public static String getRole(final PermissionLevel permission) {
         String role = "";
         switch (permission) {

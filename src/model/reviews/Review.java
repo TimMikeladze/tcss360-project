@@ -39,14 +39,17 @@ public class Review {
      */
     private String file;
     
+    /**
+     * review
+     */
     private File review;
     
     public static Review reviewFromID(final int id) {
-        List<Review> results = Database.getInstance()
-                                       .createQuery(
-                                               "SELECT ID, PaperID, ReviewerID, CONVERT(File USING utf8) AS File, FileExtension FROM reviews WHERE ID = :id")
-                                       .addParameter("id", id)
-                                       .executeAndFetch(Review.class);
+        List<Review> results = Database
+                .getInstance()
+                .createQuery(
+                        "SELECT ID, PaperID, ReviewerID, CONVERT(File USING utf8) AS File, FileExtension FROM reviews WHERE ID = :id")
+                .addParameter("id", id).executeAndFetch(Review.class);
         return Database.hasResults(results) ? results.get(0) : null;
     }
     

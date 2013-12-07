@@ -33,17 +33,17 @@ public class ReviewManager {
      * @throws IOException Signals that an I/O exception has occurred.
      */
     @Permission(level = 200)
-    public static int submitReview(final int paperID, final int reviewerID, final File file) throws DatabaseException, IOException {
+    public static int submitReview(final int paperID, final int reviewerID, final File file)
+            throws DatabaseException, IOException {
         if (PaperManager.getPaperAuthorID(paperID) != reviewerID) {
-            return Database.getInstance()
-                           .createQuery(
-                                   "INSERT INTO reviews (PaperID, ReviewerID, File, FileExtension) VALUES (:paperID, :reviewerID, :file, :fileExtension)")
-                           .addParameter("paperID", paperID)
-                           .addParameter("reviewerID", reviewerID)
-                           .addParameter("file", FileHandler.convertFileToBytes(file))
-                           .addParameter("fileExtension", FileHandler.getFileExtension(file))
-                           .executeUpdate()
-                           .getKey(Integer.class);
+            return Database
+                    .getInstance()
+                    .createQuery(
+                            "INSERT INTO reviews (PaperID, ReviewerID, File, FileExtension) VALUES (:paperID, :reviewerID, :file, :fileExtension)")
+                    .addParameter("paperID", paperID).addParameter("reviewerID", reviewerID)
+                    .addParameter("file", FileHandler.convertFileToBytes(file))
+                    .addParameter("fileExtension", FileHandler.getFileExtension(file))
+                    .executeUpdate().getKey(Integer.class);
         }
         else {
             throw new DatabaseException(DatabaseErrors.CANT_REVIEW_PAPER);
@@ -58,11 +58,11 @@ public class ReviewManager {
      */
     @Permission(level = 100, strict = true)
     public static List<Review> getReviews(final int paperID) {
-        return Database.getInstance()
-                       .createQuery(
-                               "SELECT ID, PaperID, ReviewerID, CONVERT(File USING utf8) AS File, FileExtension FROM reviews WHERE PaperID = :paperID")
-                       .addParameter("paperID", paperID)
-                       .executeAndFetch(Review.class);
+        return Database
+                .getInstance()
+                .createQuery(
+                        "SELECT ID, PaperID, ReviewerID, CONVERT(File USING utf8) AS File, FileExtension FROM reviews WHERE PaperID = :paperID")
+                .addParameter("paperID", paperID).executeAndFetch(Review.class);
     }
     
     /**
@@ -74,19 +74,28 @@ public class ReviewManager {
      */
     @Permission(level = 200)
     public static Review getSubmittedReview(final int paperID, final int userID) {
-        return Database.getInstance()
-                       .createQuery(
-                               "SELECT ID, PaperID, ReviewerID, CONVERT(File USING utf8) AS File, FileExtension FROM reviews WHERE PaperID = :paperID AND reviewerID = :userID")
-                       .addParameter("paperID", paperID)
-                       .addParameter("userID", userID)
-                       .executeAndFetchFirst(Review.class);
+        return Database
+                .getInstance()
+                .createQuery(
+                        "SELECT ID, PaperID, ReviewerID, CONVERT(File USING utf8) AS File, FileExtension FROM reviews WHERE PaperID = :paperID AND reviewerID = :userID")
+                .addParameter("paperID", paperID).addParameter("userID", userID)
+                .executeAndFetchFirst(Review.class);
     }
     
+    /**
+     * is reviewed 
+     * 
+     * @param paperID paper id
+     * @param userID user id
+     * @return boolean
+     */
     public static boolean isReviewed(final int paperID, final int userID) {
-        return Database.hasResults(Database.getInstance()
-                                           .createQuery("SELECT 1 FROM reviews WHERE PaperID = :paperID AND reviewerID = :userID")
-                                           .addParameter("paperID", paperID)
-                                           .addParameter("userID", userID)
-                                           .executeAndFetch(Review.class));
+        return Database
+                .hasResults(Database
+                        .getInstance()
+                        .createQuery(
+                                "SELECT 1 FROM reviews WHERE PaperID = :paperID AND reviewerID = :userID")
+                        .addParameter("paperID", paperID).addParameter("userID", userID)
+                        .executeAndFetch(Review.class));
     }
 }

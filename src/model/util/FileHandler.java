@@ -18,9 +18,7 @@ public class FileHandler {
      * @return A String representation of the given file.
      * @throws IOException 
      */
-	
-	
-    public static String convertFileToBytes(File f) throws IOException {
+    public static String convertFileToBytes(final File f) throws IOException {
         FileInputStream fis = null;
         byte[] byteArray = new byte[(int) f.length()];
         
@@ -28,7 +26,6 @@ public class FileHandler {
         fis = new FileInputStream(f);
         fis.read(byteArray);
         fis.close();
-            
         
         String result = new String(byteArray);
         
@@ -43,18 +40,18 @@ public class FileHandler {
      * @return A file created from the given String.
      * @throws IOException 
      */
-   
-    public static File convertBytesToFile(String bArray, String extension) throws IOException {
-    	File f = File.createTempFile("temp", "." + extension);
-		byte[] bytes = bArray.getBytes();
-		
-		FileOutputStream fos = new FileOutputStream(f);
-		fos.write(bytes);
-		fos.close();
-    	
-    	return f;
-    }
     
+    public static File convertBytesToFile(final String bArray, final String extension)
+            throws IOException {
+        File f = File.createTempFile("temp", "." + extension);
+        byte[] bytes = bArray.getBytes();
+        
+        FileOutputStream fos = new FileOutputStream(f);
+        fos.write(bytes);
+        fos.close();
+        
+        return f;
+    }
     
     /**
      * Finds and returns the file extension of the given file.
@@ -62,7 +59,7 @@ public class FileHandler {
      * @param f The file to find the extension for.
      * @return The file extension of the given file.
      */
-    public static String getFileExtension(File f) {
+    public static String getFileExtension(final File f) {
         String filePath = f.getAbsolutePath();
         int dot = filePath.lastIndexOf('.');
         return filePath.substring(dot + 1);
