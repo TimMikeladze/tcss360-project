@@ -163,7 +163,7 @@ public class PaperManager {
      * @param permission the user's permission level
      * @throws DatabaseException
      */
-    @Permission(level = 300)
+    @Permission(level = 100)
     public static void assignPaper(final int paperID, final int userID,
             final PermissionLevel permission) throws DatabaseException {
         if (getPaperAuthorID(paperID) != userID) {
